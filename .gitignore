@@ -18,3 +18,5 @@ temp*
 *.old
 /regression_testing/cases/*-results/
 /.vs/
+/Win32/
+/x64/
