@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tidy-html5-dotnet", "src\ti
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tidy-html5-console", "console\tidy-html5-console.vcxproj", "{609F2294-A1EF-49B3-87C5-FE464AEC1011}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tidy-html5-dotnet-test", "tidy-html5-dotnet-test\tidy-html5-dotnet-test.csproj", "{24D46067-4725-4511-8836-D34DFF20797D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -31,6 +33,14 @@ Global
 		{609F2294-A1EF-49B3-87C5-FE464AEC1011}.Release|x64.Build.0 = Release|x64
 		{609F2294-A1EF-49B3-87C5-FE464AEC1011}.Release|x86.ActiveCfg = Release|Win32
 		{609F2294-A1EF-49B3-87C5-FE464AEC1011}.Release|x86.Build.0 = Release|Win32
+		{24D46067-4725-4511-8836-D34DFF20797D}.Debug|x64.ActiveCfg = Debug|x64
+		{24D46067-4725-4511-8836-D34DFF20797D}.Debug|x64.Build.0 = Debug|x64
+		{24D46067-4725-4511-8836-D34DFF20797D}.Debug|x86.ActiveCfg = Debug|x86
+		{24D46067-4725-4511-8836-D34DFF20797D}.Debug|x86.Build.0 = Debug|x86
+		{24D46067-4725-4511-8836-D34DFF20797D}.Release|x64.ActiveCfg = Release|x64
+		{24D46067-4725-4511-8836-D34DFF20797D}.Release|x64.Build.0 = Release|x64
+		{24D46067-4725-4511-8836-D34DFF20797D}.Release|x86.ActiveCfg = Release|x86
+		{24D46067-4725-4511-8836-D34DFF20797D}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -169,7 +169,6 @@
     <ClInclude Include="sprtf.h" />
     <ClInclude Include="streamio.h" />
     <ClInclude Include="tags.h" />
-    <ClInclude Include="tidy-html5-dotnet.h" />
     <ClInclude Include="tidy-int.h" />
     <ClInclude Include="tmbstr.h" />
     <ClInclude Include="utf8.h" />
@@ -321,7 +320,7 @@
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</CompileAsManaged>
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</CompileAsManaged>
     </ClCompile>
-    <ClCompile Include="tidy-html5-dotnet.cpp" />
+    <ClCompile Include="Document.cpp" />
     <ClCompile Include="tidylib.c">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>

@@ -19,9 +19,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="tidy-html5-dotnet.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -126,7 +123,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="tidy-html5-dotnet.cpp">
+    <ClCompile Include="Document.cpp">
       <Filter>Source Files dotnet</Filter>
     </ClCompile>
     <ClCompile Include="AssemblyInfo.cpp">
