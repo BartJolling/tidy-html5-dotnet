@@ -22,9 +22,6 @@
     <ClInclude Include="Resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="pch.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="access.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -129,9 +126,6 @@
     <ClCompile Include="AssemblyInfo.cpp">
       <Filter>Source Files dotnet</Filter>
     </ClCompile>
-    <ClCompile Include="pch.cpp">
-      <Filter>Source Files dotnet</Filter>
-    </ClCompile>
     <ClCompile Include="config.c">
       <Filter>Source Files libtidy</Filter>
     </ClCompile>
@@ -209,6 +203,9 @@
     </ClCompile>
     <ClCompile Include="utf8.c">
       <Filter>Source Files libtidy</Filter>
+    </ClCompile>
+    <ClCompile Include="Tidy.cpp">
+      <Filter>Source Files dotnet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
