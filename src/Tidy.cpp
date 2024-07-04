@@ -8,18 +8,14 @@ namespace TidyHtml5Dotnet {
 	public ref class Tidy abstract sealed
 	{
 	private:
-		static String^ _libraryVersion = nullptr;
-		static DateTime _releaseDate = DateTime::MinValue;
+		static String^ _libraryVersion = gcnew String(tidyLibraryVersion());
+		static DateTime _releaseDate = DateTime::ParseExact(gcnew String(tidyReleaseDate()), "yyyy.MM.dd", CultureInfo::InvariantCulture);
 
 	public:
 		static property String^ LibraryVersion
 		{
-			String^ get()
+			String^ get() 
 			{
-				if (_libraryVersion == nullptr)
-				{
-					_libraryVersion = gcnew String(tidyLibraryVersion());
-				}
 				return _libraryVersion;
 			}
 		}
@@ -28,11 +24,6 @@ namespace TidyHtml5Dotnet {
 		{
 			DateTime get()
 			{
-				if (_releaseDate == DateTime::MinValue)
-				{
-					auto releaseDate = gcnew String(tidyReleaseDate());
-					_releaseDate = DateTime::ParseExact(releaseDate, "yyyy.MM.dd", CultureInfo::InvariantCulture);
-				}
 				return _releaseDate;
 			}
 		}
