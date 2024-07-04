@@ -1,0 +1,224 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files dotnet">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source Files libtidy">
+      <UniqueIdentifier>{fef9a351-644f-4a1d-acc8-49cf8b9b2574}</UniqueIdentifier>
+      <Extensions>c;</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="access.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="attrdict.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="attrs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="charsets.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="clean.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="entities.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="fileio.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="forward.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="gdoc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="language.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="language_de.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="language_en.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="language_en_gb.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="language_es.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="language_es_mx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="language_fr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="language_pt_br.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="language_zh_cn.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lexer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mappedio.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="message.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="messageobj.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="parser.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pprint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sprtf.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="streamio.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tags.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tidy-int.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tmbstr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="utf8.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="version.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Document.cpp">
+      <Filter>Source Files dotnet</Filter>
+    </ClCompile>
+    <ClCompile Include="AssemblyInfo.cpp">
+      <Filter>Source Files dotnet</Filter>
+    </ClCompile>
+    <ClCompile Include="config.c">
+      <Filter>Source Files libtidy</Filter>
+    </ClCompile>
+    <ClCompile Include="access.c">
+      <Filter>Source Files libtidy</Filter>
+    </ClCompile>
+    <ClCompile Include="alloc.c">
+      <Filter>Source Files libtidy</Filter>
+    </ClCompile>
+    <ClCompile Include="attrdict.c">
+      <Filter>Source Files libtidy</Filter>
+    </ClCompile>
+    <ClCompile Include="attrs.c">
+      <Filter>Source Files libtidy</Filter>
+    </ClCompile>
+    <ClCompile Include="buffio.c">
+      <Filter>Source Files libtidy</Filter>
+    </ClCompile>
+    <ClCompile Include="charsets.c">
+      <Filter>Source Files libtidy</Filter>
+    </ClCompile>
+    <ClCompile Include="clean.c">
+      <Filter>Source Files libtidy</Filter>
+    </ClCompile>
+    <ClCompile Include="entities.c">
+      <Filter>Source Files libtidy</Filter>
+    </ClCompile>
+    <ClCompile Include="fileio.c">
+      <Filter>Source Files libtidy</Filter>
+    </ClCompile>
+    <ClCompile Include="gdoc.c">
+      <Filter>Source Files libtidy</Filter>
+    </ClCompile>
+    <ClCompile Include="istack.c">
+      <Filter>Source Files libtidy</Filter>
+    </ClCompile>
+    <ClCompile Include="language.c">
+      <Filter>Source Files libtidy</Filter>
+    </ClCompile>
+    <ClCompile Include="lexer.c">
+      <Filter>Source Files libtidy</Filter>
+    </ClCompile>
+    <ClCompile Include="mappedio.c">
+      <Filter>Source Files libtidy</Filter>
+    </ClCompile>
+    <ClCompile Include="message.c">
+      <Filter>Source Files libtidy</Filter>
+    </ClCompile>
+    <ClCompile Include="messageobj.c">
+      <Filter>Source Files libtidy</Filter>
+    </ClCompile>
+    <ClCompile Include="parser.c">
+      <Filter>Source Files libtidy</Filter>
+    </ClCompile>
+    <ClCompile Include="pprint.c">
+      <Filter>Source Files libtidy</Filter>
+    </ClCompile>
+    <ClCompile Include="sprtf.c">
+      <Filter>Source Files libtidy</Filter>
+    </ClCompile>
+    <ClCompile Include="streamio.c">
+      <Filter>Source Files libtidy</Filter>
+    </ClCompile>
+    <ClCompile Include="tagask.c">
+      <Filter>Source Files libtidy</Filter>
+    </ClCompile>
+    <ClCompile Include="tags.c">
+      <Filter>Source Files libtidy</Filter>
+    </ClCompile>
+    <ClCompile Include="tidylib.c">
+      <Filter>Source Files libtidy</Filter>
+    </ClCompile>
+    <ClCompile Include="tmbstr.c">
+      <Filter>Source Files libtidy</Filter>
+    </ClCompile>
+    <ClCompile Include="utf8.c">
+      <Filter>Source Files libtidy</Filter>
+    </ClCompile>
+    <ClCompile Include="Tidy.cpp">
+      <Filter>Source Files dotnet</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="app.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="app.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".gitignore" />
+  </ItemGroup>
+</Project>
