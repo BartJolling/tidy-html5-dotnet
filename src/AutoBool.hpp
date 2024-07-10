@@ -1,4 +1,4 @@
-public enum class TriState
+public enum class AutoBool
 {
 	False = 0,
 	True,

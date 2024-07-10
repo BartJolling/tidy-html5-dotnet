@@ -131,7 +131,10 @@
     <ClInclude Include="DocTypeMode.hpp">
       <Filter>dotnet Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TriState.hpp">
+    <ClInclude Include="AutoBool.hpp">
+      <Filter>dotnet Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RepeatedAttributeMode.hpp">
       <Filter>dotnet Header Files</Filter>
     </ClInclude>
   </ItemGroup>
