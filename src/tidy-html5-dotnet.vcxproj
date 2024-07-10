@@ -142,9 +142,12 @@
     <ClInclude Include="access.h" />
     <ClInclude Include="attrdict.h" />
     <ClInclude Include="attrs.h" />
+    <ClInclude Include="TriState.hpp" />
     <ClInclude Include="charsets.h" />
     <ClInclude Include="clean.h" />
     <ClInclude Include="config.h" />
+    <ClInclude Include="DocTypeMode.hpp" />
+    <ClInclude Include="Document.hpp" />
     <ClInclude Include="entities.h" />
     <ClInclude Include="fileio.h" />
     <ClInclude Include="forward.h" />
@@ -162,6 +165,7 @@
     <ClInclude Include="mappedio.h" />
     <ClInclude Include="message.h" />
     <ClInclude Include="messageobj.h" />
+    <ClInclude Include="Options.hpp" />
     <ClInclude Include="parser.h" />
     <ClInclude Include="pprint.h" />
     <ClInclude Include="Resource.h" />
@@ -277,6 +281,7 @@
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</CompileAsManaged>
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</CompileAsManaged>
     </ClCompile>
+    <ClCompile Include="Options.cpp" />
     <ClCompile Include="parser.c">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
