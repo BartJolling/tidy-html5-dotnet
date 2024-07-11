@@ -124,22 +124,22 @@ namespace tidy_html5_dotnet_test
         public void DocType_sets_option_TidyCSSPrefix()
         {
             var document = new Document();
-            Assert.Equal(DocTypeMode.Auto, document.Options.DocType);
+            Assert.Equal(DocTypeModes.Auto, document.Options.DocTypeMode);
 
-            document.Options.DocType = DocTypeMode.Html5;
-            Assert.Equal(DocTypeMode.Html5, document.Options.DocType);
+            document.Options.DocTypeMode = DocTypeModes.Html5;
+            Assert.Equal(DocTypeModes.Html5, document.Options.DocTypeMode);
 
-            document.Options.DocType = DocTypeMode.Omit;
-            Assert.Equal(DocTypeMode.Omit, document.Options.DocType);
+            document.Options.DocTypeMode = DocTypeModes.Omit;
+            Assert.Equal(DocTypeModes.Omit, document.Options.DocTypeMode);
 
-            document.Options.DocType = DocTypeMode.Strict;
-            Assert.Equal(DocTypeMode.Strict, document.Options.DocType);
+            document.Options.DocTypeMode = DocTypeModes.Strict;
+            Assert.Equal(DocTypeModes.Strict, document.Options.DocTypeMode);
 
-            document.Options.DocType = DocTypeMode.Loose;
-            Assert.Equal(DocTypeMode.Loose, document.Options.DocType);
+            document.Options.DocTypeMode = DocTypeModes.Loose;
+            Assert.Equal(DocTypeModes.Loose, document.Options.DocTypeMode);
 
-            document.Options.DocType = DocTypeMode.User;
-            Assert.Equal(DocTypeMode.User, document.Options.DocType);
+            document.Options.DocTypeMode = DocTypeModes.User;
+            Assert.Equal(DocTypeModes.User, document.Options.DocTypeMode);
         }
     }
 }

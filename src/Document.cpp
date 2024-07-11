@@ -9,6 +9,7 @@ namespace TidyHtml5Dotnet
 	{
 		_tidyDoc = tidyCreate();
 		_options = gcnew TidyHtml5Dotnet::Options(_tidyDoc);
+		_diagnostics = gcnew TidyHtml5Dotnet::Diagnostics(_tidyDoc);
 	};
 
 	Document::Document(String^ htmlString) : Document()
@@ -22,4 +23,3 @@ namespace TidyHtml5Dotnet
 		_stream = stream;
 	};
 }
-

@@ -1,6 +1,9 @@
-public enum class AutoBool
+namespace TidyHtml5Dotnet
 {
-	False = 0,
-	True,
-	Auto
-};
+	public enum class AutoBool
+	{
+		False = 0,
+		True,
+		Auto
+	};
+}

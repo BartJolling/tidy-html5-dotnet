@@ -1,6 +1,10 @@
 #include "Options.hpp"
 
-TidyHtml5Dotnet::Options::Options(const TidyDoc tidyDoc)
+namespace TidyHtml5Dotnet
 {
-	_tidyDoc = tidyDoc;
-};
+
+	Options::Options(const TidyDoc tidyDoc)
+	{
+		_tidyDoc = tidyDoc;
+	};
+}
