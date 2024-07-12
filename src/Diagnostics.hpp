@@ -16,7 +16,7 @@ namespace TidyHtml5Dotnet
 
     public:
         DEFINE_PROPERTY_ENUM(AccessibilityCheckLevels, AccessibilityCheckLevel, TidyAccessibilityCheckLevel)
-        DECLARE_PROPERTY_INTEGER(ShowErrors, TidyShowErrors)
+        DECLARE_PROPERTY_SIGNED_INTEGER(ShowErrors, TidyShowErrors)
         DECLARE_PROPERTY_BOOL(ShowInfo, TidyShowInfo)        
 	};
 }

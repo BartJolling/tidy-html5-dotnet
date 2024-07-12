@@ -128,13 +128,22 @@
     <ClInclude Include="Options.hpp">
       <Filter>dotnet Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DocTypeMode.hpp">
-      <Filter>dotnet Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="AutoBool.hpp">
       <Filter>dotnet Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RepeatedAttributeMode.hpp">
+    <ClInclude Include="AccessibilityCheckLevels.hpp">
+      <Filter>dotnet Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Conversions.hpp">
+      <Filter>dotnet Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Diagnostics.hpp">
+      <Filter>dotnet Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DocTypeModes.hpp">
+      <Filter>dotnet Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RepeatedAttributeModes.hpp">
       <Filter>dotnet Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -229,6 +238,12 @@
     <ClCompile Include="Options.cpp">
       <Filter>dotnet Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Conversions.cpp">
+      <Filter>dotnet Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Diagnostics.cpp">
+      <Filter>dotnet Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="app.rc">
@@ -242,5 +257,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
+    <None Include="CPP.HINT">
+      <Filter>dotnet Header Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
