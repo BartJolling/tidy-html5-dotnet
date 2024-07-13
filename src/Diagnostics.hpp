@@ -15,8 +15,6 @@ namespace TidyHtml5Dotnet
         Diagnostics(const TidyDoc tidyDoc);
 
     public:
-        DEFINE_PROPERTY_ENUM(AccessibilityCheckLevels, AccessibilityCheckLevel, TidyAccessibilityCheckLevel)
-        DECLARE_PROPERTY_SIGNED_INTEGER(ShowErrors, TidyShowErrors)
-        DECLARE_PROPERTY_BOOL(ShowInfo, TidyShowInfo)        
+        DECLARE_PROPERTY_ENUM(AccessibilityCheckLevels, AccessibilityCheckLevel, TidyAccessibilityCheckLevel)
 	};
 }

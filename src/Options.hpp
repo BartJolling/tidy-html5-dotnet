@@ -2,7 +2,6 @@
 
 #include "tidy.h"
 #include "Conversions.hpp"
-#include "AutoBool.hpp"
 #include "DocTypeModes.hpp"
 #include "RepeatedAttributeModes.hpp"
 
@@ -29,7 +28,7 @@ namespace TidyHtml5Dotnet
         DECLARE_PROPERTY_BOOL(CoerceEndTags, TidyCoerceEndTags)
         DECLARE_PROPERTY_STRING(CssPrefix, TidyCSSPrefix)
         DECLARE_PROPERTY_BOOL(DecorateInferredUL, TidyDecorateInferredUL)		
-        DEFINE_PROPERTY_ENUM(DocTypeModes, DocTypeMode, TidyDoctypeMode)
+        DECLARE_PROPERTY_ENUM(DocTypeModes, DocTypeMode, TidyDoctypeMode)
         DECLARE_PROPERTY_BOOL(DropEmptyElements, TidyDropEmptyElems)
         DECLARE_PROPERTY_BOOL(DropEmptyParagraphs, TidyDropEmptyParas)
         DECLARE_PROPERTY_BOOL(DropProprietaryAttributes, TidyDropPropAttrs)
@@ -48,9 +47,9 @@ namespace TidyHtml5Dotnet
         DECLARE_PROPERTY_BOOL(LiteralAttributes, TidyLiteralAttribs)
         DECLARE_PROPERTY_BOOL(LogicalEmphasis, TidyLogicalEmphasis)
         DECLARE_PROPERTY_BOOL(LowerCaseLiterals, TidyLowerLiterals)
-        DEFINE_PROPERTY_ENUM(AutoBool, MergeDivs, TidyMergeDivs)
+        DECLARE_PROPERTY_AUTOBOOL(MergeDivs, TidyMergeDivs)
         DECLARE_PROPERTY_BOOL(MergeEmphasis, TidyMergeEmphasis)
-        DEFINE_PROPERTY_ENUM(AutoBool, MergeSpans, TidyMergeSpans)
+        DECLARE_PROPERTY_AUTOBOOL(MergeSpans, TidyMergeSpans)
         DECLARE_PROPERTY_BOOL(AllowNumericCharacterReferences, TidyNCR)
         DECLARE_PROPERTY_STRING(NewBlockLevelTags, TidyBlockTags)
         DECLARE_PROPERTY_STRING(NewEmptyTags, TidyEmptyTags)
@@ -65,9 +64,9 @@ namespace TidyHtml5Dotnet
         DECLARE_PROPERTY_BOOL(QuoteAmpersands, TidyQuoteAmpersand)
         DECLARE_PROPERTY_BOOL(QuoteMarks, TidyQuoteMarks)
         DECLARE_PROPERTY_BOOL(QuoteNonBreakingSpaces, TidyQuoteNbsp)
-        DEFINE_PROPERTY_ENUM(RepeatedAttributeModes, RepeatedAttributeMode, TidyDuplicateAttrs)
+        DECLARE_PROPERTY_ENUM(RepeatedAttributeModes, RepeatedAttributeMode, TidyDuplicateAttrs)
         DECLARE_PROPERTY_BOOL(UseColorNames, TidyReplaceColor)
-        DEFINE_PROPERTY_ENUM(AutoBool, OutputBodyOnly, TidyBodyOnly)
+        DECLARE_PROPERTY_AUTOBOOL(OutputBodyOnly, TidyBodyOnly)
         DECLARE_PROPERTY_BOOL(SkipNestedTags, TidySkipNested)
         DECLARE_PROPERTY_BOOL(UpperCaseAttributes, TidyUpperCaseAttrs)
         DECLARE_PROPERTY_BOOL(UpperCaseTags, TidyUpperCaseTags)

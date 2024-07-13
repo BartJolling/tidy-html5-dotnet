@@ -143,12 +143,12 @@
     <ClInclude Include="AccessibilityCheckLevels.hpp" />
     <ClInclude Include="attrdict.h" />
     <ClInclude Include="attrs.h" />
-    <ClInclude Include="AutoBool.hpp" />
     <ClInclude Include="charsets.h" />
     <ClInclude Include="clean.h" />
     <ClInclude Include="config.h" />
     <ClInclude Include="Conversions.hpp" />
     <ClInclude Include="Diagnostics.hpp" />
+    <ClInclude Include="DisplayOptions.hpp" />
     <ClInclude Include="DocTypeModes.hpp" />
     <ClInclude Include="Document.hpp" />
     <ClInclude Include="entities.h" />
@@ -233,6 +233,7 @@
     </ClCompile>
     <ClCompile Include="Conversions.cpp" />
     <ClCompile Include="Diagnostics.cpp" />
+    <ClCompile Include="DisplayOptions.cpp" />
     <ClCompile Include="entities.c">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>

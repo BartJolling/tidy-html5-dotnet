@@ -8,8 +8,10 @@ namespace TidyHtml5Dotnet
 	Document::Document()
 	{
 		_tidyDoc = tidyCreate();
+
 		_options = gcnew TidyHtml5Dotnet::Options(_tidyDoc);
 		_diagnostics = gcnew TidyHtml5Dotnet::Diagnostics(_tidyDoc);
+		_displayOptions = gcnew TidyHtml5Dotnet::DisplayOptions(_tidyDoc);
 	};
 
 	Document::Document(String^ htmlString) : Document()

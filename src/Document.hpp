@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Document.hpp"
+#include "DisplayOptions.hpp"
 #include "Diagnostics.hpp"
 #include "Options.hpp"
 #include "tidy.h"
@@ -14,8 +15,11 @@ namespace TidyHtml5Dotnet
 	{
 	private:
 		TidyDoc _tidyDoc = nullptr;
+
+		// Options
 		Options^ _options = nullptr;
 		Diagnostics^ _diagnostics = nullptr;
+		DisplayOptions^ _displayOptions = nullptr;
 
 		Stream^ _stream = nullptr;
 		String^ _htmlString;
@@ -30,5 +34,6 @@ namespace TidyHtml5Dotnet
 
 		property Options^ Options { TidyHtml5Dotnet::Options^ get() { return _options; }}
 		property Diagnostics^ Diagnostics { TidyHtml5Dotnet::Diagnostics^ get() { return _diagnostics; }}
+		property DisplayOptions^ DisplayOptions { TidyHtml5Dotnet::DisplayOptions^ get() { return _displayOptions; }}
 	};
 }
