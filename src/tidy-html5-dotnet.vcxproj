@@ -155,6 +155,7 @@
     <ClInclude Include="fileio.h" />
     <ClInclude Include="forward.h" />
     <ClInclude Include="gdoc.h" />
+    <ClInclude Include="InOutOptions.hpp" />
     <ClInclude Include="language.h" />
     <ClInclude Include="language_de.h" />
     <ClInclude Include="language_en.h" />
@@ -252,6 +253,7 @@
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</CompileAsManaged>
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</CompileAsManaged>
     </ClCompile>
+    <ClCompile Include="InOutOptions.cpp" />
     <ClCompile Include="istack.c">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>

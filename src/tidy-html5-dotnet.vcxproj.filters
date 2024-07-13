@@ -146,6 +146,9 @@
     <ClInclude Include="DisplayOptions.hpp">
       <Filter>dotnet Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="InOutOptions.hpp">
+      <Filter>dotnet Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Document.cpp">
@@ -245,6 +248,9 @@
       <Filter>dotnet Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DisplayOptions.cpp">
+      <Filter>dotnet Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InOutOptions.cpp">
       <Filter>dotnet Source Files</Filter>
     </ClCompile>
   </ItemGroup>

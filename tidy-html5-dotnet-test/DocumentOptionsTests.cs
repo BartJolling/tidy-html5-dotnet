@@ -5,30 +5,6 @@ namespace tidy_html5_dotnet_test;
 public class DocumentOptionsTests
 {
     [Fact]
-    public void AddXmlDeclaration_sets_option_TidyXmlDecl()
-    {
-        var document = new Document();
-
-        document.Options.AddXmlDeclaration = true;
-        Assert.True(document.Options.AddXmlDeclaration);
-
-        document.Options.AddXmlDeclaration = false;
-        Assert.False(document.Options.AddXmlDeclaration);
-    }
-
-    [Fact]
-    public void AddXmlSpacePreserve_sets_option_TidyXmlSpace()
-    {
-        var document = new Document();
-
-        document.Options.AddXmlSpacePreserve = true;
-        Assert.True(document.Options.AddXmlSpacePreserve);
-
-        document.Options.AddXmlSpacePreserve = false;
-        Assert.False(document.Options.AddXmlSpacePreserve);
-    }
-
-    [Fact]
     public void DefaultAltText_sets_option_TidyAltText()
     {
         var document = new Document();
@@ -118,27 +94,5 @@ public class DocumentOptionsTests
 
         document.Options.DecorateInferredUL = false;
         Assert.False(document.Options.DecorateInferredUL);
-    }
-
-    [Fact]
-    public void DocType_sets_option_TidyCSSPrefix()
-    {
-        var document = new Document();
-        Assert.Equal(DocTypeModes.Auto, document.Options.DocTypeMode);
-
-        document.Options.DocTypeMode = DocTypeModes.Html5;
-        Assert.Equal(DocTypeModes.Html5, document.Options.DocTypeMode);
-
-        document.Options.DocTypeMode = DocTypeModes.Omit;
-        Assert.Equal(DocTypeModes.Omit, document.Options.DocTypeMode);
-
-        document.Options.DocTypeMode = DocTypeModes.Strict;
-        Assert.Equal(DocTypeModes.Strict, document.Options.DocTypeMode);
-
-        document.Options.DocTypeMode = DocTypeModes.Loose;
-        Assert.Equal(DocTypeModes.Loose, document.Options.DocTypeMode);
-
-        document.Options.DocTypeMode = DocTypeModes.User;
-        Assert.Equal(DocTypeModes.User, document.Options.DocTypeMode);
     }
 }

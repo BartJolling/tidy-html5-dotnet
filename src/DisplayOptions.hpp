@@ -5,6 +5,9 @@
 
 namespace TidyHtml5Dotnet
 {
+	/// <summary>
+	/// https://api.html-tidy.org/tidy/tidylib_api_5.8.0/tidy_quickref.html#DisplayHeader
+	/// </summary>	
 	public ref class DisplayOptions
 	{
 	private:
