@@ -3,11 +3,11 @@
 #include "Document.hpp"
 #include "DisplayOptions.hpp"
 #include "Diagnostics.hpp"
+#include "FileOptions.hpp"
 #include "InOutOptions.hpp"
 #include "Options.hpp"
 #include "tidy.h"
 
-using namespace System;
 using namespace System::IO;
 
 namespace TidyHtml5Dotnet
@@ -22,6 +22,7 @@ namespace TidyHtml5Dotnet
 		Diagnostics^ _diagnostics = nullptr;
 		DisplayOptions^ _displayOptions = nullptr;
 		InOutOptions^ _inOutOptions = nullptr;
+		FileOptions^ _fileOptions = nullptr;
 
 		Stream^ _stream = nullptr;
 		String^ _htmlString;
@@ -38,5 +39,6 @@ namespace TidyHtml5Dotnet
 		property Diagnostics^ Diagnostics { TidyHtml5Dotnet::Diagnostics^ get() { return _diagnostics; }}
 		property DisplayOptions^ DisplayOptions { TidyHtml5Dotnet::DisplayOptions^ get() { return _displayOptions; }}
 		property InOutOptions^ InOutOptions { TidyHtml5Dotnet::InOutOptions^ get() { return _inOutOptions; }}
+		property FileOptions^ FileOptions { TidyHtml5Dotnet::FileOptions^ get() { return _fileOptions; }}
 	};
 }

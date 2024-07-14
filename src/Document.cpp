@@ -13,6 +13,7 @@ namespace TidyHtml5Dotnet
 		_diagnostics = gcnew TidyHtml5Dotnet::Diagnostics(_tidyDoc);
 		_displayOptions = gcnew TidyHtml5Dotnet::DisplayOptions(_tidyDoc);
 		_inOutOptions = gcnew TidyHtml5Dotnet::InOutOptions(_tidyDoc);
+		_fileOptions = gcnew TidyHtml5Dotnet::FileOptions(_tidyDoc);
 	};
 
 	Document::Document(String^ htmlString) : Document()

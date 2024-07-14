@@ -14,16 +14,8 @@ property Boolean PROPERTY_NAME \
 #define DECLARE_PROPERTY_AUTOBOOL(PROPERTY_NAME, TIDY_OPTION_ID) \
 property Nullable<Boolean> PROPERTY_NAME \
 { \
-    Nullable<Boolean> get() \
-    { \
-        auto value = static_cast<TidyTriState>(tidyOptGetInt(_tidyDoc, TidyOptionId::TIDY_OPTION_ID)); \
-        return Conversions::TidyTriStateToNullableBoolean(value); \
-    } \
-    void set(Nullable<Boolean> value) \
-    { \
-        auto autobool = Conversions::NullableBooleanToTidyTriState(value); \
-        tidyOptSetInt(_tidyDoc, TidyOptionId::TIDY_OPTION_ID, autobool); \
-    } \
+    Nullable<Boolean> get() { return Conversions::TidyTriStateToNullableBoolean(static_cast<TidyTriState>(tidyOptGetInt(_tidyDoc, TidyOptionId::TIDY_OPTION_ID))); } \
+    void set(Nullable<Boolean> value) { tidyOptSetInt(_tidyDoc, TidyOptionId::TIDY_OPTION_ID, Conversions::NullableBooleanToTidyTriState(value)); } \
 }
 
 #define DECLARE_PROPERTY_STRING(PROPERTY_NAME, TIDY_OPTION_ID) \
@@ -31,6 +23,17 @@ property String^ PROPERTY_NAME \
 { \
     String^ get() { return gcnew String(tidyOptGetValue(_tidyDoc, TidyOptionId::TIDY_OPTION_ID)); } \
     void set(String^ value) { tidyOptSetValue(_tidyDoc, TidyOptionId::TIDY_OPTION_ID, Conversions::StringToCharArray(value)); } \
+}
+
+#define DECLARE_PROPERTY_FILEINFO(PROPERTY_NAME, TIDY_OPTION_ID) \
+property FileInfo^ PROPERTY_NAME \
+{ \
+    FileInfo^ get() \
+    { \
+        auto value = tidyOptGetValue(_tidyDoc, TidyOptionId::TIDY_OPTION_ID); \
+        return (value == nullptr || value[0] == '\0') ? nullptr : gcnew FileInfo(gcnew String(value)); \
+    }; \
+    void set(FileInfo^ value) { tidyOptSetValue(_tidyDoc, TidyOptionId::TIDY_OPTION_ID, (value == nullptr) ? "" : Conversions::StringToCharArray(value->FullName)); }; \
 }
 
 #define DECLARE_PROPERTY_SIGNED_INTEGER(PROPERTY_NAME, TIDY_OPTION_ID) \
@@ -56,20 +59,20 @@ property ENUM_TYPE PROPERTY_NAME \
 
 namespace TidyHtml5Dotnet
 {
-    ref class Conversions abstract sealed
-    {
-    public:
-        /*
-        * Managed --> Tidy
-        */
+	ref class Conversions abstract sealed
+	{
+	public:
+		/*
+		* Managed --> Tidy
+		*/
 
-        static ctmbstr StringToCharArray(String^ managedString);
-        static TidyTriState NullableBooleanToTidyTriState(Nullable<Boolean> nullableBool);
+		static ctmbstr StringToCharArray(String^ managedString);
+		static TidyTriState NullableBooleanToTidyTriState(Nullable<Boolean> nullableBool);
 
-        /*
-        * Managed --> Tidy
-        */
+		/*
+		* Managed --> Tidy
+		*/
 
-        static Nullable<Boolean> TidyTriStateToNullableBoolean(TidyTriState autobool);
-    };
+		static Nullable<Boolean> TidyTriStateToNullableBoolean(TidyTriState autobool);
+	};
 }
