@@ -147,7 +147,7 @@
     <ClInclude Include="clean.h" />
     <ClInclude Include="config.h" />
     <ClInclude Include="Conversions.hpp" />
-    <ClInclude Include="Diagnostics.hpp" />
+    <ClInclude Include="DiagnosticOptions.hpp" />
     <ClInclude Include="DisplayOptions.hpp" />
     <ClInclude Include="DocTypeModes.hpp" />
     <ClInclude Include="Document.hpp" />
@@ -234,8 +234,6 @@
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</CompileAsManaged>
     </ClCompile>
     <ClCompile Include="Conversions.cpp" />
-    <ClCompile Include="Diagnostics.cpp" />
-    <ClCompile Include="DisplayOptions.cpp" />
     <ClCompile Include="entities.c">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
@@ -248,14 +246,12 @@
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</CompileAsManaged>
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</CompileAsManaged>
     </ClCompile>
-    <ClCompile Include="FileOptions.cpp" />
     <ClCompile Include="gdoc.c">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</CompileAsManaged>
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</CompileAsManaged>
     </ClCompile>
-    <ClCompile Include="InOutOptions.cpp" />
     <ClCompile Include="istack.c">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>

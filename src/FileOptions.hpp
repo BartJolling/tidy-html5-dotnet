@@ -1,7 +1,7 @@
 #pragma once
 
-#include "tidy.h"
 #include "Conversions.hpp"
+#include "tidy.h"
 
 using namespace System::IO;
 
@@ -16,7 +16,11 @@ namespace TidyHtml5Dotnet
 		TidyDoc _tidyDoc = nullptr;
 
 	internal:
-		FileOptions(const TidyDoc tidyDoc);
+		FileOptions(const TidyDoc tidyDoc)
+		{
+			assert(tidyDoc);
+			_tidyDoc = tidyDoc;
+		};
 
 	public:
 		

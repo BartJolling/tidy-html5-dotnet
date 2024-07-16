@@ -1,8 +1,8 @@
 #pragma once
 
-#include "tidy.h"
 #include "Conversions.hpp"
 #include "DocTypeModes.hpp"
+#include "tidy.h"
 
 namespace TidyHtml5Dotnet
 {
@@ -15,7 +15,11 @@ namespace TidyHtml5Dotnet
 		TidyDoc _tidyDoc = nullptr;
 
 	internal:
-		InOutOptions(const TidyDoc tidyDoc);
+		InOutOptions(const TidyDoc tidyDoc)
+		{
+			assert(tidyDoc);
+			_tidyDoc = tidyDoc;
+		};
 
 	public:
 		DECLARE_PROPERTY_BOOL(AddMetaCharset, TidyMetaCharset)

@@ -8,15 +8,68 @@ public class DiagnosticsOptionsTests
     public void AccessibilityCheckLevel_property_should_Set_and_Get()
     {
         var document = new Document();
-        Assert.Equal(AccessibilityCheckLevels.TidyClassic, document.Diagnostics.AccessibilityCheckLevel);
 
-        document.Diagnostics.AccessibilityCheckLevel = AccessibilityCheckLevels.Priority1;
-        Assert.Equal(AccessibilityCheckLevels.Priority1, document.Diagnostics.AccessibilityCheckLevel);
+        var options = document.DiagnosticOptions;
+        Assert.NotNull(options);
 
-        document.Diagnostics.AccessibilityCheckLevel = AccessibilityCheckLevels.Priority2;
-        Assert.Equal(AccessibilityCheckLevels.Priority2, document.Diagnostics.AccessibilityCheckLevel);
+        Assert.Equal(AccessibilityCheckLevels.TidyClassic, document.DiagnosticOptions.AccessibilityCheckLevel);
 
-        document.Diagnostics.AccessibilityCheckLevel = AccessibilityCheckLevels.Priority3;
-        Assert.Equal(AccessibilityCheckLevels.Priority3, document.Diagnostics.AccessibilityCheckLevel);
+        options.AccessibilityCheckLevel = AccessibilityCheckLevels.Priority1;
+        Assert.Equal(AccessibilityCheckLevels.Priority1, options.AccessibilityCheckLevel);
+
+        options.AccessibilityCheckLevel = AccessibilityCheckLevels.Priority2;
+        Assert.Equal(AccessibilityCheckLevels.Priority2, options.AccessibilityCheckLevel);
+
+        options.AccessibilityCheckLevel = AccessibilityCheckLevels.Priority3;
+        Assert.Equal(AccessibilityCheckLevels.Priority3, options.AccessibilityCheckLevel);
+    }
+
+    [Fact]
+    public void ForceOutput_property_should_Set_and_Get()
+    {
+        var document = new Document();
+
+        var options = document.DiagnosticOptions;
+        Assert.NotNull(options);
+
+        Assert.False(options.ForceOutput);
+
+        options.ForceOutput = true;
+        Assert.True(options.ForceOutput);
+
+        options.ForceOutput = false;
+        Assert.False(options.ForceOutput);
+    }
+
+    [Fact]
+    public void ShowMetaChange_property_should_Set_and_Get()
+    {
+        var document = new Document();
+        var options = document.DiagnosticOptions;
+        Assert.NotNull(options);
+
+        Assert.False(options.ShowMetaChange);
+
+        options.ShowMetaChange = true;
+        Assert.True(options.ShowMetaChange);
+
+        options.ShowMetaChange = false;
+        Assert.False(options.ShowMetaChange);
+    }
+
+    [Fact]
+    public void WarnProprietaryAttributes_property_should_Set_and_Get()
+    {
+        var document = new Document();
+        var options = document.DiagnosticOptions;
+        Assert.NotNull(options);
+
+        Assert.True(options.WarnProprietaryAttributes);
+
+        options.WarnProprietaryAttributes = false;
+        Assert.False(options.WarnProprietaryAttributes);
+
+        options.WarnProprietaryAttributes = true;
+        Assert.True(options.WarnProprietaryAttributes);
     }
 }

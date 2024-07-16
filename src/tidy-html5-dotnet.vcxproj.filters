@@ -134,7 +134,7 @@
     <ClInclude Include="Conversions.hpp">
       <Filter>dotnet Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Diagnostics.hpp">
+    <ClInclude Include="DiagnosticOptions.hpp">
       <Filter>dotnet Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DocTypeModes.hpp">
@@ -147,6 +147,9 @@
       <Filter>dotnet Header Files</Filter>
     </ClInclude>
     <ClInclude Include="InOutOptions.hpp">
+      <Filter>dotnet Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FileOptions.hpp">
       <Filter>dotnet Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -242,15 +245,6 @@
       <Filter>dotnet Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Conversions.cpp">
-      <Filter>dotnet Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Diagnostics.cpp">
-      <Filter>dotnet Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DisplayOptions.cpp">
-      <Filter>dotnet Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="InOutOptions.cpp">
       <Filter>dotnet Source Files</Filter>
     </ClCompile>
   </ItemGroup>
