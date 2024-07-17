@@ -3,6 +3,7 @@
 #include "DiagnosticOptions.hpp"
 #include "DisplayOptions.hpp"
 #include "Document.hpp"
+#include "EncodingOptions.hpp"
 #include "FileOptions.hpp"
 #include "InOutOptions.hpp"
 #include "Options.hpp"
@@ -21,8 +22,10 @@ namespace TidyHtml5Dotnet
 		Options^ _options = nullptr;
 		DiagnosticOptions^ _diagnosticOptions = nullptr;
 		DisplayOptions^ _displayOptions = nullptr;
-		InOutOptions^ _inOutOptions = nullptr;
+		EncodingOptions^ _encodingOptions = nullptr;
 		FileOptions^ _fileOptions = nullptr;
+		InOutOptions^ _inOutOptions = nullptr;
+
 
 		Stream^ _stream = nullptr;
 		String^ _htmlString;
@@ -38,7 +41,8 @@ namespace TidyHtml5Dotnet
 		property Options^ Options { TidyHtml5Dotnet::Options^ get() { return _options; }}
 		property DiagnosticOptions^ DiagnosticOptions { TidyHtml5Dotnet::DiagnosticOptions^ get() { return _diagnosticOptions; }}
 		property DisplayOptions^ DisplayOptions { TidyHtml5Dotnet::DisplayOptions^ get() { return _displayOptions; }}
-		property InOutOptions^ InOutOptions { TidyHtml5Dotnet::InOutOptions^ get() { return _inOutOptions; }}
+		property EncodingOptions^ EncodingOptions { TidyHtml5Dotnet::EncodingOptions^ get() { return _encodingOptions; }}
 		property FileOptions^ FileOptions { TidyHtml5Dotnet::FileOptions^ get() { return _fileOptions; }}
+		property InOutOptions^ InOutOptions { TidyHtml5Dotnet::InOutOptions^ get() { return _inOutOptions; }}
 	};
 }

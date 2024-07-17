@@ -8,11 +8,10 @@ public class DiagnosticsOptionsTests
     public void AccessibilityCheckLevel_property_should_Set_and_Get()
     {
         var document = new Document();
-
         var options = document.DiagnosticOptions;
         Assert.NotNull(options);
 
-        Assert.Equal(AccessibilityCheckLevels.TidyClassic, document.DiagnosticOptions.AccessibilityCheckLevel);
+        Assert.Equal(AccessibilityCheckLevels.TidyClassic, options.AccessibilityCheckLevel);
 
         options.AccessibilityCheckLevel = AccessibilityCheckLevels.Priority1;
         Assert.Equal(AccessibilityCheckLevels.Priority1, options.AccessibilityCheckLevel);
@@ -28,7 +27,6 @@ public class DiagnosticsOptionsTests
     public void ForceOutput_property_should_Set_and_Get()
     {
         var document = new Document();
-
         var options = document.DiagnosticOptions;
         Assert.NotNull(options);
 

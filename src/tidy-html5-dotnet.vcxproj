@@ -151,6 +151,8 @@
     <ClInclude Include="DisplayOptions.hpp" />
     <ClInclude Include="DocTypeModes.hpp" />
     <ClInclude Include="Document.hpp" />
+    <ClInclude Include="EncodingOptions.hpp" />
+    <ClInclude Include="Encodings.hpp" />
     <ClInclude Include="entities.h" />
     <ClInclude Include="fileio.h" />
     <ClInclude Include="FileOptions.hpp" />
@@ -167,6 +169,7 @@
     <ClInclude Include="language_pt_br.h" />
     <ClInclude Include="language_zh_cn.h" />
     <ClInclude Include="lexer.h" />
+    <ClInclude Include="LineEndings.hpp" />
     <ClInclude Include="mappedio.h" />
     <ClInclude Include="message.h" />
     <ClInclude Include="messageobj.h" />
