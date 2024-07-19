@@ -38,29 +38,7 @@ public class DocumentOptionsTests
         Assert.False(document.Options.ChangeXmlProcessingInstructions);
     }
 
-    [Fact]
-    public void MakeBare_sets_option_TidyMakeBare()
-    {
-        var document = new Document();
 
-        document.Options.MakeBare = true;
-        Assert.True(document.Options.MakeBare);
-
-        document.Options.MakeBare = false;
-        Assert.False(document.Options.MakeBare);
-    }
-
-    [Fact]
-    public void MakeClean_sets_option_TidyMakeClean()
-    {
-        var document = new Document();
-
-        document.Options.MakeClean = true;
-        Assert.True(document.Options.MakeClean);
-
-        document.Options.MakeClean = false;
-        Assert.False(document.Options.MakeClean);
-    }
 
     [Fact]
     public void CoerceEndTags_sets_option_TidyCoerceEndTags()

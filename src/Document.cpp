@@ -10,6 +10,7 @@ namespace TidyHtml5Dotnet
 		_tidyDoc = tidyCreate();
 
 		_options = gcnew TidyHtml5Dotnet::Options(_tidyDoc);
+		_cleanupOptions = gcnew TidyHtml5Dotnet::CleanupOptions(_tidyDoc);
 		_diagnosticOptions = gcnew TidyHtml5Dotnet::DiagnosticOptions(_tidyDoc);
 		_displayOptions = gcnew TidyHtml5Dotnet::DisplayOptions(_tidyDoc);		
 		_encodingOptions = gcnew TidyHtml5Dotnet::EncodingOptions(_tidyDoc);

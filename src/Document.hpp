@@ -1,5 +1,6 @@
 #pragma once
 
+#include "CleanupOptions.hpp"
 #include "DiagnosticOptions.hpp"
 #include "DisplayOptions.hpp"
 #include "Document.hpp"
@@ -20,12 +21,12 @@ namespace TidyHtml5Dotnet
 
 		// Options
 		Options^ _options = nullptr;
+		CleanupOptions^ _cleanupOptions = nullptr;
 		DiagnosticOptions^ _diagnosticOptions = nullptr;
 		DisplayOptions^ _displayOptions = nullptr;
 		EncodingOptions^ _encodingOptions = nullptr;
 		FileOptions^ _fileOptions = nullptr;
 		InOutOptions^ _inOutOptions = nullptr;
-
 
 		Stream^ _stream = nullptr;
 		String^ _htmlString;
@@ -39,6 +40,7 @@ namespace TidyHtml5Dotnet
 		Document(Stream^ stream);
 
 		property Options^ Options { TidyHtml5Dotnet::Options^ get() { return _options; }}
+		property CleanupOptions^ CleanupOptions { TidyHtml5Dotnet::CleanupOptions^ get() { return _cleanupOptions; }}
 		property DiagnosticOptions^ DiagnosticOptions { TidyHtml5Dotnet::DiagnosticOptions^ get() { return _diagnosticOptions; }}
 		property DisplayOptions^ DisplayOptions { TidyHtml5Dotnet::DisplayOptions^ get() { return _displayOptions; }}
 		property EncodingOptions^ EncodingOptions { TidyHtml5Dotnet::EncodingOptions^ get() { return _encodingOptions; }}

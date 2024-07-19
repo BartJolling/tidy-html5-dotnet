@@ -145,6 +145,7 @@
     <ClInclude Include="attrs.h" />
     <ClInclude Include="charsets.h" />
     <ClInclude Include="clean.h" />
+    <ClInclude Include="CleanupOptions.hpp" />
     <ClInclude Include="config.h" />
     <ClInclude Include="Conversions.hpp" />
     <ClInclude Include="DiagnosticOptions.hpp" />
