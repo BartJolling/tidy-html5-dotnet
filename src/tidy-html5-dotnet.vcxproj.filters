@@ -152,6 +152,21 @@
     <ClInclude Include="FileOptions.hpp">
       <Filter>dotnet Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CleanupOptions.hpp">
+      <Filter>dotnet Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EncodingOptions.hpp">
+      <Filter>dotnet Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Encodings.hpp">
+      <Filter>dotnet Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LineEndings.hpp">
+      <Filter>dotnet Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EntitiesOptions.hpp">
+      <Filter>dotnet Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Document.cpp">

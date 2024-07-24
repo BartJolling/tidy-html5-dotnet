@@ -155,6 +155,7 @@
     <ClInclude Include="EncodingOptions.hpp" />
     <ClInclude Include="Encodings.hpp" />
     <ClInclude Include="entities.h" />
+    <ClInclude Include="EntitiesOptions.hpp" />
     <ClInclude Include="fileio.h" />
     <ClInclude Include="FileOptions.hpp" />
     <ClInclude Include="forward.h" />

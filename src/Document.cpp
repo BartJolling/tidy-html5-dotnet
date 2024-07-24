@@ -14,6 +14,7 @@ namespace TidyHtml5Dotnet
 		_diagnosticOptions = gcnew TidyHtml5Dotnet::DiagnosticOptions(_tidyDoc);
 		_displayOptions = gcnew TidyHtml5Dotnet::DisplayOptions(_tidyDoc);		
 		_encodingOptions = gcnew TidyHtml5Dotnet::EncodingOptions(_tidyDoc);
+		_entitiesOptions = gcnew TidyHtml5Dotnet::EntitiesOptions(_tidyDoc);
 		_fileOptions = gcnew TidyHtml5Dotnet::FileOptions(_tidyDoc);
 		_inOutOptions = gcnew TidyHtml5Dotnet::InOutOptions(_tidyDoc);
 	};
