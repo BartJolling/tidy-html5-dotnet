@@ -9,6 +9,7 @@
 #include "FileOptions.hpp"
 #include "InOutOptions.hpp"
 #include "Options.hpp"
+#include "RepairOptions.hpp"
 #include "tidy.h"
 
 using namespace System::IO;
@@ -29,6 +30,7 @@ namespace TidyHtml5Dotnet
 		EntitiesOptions^ _entitiesOptions = nullptr;
 		FileOptions^ _fileOptions = nullptr;
 		InOutOptions^ _inOutOptions = nullptr;
+		RepairOptions^ _repairOptions = nullptr;
 
 		Stream^ _stream = nullptr;
 		String^ _htmlString;
@@ -49,5 +51,6 @@ namespace TidyHtml5Dotnet
 		property EntitiesOptions^ EntitiesOptions { TidyHtml5Dotnet::EntitiesOptions^ get() { return _entitiesOptions; }}
 		property FileOptions^ FileOptions { TidyHtml5Dotnet::FileOptions^ get() { return _fileOptions; }}
 		property InOutOptions^ InOutOptions { TidyHtml5Dotnet::InOutOptions^ get() { return _inOutOptions; }}
+		property RepairOptions^ RepairOptions { TidyHtml5Dotnet::RepairOptions^ get() { return _repairOptions; }}
 	};
 }

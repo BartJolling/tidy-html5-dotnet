@@ -167,6 +167,12 @@
     <ClInclude Include="EntitiesOptions.hpp">
       <Filter>dotnet Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="RepairOptions.hpp">
+      <Filter>dotnet Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UpperCaseModes.hpp">
+      <Filter>dotnet Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Document.cpp">

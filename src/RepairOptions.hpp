@@ -2,6 +2,7 @@
 
 #include "Conversions.hpp"
 #include "RepeatedAttributeModes.hpp"
+#include "UpperCaseModes.hpp"
 #include "UseCustomTagsStates.hpp"
 #include "tidy.h"
 
@@ -41,7 +42,7 @@ namespace TidyHtml5Dotnet
         DECLARE_PROPERTY_ENUM(RepeatedAttributeModes, RepeatedAttributeMode, TidyDuplicateAttrs)
         DECLARE_PROPERTY_BOOL(SkipNestedTags, TidySkipNested)
         DECLARE_PROPERTY_BOOL(StrictTagsAttributes, TidyStrictTagsAttr)
-        DECLARE_PROPERTY_BOOL(UpperCaseAttributes, TidyUpperCaseAttrs)
+        DECLARE_PROPERTY_ENUM(UpperCaseModes, UpperCaseAttributes, TidyUpperCaseAttrs)
         DECLARE_PROPERTY_BOOL(UpperCaseTags, TidyUpperCaseTags)
 	};
 }
