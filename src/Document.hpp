@@ -8,8 +8,8 @@
 #include "EntitiesOptions.hpp"
 #include "FileOptions.hpp"
 #include "InOutOptions.hpp"
-#include "Options.hpp"
 #include "RepairOptions.hpp"
+#include "TransformationOptions.hpp"
 #include "tidy.h"
 
 using namespace System::IO;
@@ -22,7 +22,6 @@ namespace TidyHtml5Dotnet
 		TidyDoc _tidyDoc = nullptr;
 
 		// Options
-		Options^ _options = nullptr;
 		CleanupOptions^ _cleanupOptions = nullptr;
 		DiagnosticOptions^ _diagnosticOptions = nullptr;
 		DisplayOptions^ _displayOptions = nullptr;
@@ -31,6 +30,7 @@ namespace TidyHtml5Dotnet
 		FileOptions^ _fileOptions = nullptr;
 		InOutOptions^ _inOutOptions = nullptr;
 		RepairOptions^ _repairOptions = nullptr;
+		TransformationOptions^ _transformationOptions = nullptr;
 
 		Stream^ _stream = nullptr;
 		String^ _htmlString;
@@ -43,7 +43,6 @@ namespace TidyHtml5Dotnet
 		Document(String^ htmlString);
 		Document(Stream^ stream);
 
-		property Options^ Options { TidyHtml5Dotnet::Options^ get() { return _options; }}
 		property CleanupOptions^ CleanupOptions { TidyHtml5Dotnet::CleanupOptions^ get() { return _cleanupOptions; }}
 		property DiagnosticOptions^ DiagnosticOptions { TidyHtml5Dotnet::DiagnosticOptions^ get() { return _diagnosticOptions; }}
 		property DisplayOptions^ DisplayOptions { TidyHtml5Dotnet::DisplayOptions^ get() { return _displayOptions; }}
@@ -52,5 +51,6 @@ namespace TidyHtml5Dotnet
 		property FileOptions^ FileOptions { TidyHtml5Dotnet::FileOptions^ get() { return _fileOptions; }}
 		property InOutOptions^ InOutOptions { TidyHtml5Dotnet::InOutOptions^ get() { return _inOutOptions; }}
 		property RepairOptions^ RepairOptions { TidyHtml5Dotnet::RepairOptions^ get() { return _repairOptions; }}
+		property TransformationOptions^ TransformationOptions { TidyHtml5Dotnet::TransformationOptions^ get() { return _transformationOptions; }}
 	};
 }

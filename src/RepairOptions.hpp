@@ -9,7 +9,7 @@
 namespace TidyHtml5Dotnet
 {
 	/// <summary>
-	/// https://api.html-tidy.org/tidy/tidylib_api_next/tidy_quickref.html#MarkupRepairHeader
+	/// https://api.html-tidy.org/tidy/tidylib_api_5.8.0/tidy_quickref.html#MarkupRepairHeader
 	/// </summary>
 	public ref class RepairOptions
 	{

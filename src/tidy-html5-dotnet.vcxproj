@@ -175,7 +175,7 @@
     <ClInclude Include="mappedio.h" />
     <ClInclude Include="message.h" />
     <ClInclude Include="messageobj.h" />
-    <ClInclude Include="Options.hpp" />
+    <ClInclude Include="TransformationOptions.hpp" />
     <ClInclude Include="parser.h" />
     <ClInclude Include="pprint.h" />
     <ClInclude Include="RepairOptions.hpp" />
@@ -295,7 +295,6 @@
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</CompileAsManaged>
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</CompileAsManaged>
     </ClCompile>
-    <ClCompile Include="Options.cpp" />
     <ClCompile Include="parser.c">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>

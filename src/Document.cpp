@@ -8,8 +8,7 @@ namespace TidyHtml5Dotnet
 	Document::Document()
 	{
 		_tidyDoc = tidyCreate();
-
-		_options = gcnew TidyHtml5Dotnet::Options(_tidyDoc);
+		
 		_cleanupOptions = gcnew TidyHtml5Dotnet::CleanupOptions(_tidyDoc);
 		_diagnosticOptions = gcnew TidyHtml5Dotnet::DiagnosticOptions(_tidyDoc);
 		_displayOptions = gcnew TidyHtml5Dotnet::DisplayOptions(_tidyDoc);		
@@ -18,6 +17,7 @@ namespace TidyHtml5Dotnet
 		_fileOptions = gcnew TidyHtml5Dotnet::FileOptions(_tidyDoc);
 		_inOutOptions = gcnew TidyHtml5Dotnet::InOutOptions(_tidyDoc);
 		_repairOptions = gcnew TidyHtml5Dotnet::RepairOptions(_tidyDoc);
+		_transformationOptions = gcnew TidyHtml5Dotnet::TransformationOptions(_tidyDoc);
 	};
 
 	Document::Document(String^ htmlString) : Document()

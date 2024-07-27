@@ -125,7 +125,7 @@
     <ClInclude Include="Document.hpp">
       <Filter>dotnet Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Options.hpp">
+    <ClInclude Include="TransformationOptions.hpp">
       <Filter>dotnet Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AccessibilityCheckLevels.hpp">
@@ -260,9 +260,6 @@
       <Filter>libtidy Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Tidy.cpp">
-      <Filter>dotnet Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Options.cpp">
       <Filter>dotnet Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Conversions.cpp">
