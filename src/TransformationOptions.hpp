@@ -34,10 +34,6 @@ namespace TidyHtml5Dotnet
         /*
         DECLARE_PROPERTY_BOOL(IndentCdata, TidyIndentCdata)
         DECLARE_PROPERTY_BOOL(AllowNumericCharacterReferences, TidyNCR)
-        DECLARE_PROPERTY_STRING(NewBlockLevelTags, TidyBlockTags)
-        DECLARE_PROPERTY_STRING(NewEmptyTags, TidyEmptyTags)
-        DECLARE_PROPERTY_STRING(NewInlineTags, TidyInlineTags)
-        DECLARE_PROPERTY_STRING(NewPreTags, TidyPreTags)
         DECLARE_PROPERTY_BOOL(OmitOptionalTags, TidyOmitOptionalTags)        
         DECLARE_PROPERTY_BOOL(UseColorNames, TidyReplaceColor)
         DECLARE_PROPERTY_AUTOBOOL(OutputBodyOnly, TidyBodyOnly)

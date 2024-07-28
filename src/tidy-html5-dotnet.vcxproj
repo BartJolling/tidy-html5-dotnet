@@ -175,6 +175,7 @@
     <ClInclude Include="mappedio.h" />
     <ClInclude Include="message.h" />
     <ClInclude Include="messageobj.h" />
+    <ClInclude Include="TeachingOptions.hpp" />
     <ClInclude Include="TransformationOptions.hpp" />
     <ClInclude Include="parser.h" />
     <ClInclude Include="pprint.h" />

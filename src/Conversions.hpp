@@ -3,6 +3,7 @@
 #include "config.h"
 
 using namespace System;
+using namespace System::Collections::Generic;
 
 #define DECLARE_PROPERTY_BOOL(PROPERTY_NAME, TIDY_OPTION_ID) \
 property Boolean PROPERTY_NAME \
@@ -57,6 +58,21 @@ property ENUM_TYPE PROPERTY_NAME \
     void set(ENUM_TYPE value) { tidyOptSetInt(_tidyDoc, TidyOptionId::TIDY_OPTION_ID, static_cast<ulong>(value)); } \
 }
 
+#define DECLARE_PROPERTY_TAGNAMES(PROPERTY_NAME, TIDY_OPTION_ID) \
+private: \
+    IEnumerable<String^>^ PROPERTY_NAME##Cache = nullptr; \
+public: \
+    property IEnumerable<String^>^ PROPERTY_NAME { \
+        IEnumerable<String^>^ get() { \
+            if (PROPERTY_NAME##Cache == nullptr) { PROPERTY_NAME##Cache = Conversions::TidyTagNamesToIEnumerable(tidyOptGetValue(_tidyDoc, TidyOptionId::TIDY_OPTION_ID)); } \
+            return PROPERTY_NAME##Cache; \
+        }; \
+        void set(IEnumerable<String^>^ value) { \
+            ArgumentNullException::ThrowIfNull(value, "value"); \
+            if (tidyOptSetValue(_tidyDoc, TidyOptionId::TIDY_OPTION_ID, Conversions::IEnumerableToTidyTagNames(value))) { PROPERTY_NAME##Cache = nullptr; } \
+        }; \
+    }
+
 namespace TidyHtml5Dotnet
 {
 	ref class Conversions abstract sealed
@@ -68,11 +84,13 @@ namespace TidyHtml5Dotnet
 
 		static ctmbstr StringToCharArray(String^ managedString);
 		static TidyTriState NullableBooleanToTidyTriState(Nullable<Boolean> nullableBool);
+        static ctmbstr Conversions::IEnumerableToTidyTagNames(IEnumerable<String^>^ tidyTagNames);
 
 		/*
-		* Managed --> Tidy
+		* Tidy --> Managed
 		*/
 
 		static Nullable<Boolean> TidyTriStateToNullableBoolean(TidyTriState autobool);
+        static IEnumerable<String^>^ TidyTagNamesToIEnumerable(ctmbstr tidyTagNames);
 	};
 }

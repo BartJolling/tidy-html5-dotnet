@@ -1,5 +1,8 @@
 #include "Conversions.hpp"
+#include <sstream>
 
+using namespace System::Collections::Generic;
+using namespace System::Linq;
 using namespace System::Runtime::InteropServices;
 
 namespace TidyHtml5Dotnet
@@ -15,12 +18,19 @@ namespace TidyHtml5Dotnet
 
 	TidyTriState Conversions::NullableBooleanToTidyTriState(Nullable<Boolean> nullableBool)
 	{
-		if (!nullableBool.HasValue) 
+		if (!nullableBool.HasValue)
 			return TidyTriState::TidyAutoState; // automatic
 
 		return nullableBool.Value
 			? TidyTriState::TidyYesState        // maps to 'true'
 			: TidyTriState::TidyNoState;        // maps to 'false'
+	}
+
+	ctmbstr Conversions::IEnumerableToTidyTagNames(IEnumerable<String^>^ tidyTagNames)
+	{
+		if (!Enumerable::Any(tidyTagNames)) { return ""; }
+		auto joined = String::Join(",", tidyTagNames);
+		return Conversions::StringToCharArray(joined);
 	}
 
 	/*
@@ -38,5 +48,22 @@ namespace TidyHtml5Dotnet
 		default:
 			return Nullable<Boolean>();
 		}
+	}
+
+	IEnumerable<String^>^ Conversions::TidyTagNamesToIEnumerable(ctmbstr tidyTagNames)
+	{
+		if (tidyTagNames == nullptr) { return gcnew array<String^>(0); }
+
+		List<String^>^ list = gcnew List<String^>();
+
+		std::istringstream tagStream(tidyTagNames);
+		std::string token;
+
+		while (getline(tagStream, token, ','))
+		{
+			list->Add((gcnew String(token.c_str()))->TrimStart());
+		}
+
+		return list;
 	}
 }
