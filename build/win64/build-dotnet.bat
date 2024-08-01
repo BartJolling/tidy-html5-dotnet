@@ -1,0 +1,3 @@
+msbuild.exe ..\..\tidy-html5-dotnet.sln -t:build -restore -p:RestorePackagesConfig=true /p:IncludePath="..\include;$(IncludePath)" -p:Configuration=Release -p:Platform=x64
+copy ..\..\tidy-html5-dotnet-test\bin\x64\Release\net8.0-windows\tidy-html5-dotnet-test.runtimeconfig.json ..\..\tidy-html5-dotnet-test\bin\x64\Release\net8.0-windows\testhost.runtimeconfig.json
+vstest.console.exe ..\..\tidy-html5-dotnet-test\bin\x64\Release\net8.0-windows\tidy-html5-dotnet-test.dll
