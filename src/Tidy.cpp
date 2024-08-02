@@ -4,7 +4,8 @@ using namespace System::Globalization;
 using namespace System;
 using namespace System::IO;
 
-namespace TidyHtml5Dotnet {
+namespace TidyHtml5Dotnet 
+{
 	public ref class Tidy abstract sealed
 	{
 	private:

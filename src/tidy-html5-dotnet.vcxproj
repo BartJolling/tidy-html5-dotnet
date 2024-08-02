@@ -140,15 +140,29 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="access.h" />
+    <ClInclude Include="AccessibilityCheckLevels.hpp" />
     <ClInclude Include="attrdict.h" />
     <ClInclude Include="attrs.h" />
     <ClInclude Include="charsets.h" />
     <ClInclude Include="clean.h" />
+    <ClInclude Include="CleanupOptions.hpp" />
     <ClInclude Include="config.h" />
+    <ClInclude Include="Conversions.hpp" />
+    <ClInclude Include="DiagnosticOptions.hpp" />
+    <ClInclude Include="DisplayOptions.hpp" />
+    <ClInclude Include="DocTypeModes.hpp" />
+    <ClInclude Include="Document.hpp" />
+    <ClInclude Include="EncodingOptions.hpp" />
+    <ClInclude Include="Encodings.hpp" />
     <ClInclude Include="entities.h" />
+    <ClInclude Include="EntitiesOptions.hpp" />
     <ClInclude Include="fileio.h" />
+    <ClInclude Include="FileOptions.hpp" />
     <ClInclude Include="forward.h" />
     <ClInclude Include="gdoc.h" />
+    <ClInclude Include="InOutOptions.hpp" />
+    <ClInclude Include="PrettPrintOptions.hpp" />
+    <ClInclude Include="SortAttributeStrategy.hpp" />
     <ClInclude Include="language.h" />
     <ClInclude Include="language_de.h" />
     <ClInclude Include="language_en.h" />
@@ -159,17 +173,23 @@
     <ClInclude Include="language_pt_br.h" />
     <ClInclude Include="language_zh_cn.h" />
     <ClInclude Include="lexer.h" />
+    <ClInclude Include="LineEndings.hpp" />
     <ClInclude Include="mappedio.h" />
     <ClInclude Include="message.h" />
     <ClInclude Include="messageobj.h" />
+    <ClInclude Include="TeachingOptions.hpp" />
+    <ClInclude Include="TransformationOptions.hpp" />
     <ClInclude Include="parser.h" />
     <ClInclude Include="pprint.h" />
+    <ClInclude Include="RepairOptions.hpp" />
+    <ClInclude Include="RepeatedAttributeModes.hpp" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="sprtf.h" />
     <ClInclude Include="streamio.h" />
     <ClInclude Include="tags.h" />
     <ClInclude Include="tidy-int.h" />
     <ClInclude Include="tmbstr.h" />
+    <ClInclude Include="UpperCaseModes.hpp" />
     <ClInclude Include="utf8.h" />
     <ClInclude Include="version.h" />
   </ItemGroup>
@@ -223,6 +243,7 @@
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</CompileAsManaged>
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</CompileAsManaged>
     </ClCompile>
+    <ClCompile Include="Conversions.cpp" />
     <ClCompile Include="entities.c">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
@@ -342,6 +363,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
+    <None Include="CPP.HINT" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
