@@ -30,13 +30,5 @@ namespace TidyHtml5Dotnet
         DECLARE_PROPERTY_BOOL(JoinStyles, TidyJoinStyles)               
         DECLARE_PROPERTY_BOOL(MergeEmphasis, TidyMergeEmphasis)
         DECLARE_PROPERTY_BOOL(ReplaceColor, TidyReplaceColor)
-
-        /*
-        DECLARE_PROPERTY_BOOL(IndentCdata, TidyIndentCdata)
-        DECLARE_PROPERTY_BOOL(AllowNumericCharacterReferences, TidyNCR)
-        DECLARE_PROPERTY_BOOL(OmitOptionalTags, TidyOmitOptionalTags)        
-        DECLARE_PROPERTY_BOOL(UseColorNames, TidyReplaceColor)
-        DECLARE_PROPERTY_AUTOBOOL(OutputBodyOnly, TidyBodyOnly)
-        */
     };
 }

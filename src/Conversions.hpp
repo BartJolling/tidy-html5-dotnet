@@ -44,7 +44,7 @@ property Int32 PROPERTY_NAME \
     void set(Int32 value) { tidyOptSetInt(_tidyDoc, TidyOptionId::TIDY_OPTION_ID, static_cast<ulong>(value)); } \
 }
 
-#define DECLARE_PROPERTY_UNSINGED_INTEGER(PROPERTY_NAME, TIDY_OPTION_ID) \
+#define DECLARE_PROPERTY_UNSIGNED_INTEGER(PROPERTY_NAME, TIDY_OPTION_ID) \
 property UInt32 PROPERTY_NAME \
 { \
     UInt32 get() { return static_cast<UInt32>(tidyOptGetInt(_tidyDoc, TidyOptionId::TIDY_OPTION_ID)); } \

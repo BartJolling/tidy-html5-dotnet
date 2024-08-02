@@ -161,6 +161,8 @@
     <ClInclude Include="forward.h" />
     <ClInclude Include="gdoc.h" />
     <ClInclude Include="InOutOptions.hpp" />
+    <ClInclude Include="PrettPrintOptions.hpp" />
+    <ClInclude Include="SortAttributeStrategy.hpp" />
     <ClInclude Include="language.h" />
     <ClInclude Include="language_de.h" />
     <ClInclude Include="language_en.h" />

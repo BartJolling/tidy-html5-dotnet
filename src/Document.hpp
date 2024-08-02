@@ -8,6 +8,7 @@
 #include "EntitiesOptions.hpp"
 #include "FileOptions.hpp"
 #include "InOutOptions.hpp"
+#include "PrettyPrintOptions.hpp"
 #include "RepairOptions.hpp"
 #include "TeachingOptions.hpp"
 #include "TransformationOptions.hpp"
@@ -30,6 +31,7 @@ namespace TidyHtml5Dotnet
 		EntitiesOptions^ _entitiesOptions = nullptr;
 		FileOptions^ _fileOptions = nullptr;
 		InOutOptions^ _inOutOptions = nullptr;
+		PrettyPrintOptions^ _prettyPrintOptions = nullptr;
 		RepairOptions^ _repairOptions = nullptr;
 		TeachingOptions^ _teachingOptions = nullptr;
 		TransformationOptions^ _transformationOptions = nullptr;
@@ -52,6 +54,7 @@ namespace TidyHtml5Dotnet
 		property EntitiesOptions^ EntitiesOptions { TidyHtml5Dotnet::EntitiesOptions^ get() { return _entitiesOptions; }}
 		property FileOptions^ FileOptions { TidyHtml5Dotnet::FileOptions^ get() { return _fileOptions; }}
 		property InOutOptions^ InOutOptions { TidyHtml5Dotnet::InOutOptions^ get() { return _inOutOptions; }}
+		property PrettyPrintOptions^ PrettyPrintOptions { TidyHtml5Dotnet::PrettyPrintOptions^ get() { return _prettyPrintOptions; }}
 		property RepairOptions^ RepairOptions { TidyHtml5Dotnet::RepairOptions^ get() { return _repairOptions; }}
 		property TeachingOptions^ TeachingOptions { TidyHtml5Dotnet::TeachingOptions^ get() { return _teachingOptions; }}
 		property TransformationOptions^ TransformationOptions { TidyHtml5Dotnet::TransformationOptions^ get() { return _transformationOptions; }}

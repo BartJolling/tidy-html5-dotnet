@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "tidy-html5-dotnet-test": {
-      "commandName": "Project",
-      "nativeDebugging": true
-    }
-  }
-}
