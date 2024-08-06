@@ -176,6 +176,15 @@
     <ClInclude Include="TeachingOptions.hpp">
       <Filter>dotnet Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PrettPrintOptions.hpp">
+      <Filter>dotnet Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SortAttributeStrategy.hpp">
+      <Filter>dotnet Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DocumentStatuses.hpp">
+      <Filter>dotnet Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Document.cpp">

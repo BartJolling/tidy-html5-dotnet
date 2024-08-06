@@ -1,5 +1,6 @@
 using namespace System;
 using namespace System::IO;
+using namespace System::Runtime::InteropServices;
 
 #include "Document.hpp"
 
@@ -25,6 +26,7 @@ namespace TidyHtml5Dotnet
 	Document::Document(String^ htmlString) : Document()
 	{
 		_htmlString = htmlString;
+		_contentString = Conversions::StringToCharArray(htmlString);
 		_fromString = true;
 	};
 
@@ -32,4 +34,41 @@ namespace TidyHtml5Dotnet
 	{
 		_stream = stream;
 	};
+
+	Document::~Document()
+	{
+		if (_contentString != nullptr)
+		{
+			IntPtr contentIntPtr = IntPtr((void*)_contentString);
+			Marshal::FreeHGlobal(contentIntPtr);
+			_contentString = nullptr;
+		}
+
+		tidyRelease(_tidyDoc);
+	}
+
+	DocumentStatuses Document::ParseString()
+	{
+		auto status = tidyParseString(_tidyDoc, _contentString);
+		return static_cast<DocumentStatuses>(status);
+	}
+
+	DocumentStatuses Document::CleanAndRepair()
+	{
+		if (this->_fromString)
+		{
+			auto previousEncoding = _encodingOptions->InputCharacterEncoding;
+			_encodingOptions->InputCharacterEncoding = Encodings::Utf8;
+			ParseString();
+			_encodingOptions->InputCharacterEncoding = previousEncoding;
+		}
+		else
+		{
+
+		}
+
+		//cleaned = true;
+		auto status = tidyCleanAndRepair(_tidyDoc);
+		return static_cast<DocumentStatuses>(status);
+	}
 }

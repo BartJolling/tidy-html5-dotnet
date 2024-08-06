@@ -4,6 +4,7 @@
 #include "DiagnosticOptions.hpp"
 #include "DisplayOptions.hpp"
 #include "Document.hpp"
+#include "DocumentStatuses.hpp"
 #include "EncodingOptions.hpp"
 #include "EntitiesOptions.hpp"
 #include "FileOptions.hpp"
@@ -38,6 +39,7 @@ namespace TidyHtml5Dotnet
 
 		Stream^ _stream = nullptr;
 		String^ _htmlString;
+		ctmbstr _contentString;
 		bool _fromString = false;
 		bool _disposed = false;
 		bool _cleaned = false;
@@ -46,6 +48,11 @@ namespace TidyHtml5Dotnet
 		Document();
 		Document(String^ htmlString);
 		Document(Stream^ stream);
+
+		~Document();
+
+		DocumentStatuses CleanAndRepair();
+		DocumentStatuses ParseString();
 
 		property CleanupOptions^ CleanupOptions { TidyHtml5Dotnet::CleanupOptions^ get() { return _cleanupOptions; }}
 		property DiagnosticOptions^ DiagnosticOptions { TidyHtml5Dotnet::DiagnosticOptions^ get() { return _diagnosticOptions; }}
