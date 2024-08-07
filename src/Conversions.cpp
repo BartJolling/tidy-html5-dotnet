@@ -16,6 +16,11 @@ namespace TidyHtml5Dotnet
 		return static_cast<const char*>(Marshal::StringToHGlobalAnsi(managedString).ToPointer());
 	}
 
+	void Conversions::FreeCharArray(ctmbstr unmanagedString)
+	{
+		if(unmanagedString) Marshal::FreeHGlobal(IntPtr((void*)unmanagedString));
+	}
+
 	TidyTriState Conversions::NullableBooleanToTidyTriState(Nullable<Boolean> nullableBool)
 	{
 		if (!nullableBool.HasValue)

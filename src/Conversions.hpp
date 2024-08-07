@@ -23,7 +23,11 @@ property Nullable<Boolean> PROPERTY_NAME \
 property String^ PROPERTY_NAME \
 { \
     String^ get() { return gcnew String(tidyOptGetValue(_tidyDoc, TidyOptionId::TIDY_OPTION_ID)); } \
-    void set(String^ value) { tidyOptSetValue(_tidyDoc, TidyOptionId::TIDY_OPTION_ID, Conversions::StringToCharArray(value)); } \
+    void set(String^ value) { \
+        auto unmanagedValue = Conversions::StringToCharArray(value); \
+        tidyOptSetValue(_tidyDoc, TidyOptionId::TIDY_OPTION_ID, unmanagedValue); \
+        Conversions::FreeCharArray(unmanagedValue); \
+    } \
 }
 
 #define DECLARE_PROPERTY_FILEINFO(PROPERTY_NAME, TIDY_OPTION_ID) \
@@ -34,7 +38,12 @@ property FileInfo^ PROPERTY_NAME \
         auto value = tidyOptGetValue(_tidyDoc, TidyOptionId::TIDY_OPTION_ID); \
         return (value == nullptr || value[0] == '\0') ? nullptr : gcnew FileInfo(gcnew String(value)); \
     }; \
-    void set(FileInfo^ value) { tidyOptSetValue(_tidyDoc, TidyOptionId::TIDY_OPTION_ID, (value == nullptr) ? "" : Conversions::StringToCharArray(value->FullName)); }; \
+    void set(FileInfo^ value) { \
+        if(value == nullptr) { tidyOptSetValue(_tidyDoc, TidyOptionId::TIDY_OPTION_ID, ""); } else { \
+            auto unmanagedValue = Conversions::StringToCharArray(value->FullName); \
+            tidyOptSetValue(_tidyDoc, TidyOptionId::TIDY_OPTION_ID, unmanagedValue ); \
+            Conversions::FreeCharArray(unmanagedValue); } \
+    }; \
 }
 
 #define DECLARE_PROPERTY_SIGNED_INTEGER(PROPERTY_NAME, TIDY_OPTION_ID) \
@@ -83,6 +92,7 @@ namespace TidyHtml5Dotnet
 		*/
 
 		static ctmbstr StringToCharArray(String^ managedString);
+        static void FreeCharArray(ctmbstr unmanagedString);
 		static TidyTriState NullableBooleanToTidyTriState(Nullable<Boolean> nullableBool);
         static ctmbstr Conversions::IEnumerableToTidyTagNames(IEnumerable<String^>^ tidyTagNames);
 

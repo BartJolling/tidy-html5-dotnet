@@ -9,6 +9,7 @@
 #include "EntitiesOptions.hpp"
 #include "FileOptions.hpp"
 #include "InOutOptions.hpp"
+#include "InputSource.hpp"
 #include "PrettyPrintOptions.hpp"
 #include "RepairOptions.hpp"
 #include "TeachingOptions.hpp"
@@ -37,10 +38,9 @@ namespace TidyHtml5Dotnet
 		TeachingOptions^ _teachingOptions = nullptr;
 		TransformationOptions^ _transformationOptions = nullptr;
 
-		Stream^ _stream = nullptr;
-		String^ _htmlString;
+		InputSource^ _inputSource = nullptr;
 		ctmbstr _contentString;
-		bool _fromString = false;
+
 		bool _disposed = false;
 		bool _cleaned = false;
 
@@ -52,7 +52,6 @@ namespace TidyHtml5Dotnet
 		~Document();
 
 		DocumentStatuses CleanAndRepair();
-		DocumentStatuses ParseString();
 
 		property CleanupOptions^ CleanupOptions { TidyHtml5Dotnet::CleanupOptions^ get() { return _cleanupOptions; }}
 		property DiagnosticOptions^ DiagnosticOptions { TidyHtml5Dotnet::DiagnosticOptions^ get() { return _diagnosticOptions; }}

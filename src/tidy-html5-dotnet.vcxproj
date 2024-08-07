@@ -162,6 +162,7 @@
     <ClInclude Include="forward.h" />
     <ClInclude Include="gdoc.h" />
     <ClInclude Include="InOutOptions.hpp" />
+    <ClInclude Include="InputSource.hpp" />
     <ClInclude Include="PrettPrintOptions.hpp" />
     <ClInclude Include="SortAttributeStrategy.hpp" />
     <ClInclude Include="language.h" />
@@ -179,6 +180,7 @@
     <ClInclude Include="message.h" />
     <ClInclude Include="messageobj.h" />
     <ClInclude Include="TeachingOptions.hpp" />
+    <ClInclude Include="TidyException.hpp" />
     <ClInclude Include="TransformationOptions.hpp" />
     <ClInclude Include="parser.h" />
     <ClInclude Include="pprint.h" />
@@ -263,6 +265,7 @@
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</CompileAsManaged>
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</CompileAsManaged>
     </ClCompile>
+    <ClCompile Include="InputSource.cpp" />
     <ClCompile Include="istack.c">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
@@ -337,6 +340,7 @@
     </ClCompile>
     <ClCompile Include="Document.cpp" />
     <ClCompile Include="Tidy.cpp" />
+    <ClCompile Include="TidyException.cpp" />
     <ClCompile Include="tidylib.c">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>

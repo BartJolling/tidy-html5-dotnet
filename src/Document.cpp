@@ -3,6 +3,8 @@ using namespace System::IO;
 using namespace System::Runtime::InteropServices;
 
 #include "Document.hpp"
+#include "InputSource.hpp"
+#include "TidyException.hpp"
 
 namespace TidyHtml5Dotnet 
 {
@@ -25,50 +27,44 @@ namespace TidyHtml5Dotnet
 
 	Document::Document(String^ htmlString) : Document()
 	{
-		_htmlString = htmlString;
 		_contentString = Conversions::StringToCharArray(htmlString);
-		_fromString = true;
 	};
 
 	Document::Document(Stream^ stream) : Document()
 	{
-		_stream = stream;
+		_inputSource = gcnew InputSource(stream);
 	};
 
 	Document::~Document()
 	{
-		if (_contentString != nullptr)
-		{
-			IntPtr contentIntPtr = IntPtr((void*)_contentString);
-			Marshal::FreeHGlobal(contentIntPtr);
-			_contentString = nullptr;
-		}
-
+		Conversions::FreeCharArray(_contentString);
 		tidyRelease(_tidyDoc);
-	}
-
-	DocumentStatuses Document::ParseString()
-	{
-		auto status = tidyParseString(_tidyDoc, _contentString);
-		return static_cast<DocumentStatuses>(status);
 	}
 
 	DocumentStatuses Document::CleanAndRepair()
 	{
-		if (this->_fromString)
+		if (this->_contentString != nullptr)
 		{
 			auto previousEncoding = _encodingOptions->InputCharacterEncoding;
 			_encodingOptions->InputCharacterEncoding = Encodings::Utf8;
-			ParseString();
+			auto result = tidyParseString(_tidyDoc, _contentString);
 			_encodingOptions->InputCharacterEncoding = previousEncoding;
+
+			if (result < 0) throw gcnew TidyException(result);
+			return static_cast<DocumentStatuses>(result);
 		}
-		else
+		else if(this->_inputSource != nullptr)
 		{
+			auto result = tidyParseSource(_tidyDoc, _inputSource->TidyInSource);
 
+			if (result < 0) throw gcnew TidyException(result);
+			return static_cast<DocumentStatuses>(result);
 		}
 
-		//cleaned = true;
-		auto status = tidyCleanAndRepair(_tidyDoc);
-		return static_cast<DocumentStatuses>(status);
+		auto result = tidyCleanAndRepair(_tidyDoc);
+		if (result < 0) throw gcnew TidyException(result);
+
+		_cleaned = true;
+		return static_cast<DocumentStatuses>(result);
 	}
 }
