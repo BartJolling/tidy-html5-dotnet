@@ -10,6 +10,8 @@ namespace TidyHtml5Dotnet
 	{
 	public:
 		InputSource(Stream^ stream);
+		~InputSource();
+		!InputSource();
 
 	private:
 		Stream^ _stream;
@@ -18,6 +20,8 @@ namespace TidyHtml5Dotnet
 		int GetByte(void* source);
 		void UngetByte(void* source, byte byte);
 		bool IsEOF(void* source);
+
+		bool _disposed = false;
 
 	public:
 		property TidyInputSource* TidyInSource

@@ -40,16 +40,21 @@ namespace TidyHtml5Dotnet
 
 		InputSource^ _inputSource = nullptr;
 		ctmbstr _contentString;
-
-		bool _disposed = false;
 		bool _cleaned = false;
+
+		bool _disposed = false;		
 
 	public:
 		Document();
 		Document(String^ htmlString);
 		Document(Stream^ stream);
 
+		static Document^ FromString(String^ htmlString);
+		static Document^ FromFile(String^ filePath);
+		static Document^ FromStream(Stream^ stream);
+
 		~Document();
+		!Document();
 
 		DocumentStatuses CleanAndRepair();
 

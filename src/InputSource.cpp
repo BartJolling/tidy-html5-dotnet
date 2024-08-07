@@ -16,9 +16,9 @@ namespace TidyHtml5Dotnet
 
         _stream = stream;
 
-        IntPtr getByteFnPtr = Marshal::GetFunctionPointerForDelegate(gcnew TidyGetByteDelegate(this, &InputSource::GetByte));
-        IntPtr ungetByteFnPtr = Marshal::GetFunctionPointerForDelegate(gcnew TidyUngetByteDelegate(this, &InputSource::UngetByte));
-        IntPtr isEofFnPtr = Marshal::GetFunctionPointerForDelegate(gcnew TidyEOFDelegate(this, &InputSource::IsEOF));
+        auto getByteFnPtr = Marshal::GetFunctionPointerForDelegate(gcnew TidyGetByteDelegate(this, &InputSource::GetByte));
+        auto ungetByteFnPtr = Marshal::GetFunctionPointerForDelegate(gcnew TidyUngetByteDelegate(this, &InputSource::UngetByte));
+        auto isEofFnPtr = Marshal::GetFunctionPointerForDelegate(gcnew TidyEOFDelegate(this, &InputSource::IsEOF));
 
 		_tidyInputSource = new TidyInputSource();
 		_tidyInputSource->sourceData = nullptr;
@@ -26,6 +26,22 @@ namespace TidyHtml5Dotnet
         _tidyInputSource->ungetByte = static_cast<TidyUngetByteFunc>(ungetByteFnPtr.ToPointer());
         _tidyInputSource->eof = static_cast<TidyEOFFunc>(isEofFnPtr.ToPointer());
 	}
+
+    InputSource::~InputSource()
+    {
+        if (_disposed) return;
+
+        //Dispose managed objects here
+
+        this->!InputSource();
+        _disposed = true;
+    }
+
+    InputSource::!InputSource()
+    {
+        //Free unmanaged objects here
+        delete _tidyInputSource;
+    }
 
     int InputSource::GetByte(void* source)
     {

@@ -6,15 +6,15 @@ using namespace System::Runtime::InteropServices;
 #include "InputSource.hpp"
 #include "TidyException.hpp"
 
-namespace TidyHtml5Dotnet 
+namespace TidyHtml5Dotnet
 {
 	Document::Document()
 	{
 		_tidyDoc = tidyCreate();
-		
+
 		_cleanupOptions = gcnew TidyHtml5Dotnet::CleanupOptions(_tidyDoc);
 		_diagnosticOptions = gcnew TidyHtml5Dotnet::DiagnosticOptions(_tidyDoc);
-		_displayOptions = gcnew TidyHtml5Dotnet::DisplayOptions(_tidyDoc);		
+		_displayOptions = gcnew TidyHtml5Dotnet::DisplayOptions(_tidyDoc);
 		_encodingOptions = gcnew TidyHtml5Dotnet::EncodingOptions(_tidyDoc);
 		_entitiesOptions = gcnew TidyHtml5Dotnet::EntitiesOptions(_tidyDoc);
 		_fileOptions = gcnew TidyHtml5Dotnet::FileOptions(_tidyDoc);
@@ -35,8 +35,48 @@ namespace TidyHtml5Dotnet
 		_inputSource = gcnew InputSource(stream);
 	};
 
+	Document^ Document::FromString(String^ htmlString)
+	{
+		ArgumentNullException::ThrowIfNullOrWhiteSpace(htmlString, "htmlString");
+		return gcnew Document(htmlString);
+	}
+
+	Document^ Document::FromFile(String^ filePath)
+	{
+		ArgumentNullException::ThrowIfNullOrWhiteSpace(filePath, "filePath");
+
+		if (!File::Exists(filePath))
+			throw gcnew FileNotFoundException("File not found.", filePath);
+
+		return gcnew Document(gcnew FileStream(filePath, FileMode::Open));
+	}
+
+	Document^ Document::FromStream(Stream^ stream)
+	{
+		ArgumentNullException::ThrowIfNull(stream, "stream");
+
+		if (!stream->CanRead)
+			throw gcnew ArgumentException("Stream must be readable.");
+		if (!stream->CanSeek)
+			throw gcnew ArgumentException("Stream must be seekable.");
+
+		return gcnew Document(stream);
+	}
+
 	Document::~Document()
 	{
+		if (_disposed) return;
+
+		//Dispose managed objects here
+		delete _inputSource;
+				
+		this->!Document();
+		_disposed = true;
+	}
+
+	Document::!Document()
+	{
+		//Free unmanaged objects here
 		Conversions::FreeCharArray(_contentString);
 		tidyRelease(_tidyDoc);
 	}
