@@ -3,20 +3,9 @@
         {
             "name": "Win32 Debug",
             "includePath": [
-                "${workspaceFolder}/**",
                 "${workspaceFolder}/include/"
             ],
             "defines": [
-                "WIN32",
-                "DEBUG",                
-                "_DEBUG",
-                "UNICODE",
-                "_UNICODE",
-                "_WINDLL",
-                "BUILD_SHARED_LIB",
-                "BUILDING_SHARED_LIB",
-                "LIBTIDY_VERSION=\"5.8.0\"",
-                "RELEASE_DATE=\"2021.07.10\""
             ],
             "windowsSdkVersion": "10.0.22621.0",
             "compilerPath": "cl.exe",
@@ -33,19 +22,9 @@
         {
             "name": "Win32 Release",
             "includePath": [
-                "${workspaceFolder}/**",
                 "${workspaceFolder}/include/"
             ],
             "defines": [
-                "WIN32",                
-                "NDEBUG",
-                "UNICODE",
-                "_UNICODE",
-                "_WINDLL",
-                "BUILD_SHARED_LIB",
-                "BUILDING_SHARED_LIB",
-                "LIBTIDY_VERSION=\"5.8.0\"",
-                "RELEASE_DATE=\"2021.07.10\""
             ],
             "windowsSdkVersion": "10.0.22621.0",
             "compilerPath": "cl.exe",

@@ -94,12 +94,17 @@
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)Include</IncludePath>
     <ExternalIncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</ExternalIncludePath>
   </PropertyGroup>
+  <PropertyGroup>
+    <FileContent>$([System.IO.File]::ReadAllText('$(SolutionDir)version.txt').Trim())</FileContent>
+    <LibTidyVersion>$([System.Text.RegularExpressions.Regex]::Split($(FileContent), '\r?\n')[0].Trim())</LibTidyVersion>
+    <ReleaseDate>$([System.Text.RegularExpressions.Regex]::Split($(FileContent), '\r?\n')[1].Trim())</ReleaseDate>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions);BUILD_SHARED_LIB;BUILDING_SHARED_LIB;LIBTIDY_VERSION="5.8.0";RELEASE_DATE="2021.07.10";</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions);BUILD_SHARED_LIB;BUILDING_SHARED_LIB;LIBTIDY_VERSION="$(LibTidyVersion)";RELEASE_DATE="$(ReleaseDate)";</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalDependencies />
@@ -110,7 +115,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions);BUILD_SHARED_LIB;BUILDING_SHARED_LIB;LIBTIDY_VERSION="5.8.0";RELEASE_DATE="2021.07.10";</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions);BUILD_SHARED_LIB;BUILDING_SHARED_LIB;LIBTIDY_VERSION="$(LibTidyVersion)";RELEASE_DATE="$(ReleaseDate)";</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalDependencies />
@@ -121,7 +126,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>WIN32;NDEBUG;%(PreprocessorDefinitions);BUILD_SHARED_LIB;BUILDING_SHARED_LIB;LIBTIDY_VERSION="5.8.0";RELEASE_DATE="2021.07.10";</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;%(PreprocessorDefinitions);BUILD_SHARED_LIB;BUILDING_SHARED_LIB;LIBTIDY_VERSION="$(LibTidyVersion)";RELEASE_DATE="$(ReleaseDate)";</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalDependencies />
@@ -132,7 +137,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions);BUILD_SHARED_LIB;BUILDING_SHARED_LIB;LIBTIDY_VERSION="5.8.0";RELEASE_DATE="2021.07.10";</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions);BUILD_SHARED_LIB;BUILDING_SHARED_LIB;LIBTIDY_VERSION="$(LibTidyVersion)";RELEASE_DATE="$(ReleaseDate)";</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalDependencies />
