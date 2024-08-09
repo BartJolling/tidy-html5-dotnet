@@ -7,7 +7,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tidy-html5-dotnet", "src\ti
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tidy-html5-console", "console\tidy-html5-console.vcxproj", "{609F2294-A1EF-49B3-87C5-FE464AEC1011}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tidy-html5-dotnet.tests", "tidy-html5-dotnet.tests\tidy-html5-dotnet.tests.csproj", "{24D46067-4725-4511-8836-D34DFF20797D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tidy-html5-dotnet.tests", "tidy-html5-dotnet.tests\tidy-html5-dotnet.project.tests.csproj", "{24D46067-4725-4511-8836-D34DFF20797D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

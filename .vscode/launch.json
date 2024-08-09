@@ -5,9 +5,41 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Debug Console App",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "program": "${input:OutDir}tidy-html5-console.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "console": "internalConsole",
+            "preLaunchTask": "Build x64"
+        },
+        {
             "name": ".NET Core Attach",
             "type": "coreclr",
             "request": "attach"
+        },
+    ],
+    "inputs": [
+        {
+            "id": "Configuration",
+            "type": "command",
+            "command": "cpptools.activeConfigCustomVariable",
+            "args": "Configuration"
+        },
+        {
+            "id": "Platform",
+            "type": "command",
+            "command": "cpptools.activeConfigCustomVariable",
+            "args": "Platform"
+        },
+        {
+            "id": "OutDir",
+            "type": "command",
+            "command": "cpptools.activeConfigCustomVariable",
+            "args": "OutDir"
         }
     ]
 }

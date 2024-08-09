@@ -104,7 +104,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions);BUILD_SHARED_LIB;BUILDING_SHARED_LIB;LIBTIDY_VERSION="$(LibTidyVersion)";RELEASE_DATE="$(ReleaseDate)";</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;BUILD_SHARED_LIB;BUILDING_SHARED_LIB;LIBTIDY_VERSION="$(LibTidyVersion)";RELEASE_DATE="$(ReleaseDate)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalDependencies />
@@ -115,7 +115,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions);BUILD_SHARED_LIB;BUILDING_SHARED_LIB;LIBTIDY_VERSION="$(LibTidyVersion)";RELEASE_DATE="$(ReleaseDate)";</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;BUILD_SHARED_LIB;BUILDING_SHARED_LIB;LIBTIDY_VERSION="$(LibTidyVersion)";RELEASE_DATE="$(ReleaseDate)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalDependencies />
@@ -126,7 +126,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>WIN32;NDEBUG;%(PreprocessorDefinitions);BUILD_SHARED_LIB;BUILDING_SHARED_LIB;LIBTIDY_VERSION="$(LibTidyVersion)";RELEASE_DATE="$(ReleaseDate)";</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;BUILD_SHARED_LIB;BUILDING_SHARED_LIB;LIBTIDY_VERSION="$(LibTidyVersion)";RELEASE_DATE="$(ReleaseDate)";%(PreprocessorDefinitions)"</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalDependencies />
@@ -137,7 +137,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions);BUILD_SHARED_LIB;BUILDING_SHARED_LIB;LIBTIDY_VERSION="$(LibTidyVersion)";RELEASE_DATE="$(ReleaseDate)";</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;BUILD_SHARED_LIB;BUILDING_SHARED_LIB;LIBTIDY_VERSION="$(LibTidyVersion)";RELEASE_DATE="$(ReleaseDate)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalDependencies />

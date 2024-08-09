@@ -62,7 +62,7 @@
             "dependsOn": [
                 "Build x64"
             ]
-        },        
+        },
     ],
     "inputs": [
         {

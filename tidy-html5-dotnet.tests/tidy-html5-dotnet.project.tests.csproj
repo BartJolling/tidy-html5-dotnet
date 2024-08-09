@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0-windows</TargetFramework>
@@ -8,15 +8,9 @@
 
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
-    <Platforms>x64</Platforms>
-	
-	<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x64</Platform></PropertyGroup>
-	
-  <PropertyGroup>
-    <OutDir>../build/x64/$(Configuration)/</OutDir>
+    <Platforms>x86;x64</Platforms>
   </PropertyGroup>
-  
+
   <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="6.0.2">
       <PrivateAssets>all</PrivateAssets>
@@ -29,12 +23,10 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
-  
+
   <ItemGroup>
-    <Reference Include="tidy-html5-dotnet">
-      <HintPath>../build/x64/$(Configuration)/tidy-html5-dotnet.dll</HintPath>
-    </Reference>
-  </ItemGroup> 
+    <ProjectReference Include="..\src\tidy-html5-dotnet.vcxproj" />
+  </ItemGroup>
 
   <ItemGroup>
     <Using Include="Xunit" />
