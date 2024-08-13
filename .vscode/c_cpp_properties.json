@@ -1,7 +1,7 @@
 {
     "configurations": [
         {
-            "name": "Win32 Debug",
+            "name": "Debug x64 c++/cli",
             "includePath": [
                 "${workspaceFolder}/include/"
             ],
@@ -28,7 +28,7 @@
             }
         },
         {
-            "name": "Win32 Release",
+            "name": "Release x64 c++/cli",
             "includePath": [
                 "${workspaceFolder}/include/"
             ],

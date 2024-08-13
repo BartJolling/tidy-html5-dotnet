@@ -95,7 +95,7 @@
     <ExternalIncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</ExternalIncludePath>
   </PropertyGroup>
   <PropertyGroup>
-    <FileContent>$([System.IO.File]::ReadAllText('$(SolutionDir)version.txt').Trim())</FileContent>
+    <FileContent>$([System.IO.File]::ReadAllText('$(ProjectDir)..\version.txt').Trim())</FileContent>
     <LibTidyVersion>$([System.Text.RegularExpressions.Regex]::Split($(FileContent), '\r?\n')[0].Trim())</LibTidyVersion>
     <ReleaseDate>$([System.Text.RegularExpressions.Regex]::Split($(FileContent), '\r?\n')[1].Trim())</ReleaseDate>
   </PropertyGroup>

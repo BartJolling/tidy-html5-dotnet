@@ -5,18 +5,12 @@
     <RootNamespace>tidy_html5_dotnet_test</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
-    <Platforms>x64</Platforms>
-	
-	<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x64</Platform></PropertyGroup>
-	
-  <PropertyGroup>
+    <Platforms>x64</Platforms> 
     <OutDir>../build/x64/$(Configuration)/</OutDir>
-  </PropertyGroup>
-  
+  </PropertyGroup>  
+
   <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="6.0.2">
       <PrivateAssets>all</PrivateAssets>

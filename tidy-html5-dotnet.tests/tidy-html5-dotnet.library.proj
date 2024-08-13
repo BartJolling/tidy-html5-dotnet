@@ -1,0 +1,15 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <ProjectDir Condition=" '$(ProjectDir)' == '' ">$(MSBuildProjectDirectory)\</ProjectDir>
+	<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x64</Platform>
+	  <OutDir Condition=" '$(OutDir)' == '' "..\build\$(Platform)\$(Configuration)\</OutDir>
+  </PropertyGroup>
+
+  <Target Name="Build tidy-html5-dotnet-sln">
+    <Exec Command="call &quot;$(VCToolsInstallDir)..\..\..\Auxiliary\Build\vcvars64.bat&quot; &amp;&amp; msbuild.exe $(ProjectDir)..\tidy-html5-dotnet.sln -restore -t:build -p:RestorePackagesConfig=true /p:Configuration=$(Configuration) /p:Platform=$(Platform) /p:OutDir=$(OutDir)" ConsoleToMSBuild="true">
+      <Output TaskParameter="ConsoleOutput" PropertyName="OutputOfExec" />
+    </Exec>
+  </Target>
+</Project>
