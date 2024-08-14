@@ -2,14 +2,25 @@
 
   <PropertyGroup>
     <ProjectDir Condition=" '$(ProjectDir)' == '' ">$(MSBuildProjectDirectory)\</ProjectDir>
-	<Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x64</Platform>
-	  <OutDir Condition=" '$(OutDir)' == '' "..\build\$(Platform)\$(Configuration)\</OutDir>
+	  <OutDir Condition=" '$(OutDir)' == '' ">..\build\$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
 
-  <Target Name="Build tidy-html5-dotnet-sln">
+  <Target Name="Default" DependsOnTargets="Restore;Build" />
+
+  <!-- Avoids NuGet Warning NU1503 -->
+  <Target Name="_IsProjectRestoreSupported" Returns="@(_ValidProjectsForRestore)">
+    <ItemGroup>
+      <_ValidProjectsForRestore Include="$(MSBuildProjectFullPath)" />
+    </ItemGroup>
+  </Target>
+  <Target Name="Restore" />  
+
+  <Target Name="Build" >
     <Exec Command="call &quot;$(VCToolsInstallDir)..\..\..\Auxiliary\Build\vcvars64.bat&quot; &amp;&amp; msbuild.exe $(ProjectDir)..\tidy-html5-dotnet.sln -restore -t:build -p:RestorePackagesConfig=true /p:Configuration=$(Configuration) /p:Platform=$(Platform) /p:OutDir=$(OutDir)" ConsoleToMSBuild="true">
       <Output TaskParameter="ConsoleOutput" PropertyName="OutputOfExec" />
     </Exec>
   </Target>
+
 </Project>
