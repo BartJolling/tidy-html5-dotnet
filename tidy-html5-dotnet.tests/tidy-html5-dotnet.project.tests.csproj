@@ -9,6 +9,14 @@
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
     <Platforms>x86;x64</Platforms>
+    <AssemblyName>tidy-html5-dotnet.tests</AssemblyName>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Platform)' == 'x86'">
+    <OutDir>$(ProjectDir)..\build\Win32\$(Configuration)</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Platform)' != 'x86'">
+    <OutDir>$(ProjectDir)..\build\$(Platform)\$(Configuration)</OutDir>
   </PropertyGroup>
 
   <ItemGroup>
