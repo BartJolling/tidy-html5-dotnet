@@ -8,6 +8,12 @@ using namespace System::Runtime::InteropServices;
 
 namespace TidyHtml5Dotnet
 {
+	Bool TIDY_CALL NativeReportCallback(TidyMessage tmessage)
+	{
+    	Document::ReportCallback(tmessage);
+		return no;
+	}
+
 	Document::Document()
 	{
 		_tidyDoc = tidyCreate();
@@ -79,6 +85,66 @@ namespace TidyHtml5Dotnet
 		//Free unmanaged objects here
 		Conversions::FreeCharArray(_contentString);
 		tidyRelease(_tidyDoc);
+	}
+
+	void Document::ReportCallback(TidyMessage tmessage)
+	{
+		if (_messageCallback != nullptr)
+		{
+			auto key = tidyGetMessageKey( tmessage );
+			auto output = tidyGetMessageOutput( tmessage );			
+			auto message = gcnew String(output);
+
+			_messageCallback(message);
+		}
+
+		/* Move to a managed Message Class*/
+		/*
+		TidyIterator pos;
+		TidyMessageArgument arg;
+		TidyFormatParameterType messageType;
+		ctmbstr messageFormat;
+
+		printf("FILTER: %s, %s\n", tidyGetMessageKey( tmessage ), tidyGetMessageOutput( tmessage ));
+		
+		// loop through the arguments, if any, and print their details 
+		pos = tidyGetMessageArguments( tmessage );
+		while ( pos )
+		{
+			arg = tidyGetNextMessageArgument( tmessage, &pos );
+			messageType = tidyGetArgType( tmessage, &arg );
+			messageFormat = tidyGetArgFormat( tmessage, &arg );
+			printf( "  Type = %u, Format = %s, Value = ", messageType, messageFormat );
+			
+			switch (messageType)
+			{
+				case tidyFormatType_STRING:
+					printf("%s\n", tidyGetArgValueString( tmessage, &arg ));
+					break;
+					
+				case tidyFormatType_INT:
+					printf("%d\n", tidyGetArgValueInt( tmessage, &arg));
+					break;
+		
+				case tidyFormatType_UINT:
+					printf("%u\n", tidyGetArgValueUInt( tmessage, &arg));
+					break;
+
+				case tidyFormatType_DOUBLE:
+					printf("%g\n", tidyGetArgValueDouble( tmessage, &arg));
+					break;
+
+				default:
+					printf("%s", "unknown so far\n");
+			}
+		}
+		*/
+	}
+
+	void Document::SetCallback(Action<String^>^ messageCallback)
+	{
+		_messageCallback = messageCallback;
+		tidySetMessageCallback(_tidyDoc, NativeReportCallback);
 	}
 
 	DocumentStatuses Document::CleanAndRepair()

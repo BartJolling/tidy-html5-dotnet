@@ -38,6 +38,8 @@ namespace TidyHtml5Dotnet
 		TeachingOptions^ _teachingOptions = nullptr;
 		TransformationOptions^ _transformationOptions = nullptr;
 
+		static Action<String^>^ _messageCallback;
+
 		InputSource^ _inputSource = nullptr;
 		ctmbstr _contentString;
 		bool _cleaned = false;
@@ -69,5 +71,26 @@ namespace TidyHtml5Dotnet
 		property RepairOptions^ RepairOptions { TidyHtml5Dotnet::RepairOptions^ get() { return _repairOptions; }}
 		property TeachingOptions^ TeachingOptions { TidyHtml5Dotnet::TeachingOptions^ get() { return _teachingOptions; }}
 		property TransformationOptions^ TransformationOptions { TidyHtml5Dotnet::TransformationOptions^ get() { return _transformationOptions; }}
+
+		static void ReportCallback(TidyMessage tmessage);
+
+		property Action<String^>^ MessageCallback
+		{
+			Action<String^>^ get() { return _messageCallback; }
+			void set(Action<String^>^ value) 
+			{ 
+				SetCallback(value); 
+				/*
+				_messageCallback = value;
+				tidySetMessageCallback(_tidyDoc, [] (TidyMessage tmessage) -> Bool {
+					Document::ReportCallback(tmessage);
+					return no;
+				});
+				*/
+			}
+		}
+
+	private:
+		void SetCallback(Action<String^>^ messageCallback);
 	};
 }
