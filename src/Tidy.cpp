@@ -1,32 +1,24 @@
-#include "tidy.h"
-using namespace System::Globalization;
-
-using namespace System;
-using namespace System::IO;
+#include "Tidy.hpp"
 
 namespace TidyHtml5Dotnet 
 {
-	public ref class Tidy abstract sealed
+	String^ Tidy::LibraryVersion::get()
 	{
-	private:
-		static String^ _libraryVersion = gcnew String(tidyLibraryVersion());
-		static DateTime _releaseDate = DateTime::ParseExact(gcnew String(tidyReleaseDate()), "yyyy.MM.dd", CultureInfo::InvariantCulture);
+		return _libraryVersion;
+	}
 
-	public:
-		static property String^ LibraryVersion
-		{
-			String^ get() 
-			{
-				return _libraryVersion;
-			}
-		}
+	DateTime Tidy::ReleaseDate::get()
+	{
+		return _releaseDate;
+	}
 
-		static property DateTime ReleaseDate
-		{
-			DateTime get()
-			{
-				return _releaseDate;
-			}
-		}
-	};
+	Action<String^>^ Tidy::MessageCallback::get()
+	{
+		return _messageCallback;
+	}
+
+	void Tidy::MessageCallback::set(Action<String^>^ value)
+	{
+		_messageCallback = value;
+	}
 }

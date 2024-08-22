@@ -5,12 +5,62 @@ using namespace System::Runtime::InteropServices;
 #include "Document.hpp"
 #include "InputSource.hpp"
 #include "TidyException.hpp"
+#include "Tidy.hpp"
 
 namespace TidyHtml5Dotnet
 {
-	Bool TIDY_CALL NativeReportCallback(TidyMessage tmessage)
+	static Bool TIDY_CALL NativeMessageCallback(TidyMessage tmessage)
 	{
-    	Document::ReportCallback(tmessage);
+		if (Tidy::MessageCallback != nullptr)
+		{
+			auto key = tidyGetMessageKey(tmessage);
+			auto output = tidyGetMessageOutput(tmessage);
+			auto message = gcnew String(output);
+
+			Tidy::MessageCallback(message);
+		}
+
+		/*
+		TidyIterator pos;
+		TidyMessageArgument arg;
+		TidyFormatParameterType messageType;
+		ctmbstr messageFormat;
+
+		printf("FILTER: %s, %s\n", tidyGetMessageKey( tmessage ), tidyGetMessageOutput( tmessage ));
+
+		// loop through the arguments, if any, and print their details
+		pos = tidyGetMessageArguments( tmessage );
+		while ( pos )
+		{
+			arg = tidyGetNextMessageArgument( tmessage, &pos );
+			messageType = tidyGetArgType( tmessage, &arg );
+			messageFormat = tidyGetArgFormat( tmessage, &arg );
+			printf( "  Type = %u, Format = %s, Value = ", messageType, messageFormat );
+
+			switch (messageType)
+			{
+				case tidyFormatType_STRING:
+					printf("%s\n", tidyGetArgValueString( tmessage, &arg ));
+					break;
+
+				case tidyFormatType_INT:
+					printf("%d\n", tidyGetArgValueInt( tmessage, &arg));
+					break;
+
+				case tidyFormatType_UINT:
+					printf("%u\n", tidyGetArgValueUInt( tmessage, &arg));
+					break;
+
+				case tidyFormatType_DOUBLE:
+					printf("%g\n", tidyGetArgValueDouble( tmessage, &arg));
+					break;
+
+				default:
+					printf("%s", "unknown so far\n");
+			}
+		}
+		*/
+
 		return no;
 	}
 
@@ -87,64 +137,21 @@ namespace TidyHtml5Dotnet
 		tidyRelease(_tidyDoc);
 	}
 
-	void Document::ReportCallback(TidyMessage tmessage)
+	void Document::ReceiveMessages::set(bool enable)
 	{
-		if (_messageCallback != nullptr)
-		{
-			auto key = tidyGetMessageKey( tmessage );
-			auto output = tidyGetMessageOutput( tmessage );			
-			auto message = gcnew String(output);
-
-			_messageCallback(message);
+		if (enable) {
+			Bool result = tidySetMessageCallback(_tidyDoc, NativeMessageCallback);
+			if (result == yes) { _receiveMessages = true; };
 		}
-
-		/* Move to a managed Message Class*/
-		/*
-		TidyIterator pos;
-		TidyMessageArgument arg;
-		TidyFormatParameterType messageType;
-		ctmbstr messageFormat;
-
-		printf("FILTER: %s, %s\n", tidyGetMessageKey( tmessage ), tidyGetMessageOutput( tmessage ));
-		
-		// loop through the arguments, if any, and print their details 
-		pos = tidyGetMessageArguments( tmessage );
-		while ( pos )
-		{
-			arg = tidyGetNextMessageArgument( tmessage, &pos );
-			messageType = tidyGetArgType( tmessage, &arg );
-			messageFormat = tidyGetArgFormat( tmessage, &arg );
-			printf( "  Type = %u, Format = %s, Value = ", messageType, messageFormat );
-			
-			switch (messageType)
-			{
-				case tidyFormatType_STRING:
-					printf("%s\n", tidyGetArgValueString( tmessage, &arg ));
-					break;
-					
-				case tidyFormatType_INT:
-					printf("%d\n", tidyGetArgValueInt( tmessage, &arg));
-					break;
-		
-				case tidyFormatType_UINT:
-					printf("%u\n", tidyGetArgValueUInt( tmessage, &arg));
-					break;
-
-				case tidyFormatType_DOUBLE:
-					printf("%g\n", tidyGetArgValueDouble( tmessage, &arg));
-					break;
-
-				default:
-					printf("%s", "unknown so far\n");
-			}
-		}
-		*/
+		else {
+			Bool result = tidySetMessageCallback(_tidyDoc, nullptr);
+			if (result == yes) { _receiveMessages = false; };
+		};
 	}
-
-	void Document::SetCallback(Action<String^>^ messageCallback)
+	
+	bool Document::ReceiveMessages::get()
 	{
-		_messageCallback = messageCallback;
-		tidySetMessageCallback(_tidyDoc, NativeReportCallback);
+		return _receiveMessages;
 	}
 
 	DocumentStatuses Document::CleanAndRepair()

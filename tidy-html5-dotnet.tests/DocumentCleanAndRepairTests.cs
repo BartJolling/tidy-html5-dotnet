@@ -5,12 +5,13 @@ namespace tidy_html5_dotnet_test;
 
 public class DocumentCleanAndRepairTests
 {
-    private List<string> _tidyMessages = [];
+    private readonly List<string> _tidyMessages = [];
 
     public DocumentCleanAndRepairTests()
     {
         _tidyMessages.Clear();
-    } 
+        Tidy.MessageCallback = message => _tidyMessages.Add(message);
+    }
 
     [Fact]
     public void CleanAndRepair_Document_without_parameters_must_succeed()
@@ -18,7 +19,7 @@ public class DocumentCleanAndRepairTests
         using var tidyDocument = new Document();
         Assert.NotNull(tidyDocument);
 
-        tidyDocument.MessageCallback = message => _tidyMessages.Add(message);
+        tidyDocument.ReceiveMessages = true;
 
         var status = tidyDocument.CleanAndRepair();
         Assert.Equal(DocumentStatuses.Success, status);
@@ -33,8 +34,8 @@ public class DocumentCleanAndRepairTests
         using var tidyDocument = new Document(htmlString);
         Assert.NotNull(tidyDocument);
 
-        tidyDocument.MessageCallback = message => _tidyMessages.Add(message);
-        
+        tidyDocument.ReceiveMessages = true;
+
         var status = tidyDocument.CleanAndRepair();
         Assert.Equal(DocumentStatuses.Warnings, status);
 
@@ -48,7 +49,7 @@ public class DocumentCleanAndRepairTests
         using var tidyDocument = new Document(htmlStream);
         Assert.NotNull(tidyDocument);
 
-        tidyDocument.MessageCallback = message => _tidyMessages.Add(message);
+        tidyDocument.ReceiveMessages = true;
 
         var status = tidyDocument.CleanAndRepair();
         Assert.Equal(DocumentStatuses.Warnings, status);
