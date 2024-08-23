@@ -12,7 +12,6 @@ namespace TidyHtml5Dotnet
 	private:
 		TidyMessage _tmessage = nullptr;
 
-		literal String^ ARGUMENT_FORMAT = "Type = {0}, Format = {1}, Value = {2}";
 		String^ _key;
 		String^ _output;
 		List<String^>^ _arguments;

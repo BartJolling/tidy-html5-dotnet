@@ -30,28 +30,27 @@ namespace TidyHtml5Dotnet
 			String ^ argument = String::Empty;
 			arg = tidyGetNextMessageArgument(tmessage, &pos);
 			messageType = tidyGetArgType(tmessage, &arg);
-			messageFormat = tidyGetArgFormat(tmessage, &arg);
 
 			switch (messageType)
 			{
 			case tidyFormatType_STRING:
-				argument = String::Format(ARGUMENT_FORMAT, (int)messageType, gcnew String(messageFormat), gcnew String(tidyGetArgValueString(tmessage, &arg)));
+				argument = gcnew String(tidyGetArgValueString(tmessage, &arg));
 				break;
 
 			case tidyFormatType_INT:
-				argument = String::Format(ARGUMENT_FORMAT, (int)messageType, gcnew String(messageFormat), tidyGetArgValueInt(tmessage, &arg));
+				argument = Convert::ToString(tidyGetArgValueInt(tmessage, &arg));
 				break;
 
 			case tidyFormatType_UINT:
-				argument = String::Format(ARGUMENT_FORMAT, (int)messageType, gcnew String(messageFormat), tidyGetArgValueUInt(tmessage, &arg));
+				argument = Convert::ToString(tidyGetArgValueUInt(tmessage, &arg));
 				break;
 
 			case tidyFormatType_DOUBLE:
-				argument = String::Format(ARGUMENT_FORMAT, (int)messageType, gcnew String(messageFormat), tidyGetArgValueDouble(tmessage, &arg));
+				argument = Convert::ToString(tidyGetArgValueDouble(tmessage, &arg));
 				break;
 
 			default:
-				argument = String::Format(ARGUMENT_FORMAT, (int)messageType, gcnew String(messageFormat), gcnew String("unknown so far"));
+				argument = String::Format("Unknown Message Type: {0}", (int)messageType);
 			}
 
 			_arguments->Add(argument);
