@@ -18,15 +18,15 @@
             "windowsSdkVersion": "10.0.22621.0",
             "compilerPath": "cl.exe",
             "compilerArgs": [
-                "/clr:netcore"
+                "/clr:netcore",
+                "/AI", "C:/Program Files/dotnet/packs/Microsoft.NETCore.App.Ref/8.0.7/ref/net8.0/"
             ],
             "cStandard": "c17",
             "cppStandard": "c++17",
             "intelliSenseMode": "windows-msvc-x64",
             "customConfigurationVariables": {
                 "Configuration": "Debug",
-                "Platform": "x64",
-                "OutDir": "${workspaceFolder}/build/x64/Debug/"
+                "Platform": "x64"
             }
         },
         {
@@ -47,15 +47,15 @@
             "windowsSdkVersion": "10.0.22621.0",
             "compilerPath": "cl.exe",
             "compilerArgs": [
-                "/clr:netcore"
+                "/clr:netcore",
+                "/AI", "C:/Program Files/dotnet/packs/Microsoft.NETCore.App.Ref/8.0.7/ref/net8.0/"
             ],
             "cStandard": "c17",
             "cppStandard": "c++17",
             "intelliSenseMode": "windows-msvc-x64",
             "customConfigurationVariables": {
                 "Configuration": "Release",
-                "Platform": "x64",
-                "OutDir": "${workspaceFolder}/build/x64/Release/"
+                "Platform": "x64"
             }
         }
     ],

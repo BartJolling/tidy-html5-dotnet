@@ -26,7 +26,7 @@
   <Target Name="Restore" />  
 
   <Target Name="Build" DependsOnTargets="CheckVCTools">
-    <Exec Command="$(MSBuildExePath) $(ProjectDir)..\tidy-html5-dotnet.sln -restore -t:build -p:RestorePackagesConfig=true /p:Configuration=$(Configuration) /p:Platform=$(Platform) /p:OutDir=$(OutDir)" ConsoleToMSBuild="true">
+    <Exec Command="$(MSBuildExePath) $(ProjectDir)..\tidy-html5-dotnet.sln -restore -t:build -p:RestorePackagesConfig=true /p:Configuration=$(Configuration) /p:Platform=$(Platform)" ConsoleToMSBuild="true">
       <Output TaskParameter="ConsoleOutput" PropertyName="OutputOfExec" />
     </Exec>
   </Target>

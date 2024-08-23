@@ -12,8 +12,7 @@
                 "-p:RestorePackagesConfig=true",
                 "-p:IncludePath=\"..\\include;$(IncludePath)\"",
                 "-p:Configuration=${input:Configuration}",
-                "-p:Platform=${input:Platform}",
-                "-p:Outdir=${input:OutDir}",
+                "-p:Platform=${input:Platform}"
             ],
             "options": {
                 "shell": {
@@ -76,12 +75,6 @@
             "type": "command",
             "command": "cpptools.activeConfigCustomVariable",
             "args": "Platform"
-        },
-        {
-            "id": "OutDir",
-            "type": "command",
-            "command": "cpptools.activeConfigCustomVariable",
-            "args": "OutDir"
         }
     ]    
 }
