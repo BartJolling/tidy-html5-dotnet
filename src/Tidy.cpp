@@ -12,13 +12,13 @@ namespace TidyHtml5Dotnet
 		return _releaseDate;
 	}
 
-	Action<String^>^ Tidy::MessageCallback::get()
+	Action<FeedbackMessage^>^ Tidy::FeedbackMessagesCallback::get()
 	{
-		return _messageCallback;
+		return _feedbackMessagesCallback;
 	}
 
-	void Tidy::MessageCallback::set(Action<String^>^ value)
+	void Tidy::FeedbackMessagesCallback::set(Action<FeedbackMessage^>^ value)
 	{
-		_messageCallback = value;
+		_feedbackMessagesCallback = value;
 	}
 }

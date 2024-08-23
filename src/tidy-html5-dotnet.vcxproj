@@ -75,7 +75,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)Include</IncludePath>
     <ExternalIncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</ExternalIncludePath>
-	<IntDir>$(ProjectDir)..\intermediate\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
+    <IntDir>$(ProjectDir)..\intermediate\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
     <OutDir>$(ProjectDir)..\build\$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -159,7 +159,7 @@
     <ClInclude Include="DisplayOptions.hpp" />
     <ClInclude Include="DocTypeModes.hpp" />
     <ClInclude Include="Document.hpp" />
-    <ClInclude Include="Feedback.hpp" />
+    <ClInclude Include="FeedbackMessage.hpp" />
     <ClInclude Include="DocumentStatuses.hpp" />
     <ClInclude Include="EncodingOptions.hpp" />
     <ClInclude Include="Encodings.hpp" />
@@ -348,7 +348,7 @@
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</CompileAsManaged>
     </ClCompile>
     <ClCompile Include="Document.cpp" />
-    <ClCompile Include="Feedback.cpp" />
+    <ClCompile Include="FeedbackMessage.cpp" />
     <ClCompile Include="Tidy.cpp" />
     <ClCompile Include="TidyException.cpp" />
     <ClCompile Include="tidylib.c">

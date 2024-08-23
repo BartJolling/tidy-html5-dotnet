@@ -40,7 +40,7 @@ namespace TidyHtml5Dotnet
 
 		InputSource^ _inputSource = nullptr;
 		ctmbstr _contentString;
-		bool _receiveMessages = false;
+		bool _receiveFeedback = false;
 		bool _cleaned = false;
 		bool _disposed = false;		
 
@@ -58,7 +58,7 @@ namespace TidyHtml5Dotnet
 
 		DocumentStatuses CleanAndRepair();
 
-		property bool ReceiveMessages {
+		property bool ReceiveFeedback {
 			void set(bool enable);
 			bool get();
 		}

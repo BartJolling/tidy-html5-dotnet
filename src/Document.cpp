@@ -11,57 +11,13 @@ namespace TidyHtml5Dotnet
 {
 	static Bool TIDY_CALL NativeMessageCallback(TidyMessage tmessage)
 	{
-		if (Tidy::MessageCallback != nullptr)
+		if (Tidy::FeedbackMessagesCallback != nullptr)
 		{
-			auto key = tidyGetMessageKey(tmessage);
-			auto output = tidyGetMessageOutput(tmessage);
-			auto message = gcnew String(output);
-
-			Tidy::MessageCallback(message);
+			auto feedbackMessage = gcnew FeedbackMessage(tmessage);
+			Tidy::FeedbackMessagesCallback(feedbackMessage);
+			return no;
 		}
-
-		/*
-		TidyIterator pos;
-		TidyMessageArgument arg;
-		TidyFormatParameterType messageType;
-		ctmbstr messageFormat;
-
-		printf("FILTER: %s, %s\n", tidyGetMessageKey( tmessage ), tidyGetMessageOutput( tmessage ));
-
-		// loop through the arguments, if any, and print their details
-		pos = tidyGetMessageArguments( tmessage );
-		while ( pos )
-		{
-			arg = tidyGetNextMessageArgument( tmessage, &pos );
-			messageType = tidyGetArgType( tmessage, &arg );
-			messageFormat = tidyGetArgFormat( tmessage, &arg );
-			printf( "  Type = %u, Format = %s, Value = ", messageType, messageFormat );
-
-			switch (messageType)
-			{
-				case tidyFormatType_STRING:
-					printf("%s\n", tidyGetArgValueString( tmessage, &arg ));
-					break;
-
-				case tidyFormatType_INT:
-					printf("%d\n", tidyGetArgValueInt( tmessage, &arg));
-					break;
-
-				case tidyFormatType_UINT:
-					printf("%u\n", tidyGetArgValueUInt( tmessage, &arg));
-					break;
-
-				case tidyFormatType_DOUBLE:
-					printf("%g\n", tidyGetArgValueDouble( tmessage, &arg));
-					break;
-
-				default:
-					printf("%s", "unknown so far\n");
-			}
-		}
-		*/
-
-		return no;
+		return yes;
 	}
 
 	Document::Document()
@@ -137,21 +93,21 @@ namespace TidyHtml5Dotnet
 		tidyRelease(_tidyDoc);
 	}
 
-	void Document::ReceiveMessages::set(bool enable)
+	void Document::ReceiveFeedback::set(bool enable)
 	{
 		if (enable) {
 			Bool result = tidySetMessageCallback(_tidyDoc, NativeMessageCallback);
-			if (result == yes) { _receiveMessages = true; };
+			if (result == yes) { _receiveFeedback = true; };
 		}
 		else {
 			Bool result = tidySetMessageCallback(_tidyDoc, nullptr);
-			if (result == yes) { _receiveMessages = false; };
+			if (result == yes) { _receiveFeedback = false; };
 		};
 	}
 	
-	bool Document::ReceiveMessages::get()
+	bool Document::ReceiveFeedback::get()
 	{
-		return _receiveMessages;
+		return _receiveFeedback;
 	}
 
 	DocumentStatuses Document::CleanAndRepair()

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "FeedbackMessage.hpp"
 #include "tidy.h"
 
 using namespace System;
@@ -13,7 +14,7 @@ namespace TidyHtml5Dotnet
 	private:
 		static String^ _libraryVersion = gcnew String(tidyLibraryVersion());
 		static DateTime _releaseDate = DateTime::ParseExact(gcnew String(tidyReleaseDate()), "yyyy.MM.dd", CultureInfo::InvariantCulture);
-		static Action<String^>^ _messageCallback = nullptr;
+		static Action<FeedbackMessage^>^ _feedbackMessagesCallback = nullptr;
 
 	public:
 		static property String^ LibraryVersion
@@ -26,10 +27,10 @@ namespace TidyHtml5Dotnet
 			DateTime get();
 		}
 
-		static property Action<String^>^ MessageCallback
+		static property Action<FeedbackMessage^>^ FeedbackMessagesCallback
 		{
-			Action<String^>^ get();
-			void set(Action<String^>^ value);
+			Action<FeedbackMessage^>^ get();
+			void set(Action<FeedbackMessage^>^ value);
 		}
 	};
 }

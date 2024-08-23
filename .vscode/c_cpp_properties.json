@@ -26,7 +26,8 @@
             "intelliSenseMode": "windows-msvc-x64",
             "customConfigurationVariables": {
                 "Configuration": "Debug",
-                "Platform": "x64"
+                "Platform": "x64",
+                "OutDir": "${workspaceFolder}/build/x64/Debug/"
             }
         },
         {
@@ -55,7 +56,8 @@
             "intelliSenseMode": "windows-msvc-x64",
             "customConfigurationVariables": {
                 "Configuration": "Release",
-                "Platform": "x64"
+                "Platform": "x64",
+                "OutDir": "${workspaceFolder}/build/x64/Release/"
             }
         }
     ],
