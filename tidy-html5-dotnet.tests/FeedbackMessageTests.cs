@@ -12,7 +12,6 @@ public class FeedbackMessageTests
     {
         _output = output;
         _tidyMessages.Clear();
-        Tidy.FeedbackMessagesCallback = message => _tidyMessages.Add(message);
     }
 
     [Fact]
@@ -24,7 +23,7 @@ public class FeedbackMessageTests
         Assert.NotNull(tidyDocument);
 
         tidyDocument.RepairOptions.StrictTagsAttributes = true;
-        tidyDocument.ReceiveFeedback = true;
+        tidyDocument.FeedbackMessagesCallback = message => _tidyMessages.Add(message);
 
         var status = tidyDocument.CleanAndRepair();
         Assert.Equal(DocumentStatuses.Warnings, status);

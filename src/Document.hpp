@@ -7,6 +7,7 @@
 #include "DocumentStatuses.hpp"
 #include "EncodingOptions.hpp"
 #include "EntitiesOptions.hpp"
+#include "FeedbackMessage.hpp"
 #include "FileOptions.hpp"
 #include "InOutOptions.hpp"
 #include "InputSource.hpp"
@@ -40,7 +41,7 @@ namespace TidyHtml5Dotnet
 
 		InputSource^ _inputSource = nullptr;
 		ctmbstr _contentString;
-		bool _receiveFeedback = false;
+		Action<FeedbackMessage^>^ _feedbackMessagesCallback = nullptr;
 		bool _cleaned = false;
 		bool _disposed = false;		
 
@@ -58,9 +59,10 @@ namespace TidyHtml5Dotnet
 
 		DocumentStatuses CleanAndRepair();
 
-		property bool ReceiveFeedback {
-			void set(bool enable);
-			bool get();
+		property Action<FeedbackMessage^>^ FeedbackMessagesCallback
+		{
+			Action<FeedbackMessage^>^ get();
+			void set(Action<FeedbackMessage^>^ value);
 		}
 
 		property CleanupOptions^ CleanupOptions { TidyHtml5Dotnet::CleanupOptions^ get() { return _cleanupOptions; }}

@@ -11,10 +11,13 @@ namespace TidyHtml5Dotnet
 {
 	static Bool TIDY_CALL NativeMessageCallback(TidyMessage tmessage)
 	{
-		if (Tidy::FeedbackMessagesCallback != nullptr)
+		auto tidyDoc = tidyGetMessageDoc(tmessage);
+		Document^ document = Tidy::GetRegisteredDocument(tidyDoc);
+
+		if (document->FeedbackMessagesCallback != nullptr)
 		{
 			auto feedbackMessage = gcnew FeedbackMessage(tmessage);
-			Tidy::FeedbackMessagesCallback(feedbackMessage);
+			document->FeedbackMessagesCallback(feedbackMessage);
 			return no;
 		}
 		return yes;
@@ -23,6 +26,8 @@ namespace TidyHtml5Dotnet
 	Document::Document()
 	{
 		_tidyDoc = tidyCreate();
+
+		Tidy::RegisterDocument(_tidyDoc, this);
 
 		_cleanupOptions = gcnew TidyHtml5Dotnet::CleanupOptions(_tidyDoc);
 		_diagnosticOptions = gcnew TidyHtml5Dotnet::DiagnosticOptions(_tidyDoc);
@@ -90,24 +95,25 @@ namespace TidyHtml5Dotnet
 	{
 		//Free unmanaged objects here
 		Conversions::FreeCharArray(_contentString);
+		Tidy::UnregisterDocument(_tidyDoc);
 		tidyRelease(_tidyDoc);
 	}
 
-	void Document::ReceiveFeedback::set(bool enable)
+	void Document::FeedbackMessagesCallback::set(Action<FeedbackMessage^>^ value) 
 	{
-		if (enable) {
-			Bool result = tidySetMessageCallback(_tidyDoc, NativeMessageCallback);
-			if (result == yes) { _receiveFeedback = true; };
-		}
-		else {
-			Bool result = tidySetMessageCallback(_tidyDoc, nullptr);
-			if (result == yes) { _receiveFeedback = false; };
-		};
+		Bool succes = tidySetMessageCallback(_tidyDoc, value 
+			? NativeMessageCallback
+			: nullptr);
+
+		if (succes == no) 
+			throw gcnew InvalidOperationException("Failed to set message call back");
+			
+		_feedbackMessagesCallback = value; 
 	}
 	
-	bool Document::ReceiveFeedback::get()
+	Action<FeedbackMessage^>^ Document::FeedbackMessagesCallback::get()
 	{
-		return _receiveFeedback;
+		return _feedbackMessagesCallback;
 	}
 
 	DocumentStatuses Document::CleanAndRepair()

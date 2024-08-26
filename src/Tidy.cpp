@@ -12,13 +12,23 @@ namespace TidyHtml5Dotnet
 		return _releaseDate;
 	}
 
-	Action<FeedbackMessage^>^ Tidy::FeedbackMessagesCallback::get()
+	void Tidy::RegisterDocument(TidyDoc tidyDoc, Document^ document)
 	{
-		return _feedbackMessagesCallback;
+		IntPtr tidyDocPointer = IntPtr((void*)tidyDoc);
+		Tidy::_registeredDocuments[tidyDocPointer] = document;
 	}
 
-	void Tidy::FeedbackMessagesCallback::set(Action<FeedbackMessage^>^ value)
+	Document^ Tidy::GetRegisteredDocument(TidyDoc tidyDoc)
 	{
-		_feedbackMessagesCallback = value;
+		IntPtr tidyDocPointer = IntPtr((void*)tidyDoc);
+		return Tidy::_registeredDocuments[tidyDocPointer];
+	}
+
+	Document^ Tidy::UnregisterDocument(TidyDoc tidyDoc)
+	{
+		IntPtr tidyDocPointer = IntPtr((void*)tidyDoc);
+		Document^ removedDocument;
+		Tidy::_registeredDocuments->TryRemove(tidyDocPointer, removedDocument);
+		return removedDocument;
 	}
 }

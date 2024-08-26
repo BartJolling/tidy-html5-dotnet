@@ -1,16 +1,18 @@
 using System.Text;
 using TidyHtml5Dotnet;
+using Xunit.Abstractions;
 
 namespace tidy_html5_dotnet_test;
 
 public class DocumentCleanAndRepairTests
 {
+    private readonly ITestOutputHelper _output;
     private readonly List<FeedbackMessage> _tidyMessages = [];
 
-    public DocumentCleanAndRepairTests()
+    public DocumentCleanAndRepairTests(ITestOutputHelper output)
     {
+        _output = output;
         _tidyMessages.Clear();
-        Tidy.FeedbackMessagesCallback = message => _tidyMessages.Add(message);
     }
 
     [Fact]
@@ -19,7 +21,7 @@ public class DocumentCleanAndRepairTests
         using var tidyDocument = new Document();
         Assert.NotNull(tidyDocument);
 
-        tidyDocument.ReceiveFeedback = true;
+        tidyDocument.FeedbackMessagesCallback = message => _tidyMessages.Add(message);
 
         var status = tidyDocument.CleanAndRepair();
         Assert.Equal(DocumentStatuses.Success, status);
@@ -34,10 +36,15 @@ public class DocumentCleanAndRepairTests
         using var tidyDocument = new Document(htmlString);
         Assert.NotNull(tidyDocument);
 
-        tidyDocument.ReceiveFeedback = true;
+        tidyDocument.FeedbackMessagesCallback = message => _tidyMessages.Add(message);
 
         var status = tidyDocument.CleanAndRepair();
         Assert.Equal(DocumentStatuses.Warnings, status);
+
+        foreach (var message in _tidyMessages)
+        {
+            _output.WriteLine(message.ToString());
+        }
 
         Assert.Equal(2, _tidyMessages.Count);
     }
@@ -49,10 +56,15 @@ public class DocumentCleanAndRepairTests
         using var tidyDocument = new Document(htmlStream);
         Assert.NotNull(tidyDocument);
 
-        tidyDocument.ReceiveFeedback = true;
+        tidyDocument.FeedbackMessagesCallback = message => _tidyMessages.Add(message);
 
         var status = tidyDocument.CleanAndRepair();
         Assert.Equal(DocumentStatuses.Warnings, status);
+
+        foreach (var message in _tidyMessages)
+        {
+            _output.WriteLine(message.ToString());
+        }
 
         Assert.Equal(2, _tidyMessages.Count);
     }
