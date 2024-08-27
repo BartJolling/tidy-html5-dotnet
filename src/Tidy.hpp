@@ -4,6 +4,8 @@
 #include "FeedbackMessage.hpp"
 #include "tidy.h"
 
+#using "System.Collections.Concurrent.dll"
+
 using namespace System;
 using namespace System::Collections::Concurrent;
 using namespace System::Globalization;

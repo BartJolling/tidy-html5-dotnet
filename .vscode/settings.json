@@ -1,3 +1,7 @@
 {
-    "dotnet.defaultSolution": "tidy-html5-dotnet.tests.sln"
+    "dotnet.defaultSolution": "tidy-html5-dotnet.tests.sln",
+    "files.associations": {
+        "*.dll": "cpp"
+    },
+    "C_Cpp.errorSquiggles": "enabled"
 }
