@@ -4,10 +4,13 @@
 #include "DiagnosticOptions.hpp"
 #include "DisplayOptions.hpp"
 #include "Document.hpp"
+#include "DocumentStatuses.hpp"
 #include "EncodingOptions.hpp"
 #include "EntitiesOptions.hpp"
+#include "FeedbackMessage.hpp"
 #include "FileOptions.hpp"
 #include "InOutOptions.hpp"
+#include "InputSource.hpp"
 #include "PrettyPrintOptions.hpp"
 #include "RepairOptions.hpp"
 #include "TeachingOptions.hpp"
@@ -36,16 +39,31 @@ namespace TidyHtml5Dotnet
 		TeachingOptions^ _teachingOptions = nullptr;
 		TransformationOptions^ _transformationOptions = nullptr;
 
-		Stream^ _stream = nullptr;
-		String^ _htmlString;
-		bool _fromString = false;
-		bool _disposed = false;
+		InputSource^ _inputSource = nullptr;
+		ctmbstr _contentString;
+		Action<FeedbackMessage^>^ _feedbackMessagesCallback = nullptr;
 		bool _cleaned = false;
+		bool _disposed = false;		
 
 	public:
 		Document();
 		Document(String^ htmlString);
 		Document(Stream^ stream);
+
+		static Document^ FromString(String^ htmlString);
+		static Document^ FromFile(String^ filePath);
+		static Document^ FromStream(Stream^ stream);
+
+		~Document();
+		!Document();
+
+		DocumentStatuses CleanAndRepair();
+
+		property Action<FeedbackMessage^>^ FeedbackMessagesCallback
+		{
+			Action<FeedbackMessage^>^ get();
+			void set(Action<FeedbackMessage^>^ value);
+		}
 
 		property CleanupOptions^ CleanupOptions { TidyHtml5Dotnet::CleanupOptions^ get() { return _cleanupOptions; }}
 		property DiagnosticOptions^ DiagnosticOptions { TidyHtml5Dotnet::DiagnosticOptions^ get() { return _diagnosticOptions; }}

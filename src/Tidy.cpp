@@ -1,32 +1,34 @@
-#include "tidy.h"
-using namespace System::Globalization;
-
-using namespace System;
-using namespace System::IO;
+#include "Tidy.hpp"
 
 namespace TidyHtml5Dotnet 
 {
-	public ref class Tidy abstract sealed
+	String^ Tidy::LibraryVersion::get()
 	{
-	private:
-		static String^ _libraryVersion = gcnew String(tidyLibraryVersion());
-		static DateTime _releaseDate = DateTime::ParseExact(gcnew String(tidyReleaseDate()), "yyyy.MM.dd", CultureInfo::InvariantCulture);
+		return _libraryVersion;
+	}
 
-	public:
-		static property String^ LibraryVersion
-		{
-			String^ get() 
-			{
-				return _libraryVersion;
-			}
-		}
+	DateTime Tidy::ReleaseDate::get()
+	{
+		return _releaseDate;
+	}
 
-		static property DateTime ReleaseDate
-		{
-			DateTime get()
-			{
-				return _releaseDate;
-			}
-		}
-	};
+	void Tidy::RegisterDocument(TidyDoc tidyDoc, Document^ document)
+	{
+		IntPtr tidyDocPointer = IntPtr((void*)tidyDoc);
+		Tidy::_registeredDocuments[tidyDocPointer] = document;
+	}
+
+	Document^ Tidy::GetRegisteredDocument(TidyDoc tidyDoc)
+	{
+		IntPtr tidyDocPointer = IntPtr((void*)tidyDoc);
+		return Tidy::_registeredDocuments[tidyDocPointer];
+	}
+
+	Document^ Tidy::UnregisterDocument(TidyDoc tidyDoc)
+	{
+		IntPtr tidyDocPointer = IntPtr((void*)tidyDoc);
+		Document^ removedDocument;
+		Tidy::_registeredDocuments->TryRemove(tidyDocPointer, removedDocument);
+		return removedDocument;
+	}
 }

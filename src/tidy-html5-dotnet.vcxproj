@@ -57,10 +57,8 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
-  <ImportGroup Label="ExtensionSettings">
-  </ImportGroup>
-  <ImportGroup Label="Shared">
-  </ImportGroup>
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Label="Shared" />
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
@@ -77,29 +75,38 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)Include</IncludePath>
     <ExternalIncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</ExternalIncludePath>
-    <IntDir>$(Platform)\$(Configuration)\</IntDir>
-    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)..\intermediate\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>$(ProjectDir)..\build\$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)Include</IncludePath>
     <ExternalIncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</ExternalIncludePath>
-    <IntDir>$(Platform)\$(Configuration)\</IntDir>
-    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)..\intermediate\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>$(ProjectDir)..\build\$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)Include</IncludePath>
     <ExternalIncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</ExternalIncludePath>
+    <IntDir>$(ProjectDir)..\intermediate\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>$(ProjectDir)..\build\$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)Include</IncludePath>
     <ExternalIncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</ExternalIncludePath>
+    <IntDir>$(ProjectDir)..\intermediate\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
+    <OutDir>$(ProjectDir)..\build\$(Platform)\$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup>
+    <FileContent>$([System.IO.File]::ReadAllText('$(ProjectDir)..\version.txt').Trim())</FileContent>
+    <LibTidyVersion>$([System.Text.RegularExpressions.Regex]::Split($(FileContent), '\r?\n')[0].Trim())</LibTidyVersion>
+    <ReleaseDate>$([System.Text.RegularExpressions.Regex]::Split($(FileContent), '\r?\n')[1].Trim())</ReleaseDate>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions);BUILD_SHARED_LIB;BUILDING_SHARED_LIB;LIBTIDY_VERSION="5.8.0";RELEASE_DATE="2021.07.10";</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;BUILD_SHARED_LIB;BUILDING_SHARED_LIB;LIBTIDY_VERSION="$(LibTidyVersion)";RELEASE_DATE="$(ReleaseDate)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalDependencies />
@@ -110,7 +117,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions);BUILD_SHARED_LIB;BUILDING_SHARED_LIB;LIBTIDY_VERSION="5.8.0";RELEASE_DATE="2021.07.10";</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;BUILD_SHARED_LIB;BUILDING_SHARED_LIB;LIBTIDY_VERSION="$(LibTidyVersion)";RELEASE_DATE="$(ReleaseDate)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalDependencies />
@@ -121,7 +128,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>WIN32;NDEBUG;%(PreprocessorDefinitions);BUILD_SHARED_LIB;BUILDING_SHARED_LIB;LIBTIDY_VERSION="5.8.0";RELEASE_DATE="2021.07.10";</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;BUILD_SHARED_LIB;BUILDING_SHARED_LIB;LIBTIDY_VERSION="$(LibTidyVersion)";RELEASE_DATE="$(ReleaseDate)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalDependencies />
@@ -132,7 +139,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
-      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions);BUILD_SHARED_LIB;BUILDING_SHARED_LIB;LIBTIDY_VERSION="5.8.0";RELEASE_DATE="2021.07.10";</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;BUILD_SHARED_LIB;BUILDING_SHARED_LIB;LIBTIDY_VERSION="$(LibTidyVersion)";RELEASE_DATE="$(ReleaseDate)";%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalDependencies />
@@ -152,6 +159,8 @@
     <ClInclude Include="DisplayOptions.hpp" />
     <ClInclude Include="DocTypeModes.hpp" />
     <ClInclude Include="Document.hpp" />
+    <ClInclude Include="FeedbackMessage.hpp" />
+    <ClInclude Include="DocumentStatuses.hpp" />
     <ClInclude Include="EncodingOptions.hpp" />
     <ClInclude Include="Encodings.hpp" />
     <ClInclude Include="entities.h" />
@@ -161,6 +170,7 @@
     <ClInclude Include="forward.h" />
     <ClInclude Include="gdoc.h" />
     <ClInclude Include="InOutOptions.hpp" />
+    <ClInclude Include="InputSource.hpp" />
     <ClInclude Include="PrettPrintOptions.hpp" />
     <ClInclude Include="SortAttributeStrategy.hpp" />
     <ClInclude Include="language.h" />
@@ -178,6 +188,8 @@
     <ClInclude Include="message.h" />
     <ClInclude Include="messageobj.h" />
     <ClInclude Include="TeachingOptions.hpp" />
+    <ClInclude Include="Tidy.hpp" />
+    <ClInclude Include="TidyException.hpp" />
     <ClInclude Include="TransformationOptions.hpp" />
     <ClInclude Include="parser.h" />
     <ClInclude Include="pprint.h" />
@@ -262,6 +274,7 @@
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</CompileAsManaged>
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</CompileAsManaged>
     </ClCompile>
+    <ClCompile Include="InputSource.cpp" />
     <ClCompile Include="istack.c">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
@@ -335,7 +348,9 @@
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</CompileAsManaged>
     </ClCompile>
     <ClCompile Include="Document.cpp" />
+    <ClCompile Include="FeedbackMessage.cpp" />
     <ClCompile Include="Tidy.cpp" />
+    <ClCompile Include="TidyException.cpp" />
     <ClCompile Include="tidylib.c">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
@@ -366,6 +381,5 @@
     <None Include="CPP.HINT" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets">
-  </ImportGroup>
+  <ImportGroup Label="ExtensionTargets" />
 </Project>

@@ -1,6 +1,9 @@
 #include "Conversions.hpp"
 #include <sstream>
 
+#using "System.Linq.dll"
+#using "System.Collections.dll"
+
 using namespace System::Collections::Generic;
 using namespace System::Linq;
 using namespace System::Runtime::InteropServices;
@@ -14,6 +17,11 @@ namespace TidyHtml5Dotnet
 	ctmbstr Conversions::StringToCharArray(String^ managedString)
 	{
 		return static_cast<const char*>(Marshal::StringToHGlobalAnsi(managedString).ToPointer());
+	}
+
+	void Conversions::FreeCharArray(ctmbstr unmanagedString)
+	{
+		if(unmanagedString) Marshal::FreeHGlobal(IntPtr((void*)unmanagedString));
 	}
 
 	TidyTriState Conversions::NullableBooleanToTidyTriState(Nullable<Boolean> nullableBool)

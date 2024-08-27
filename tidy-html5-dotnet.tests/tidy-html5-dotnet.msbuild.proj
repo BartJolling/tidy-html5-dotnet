@@ -1,0 +1,40 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <PropertyGroup>
+    <ProjectDir Condition=" '$(ProjectDir)' == '' ">$(MSBuildProjectDirectory)\</ProjectDir>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x64</Platform>
+	  <OutDir Condition=" '$(OutDir)' == '' ">..\build\$(Platform)\$(Configuration)\</OutDir>
+  </PropertyGroup>
+
+  <PropertyGroup>    
+    <MSBuildExePath>&quot;$(VCToolsInstallDir)..\..\..\..\MSBuild\Current\Bin\MSBuild.exe&quot;</MSBuildExePath>
+  </PropertyGroup>
+
+  <Target Name="Default" DependsOnTargets="Restore;Build" />
+  
+  <Target Name="CheckVCTools">
+    <Error Condition="'$(VCToolsInstallDir)' == ''" Text="VCToolsInstallDir is not defined. Install Visual Studio Build Tools" />
+  </Target>
+  
+  <!-- Avoids NuGet Warning NU1503 -->
+  <Target Name="_IsProjectRestoreSupported" Returns="@(_ValidProjectsForRestore)">
+    <ItemGroup>
+      <_ValidProjectsForRestore Include="$(MSBuildProjectFullPath)" />
+    </ItemGroup>
+  </Target>
+  <Target Name="Restore" />  
+
+  <Target Name="Build" DependsOnTargets="CheckVCTools">
+    <Exec Command="$(MSBuildExePath) $(ProjectDir)..\tidy-html5-dotnet.sln -restore -t:build -p:RestorePackagesConfig=true /p:Configuration=$(Configuration) /p:Platform=$(Platform)" ConsoleToMSBuild="true">
+      <Output TaskParameter="ConsoleOutput" PropertyName="OutputOfExec" />
+    </Exec>
+  </Target>
+
+  <Target Name="Clean" DependsOnTargets="CheckVCTools">
+    <Exec Command="$(MSBuildExePath) $(ProjectDir)..\tidy-html5-dotnet.sln -t:Clean /p:Configuration=$(Configuration) /p:Platform=$(Platform)" ConsoleToMSBuild="true">
+      <Output TaskParameter="ConsoleOutput" PropertyName="OutputOfExec" />
+    </Exec>
+  </Target>
+
+</Project>

@@ -1,122 +1,88 @@
 {
     "version": "2.0.0",
     "tasks": [
-      {
-        "type": "shell",
-        "label": "Build Debug x64",
-        "command": "msbuild.exe",
-        "args": [
-          "${workspaceFolder}\\tidy-html5-dotnet.sln",
-          "-restore",
-          "-t:build",
-          "-p:RestorePackagesConfig=true",
-          "-p:IncludePath=\"..\\include;$(IncludePath)\"",
-          "-p:Configuration=Debug",
-          "-p:Platform=x64"
-        ],
-        "options": {
-          "shell": {
-            "executable": "C:\\Windows\\System32\\cmd.exe",
+        {
+            "type": "shell",
+            "label": "Build x64",
+            "command": "msbuild.exe",
             "args": [
-              "/d",
-              "/c",
-              "C:\\Program^ Files^ ^(x86^)\\Microsoft^ Visual^ Studio\\2022\\BuildTools\\VC\\Auxiliary\\Build\\vcvars64.bat",
-              "&&"
-            ]
-          }
+                "${workspaceFolder}\\tidy-html5-dotnet.sln",
+                "-restore",
+                "-t:build",
+                "-p:RestorePackagesConfig=true",
+                "-p:IncludePath=\"..\\include;$(IncludePath)\"",
+                "-p:Configuration=${input:Configuration}",
+                "-p:Platform=${input:Platform}",
+                "-p:Outdir=${input:OutDir}",
+
+            ],
+            "options": {
+                "shell": {
+                    "executable": "C:\\Windows\\System32\\cmd.exe",
+                    "args": [
+                        "/d",
+                        "/c",
+                        "C:\\Program^ Files^ ^(x86^)\\Microsoft^ Visual^ Studio\\2022\\BuildTools\\VC\\Auxiliary\\Build\\vcvars64.bat",
+                        "&&"
+                    ]
+                }
+            },
+            "problemMatcher": [
+                "$msCompile"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true,
+            },
+            "detail": "MSBuild.exe x64"
         },
-        "problemMatcher": [
-          "$msCompile"
-        ],
-        "group": {
-          "kind": "build",
-          "isDefault": true
-        },
-        "detail": "MSBuild.exe Debug x64"
-      },
-      {
-        "type": "shell",
-        "label": "Build Release x64",
-        "command": "msbuild.exe",
-        "args": [
-          "${workspaceFolder}\\tidy-html5-dotnet.sln",
-          "-restore",
-          "-t:build",
-          "-p:RestorePackagesConfig=true",
-          "-p:IncludePath=\"..\\include;$(IncludePath)\"",
-          "-p:Configuration=Release",
-          "-p:Platform=x64"
-        ],
-        "options": {
-          "shell": {
-            "executable": "C:\\Windows\\System32\\cmd.exe",
+        {
+            "label": "Run Tests x64",
+            "type": "shell",
+            "command": "vstest.console.exe",
             "args": [
-              "/d",
-              "/c",
-              "C:\\Program^ Files^ ^(x86^)\\Microsoft^ Visual^ Studio\\2022\\BuildTools\\VC\\Auxiliary\\Build\\vcvars64.bat",
-              "&&"
+                "${input:OutDir}tidy-html5-dotnet.tests.dll"
+            ],
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "options": {
+                "shell": {
+                    "executable": "C:\\Windows\\System32\\cmd.exe",
+                    "args": [
+                        "/d",
+                        "/c",
+                        "C:\\Program^ Files^ ^(x86^)\\Microsoft^ Visual^ Studio\\2022\\BuildTools\\VC\\Auxiliary\\Build\\vcvars64.bat",
+                        "&&"
+                    ]
+                }
+            },
+            "problemMatcher": "$msCompile",
+            "detail": "xUnit.net VSTest Console x64",
+            "dependsOn": [
+                "Build x64"
             ]
-          }
         },
-        "problemMatcher": [
-          "$msCompile"
-        ],
-        "group": {
-          "kind": "build",
-          "isDefault": false
+    ],
+    "inputs": [
+        {
+            "id": "Configuration",
+            "type": "command",
+            "command": "cpptools.activeConfigCustomVariable",
+            "args": "Configuration"
         },
-        "detail": "MSBuild.exe Release x64"
-      },
-      {
-        "label": "Run Tests Release x64",
-        "type": "shell",
-        "command": "vstest.console.exe",
-        "args": [
-          "${workspaceFolder}\\tidy-html5-dotnet.tests\\bin\\x64\\Release\\net8.0-windows\\tidy-html5-dotnet.tests.dll"
-        ],
-        "group": {
-          "kind": "test",
-          "isDefault": true
+        {
+            "id": "Platform",
+            "type": "command",
+            "command": "cpptools.activeConfigCustomVariable",
+            "args": "Platform"
         },
-        "options": {
-          "shell": {
-            "executable": "C:\\Windows\\System32\\cmd.exe",
-            "args": [
-              "/d",
-              "/c",
-              "C:\\Program^ Files^ ^(x86^)\\Microsoft^ Visual^ Studio\\2022\\BuildTools\\VC\\Auxiliary\\Build\\vcvars64.bat",
-              "&&"
-            ]
-          }
-        },
-        "problemMatcher": "$msCompile",
-        "detail": "xUnit.net VSTest Console Release x64",
-        "dependsOn": ["Build Release x64"]
-      },
-      {
-        "label": "Debug Tests Debug x64",
-        "type": "process",
-        "isBackground": true,
-        "command": "dotnet",
-        "args": [
-          "test",
-          "${workspaceFolder}/tidy-html5-dotnet.tests/bin/x64/Debug/net8.0-windows/tidy-html5-dotnet.tests.dll"
-        ],
-        "options": {
-          "cwd": "${workspaceFolder}/tidy-html5-dotnet.tests/bin/x64/Debug/net8.0-windows",
-          "env": {
-            "VSTEST_HOST_DEBUG": "1"
-          }
-        },
-        "group": "test",
-        "presentation": {
-          "echo": true,
-          "reveal": "always",
-          "focus": false,
-          "panel": "shared"
-        },
-        "detail": "VSTest Host Debug x64",
-        "dependsOn": ["Build Debug x64"]
-      }
-    ]
-  }
+        {
+            "id": "OutDir",
+            "type": "command",
+            "command": "cpptools.activeConfigCustomVariable",
+            "args": "OutDir"
+        }
+    ]    
+}

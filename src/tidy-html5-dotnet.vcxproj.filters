@@ -176,6 +176,21 @@
     <ClInclude Include="TeachingOptions.hpp">
       <Filter>dotnet Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PrettPrintOptions.hpp">
+      <Filter>dotnet Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SortAttributeStrategy.hpp">
+      <Filter>dotnet Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DocumentStatuses.hpp">
+      <Filter>dotnet Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TidyException.hpp">
+      <Filter>dotnet Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InputSource.hpp">
+      <Filter>dotnet Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Document.cpp">
@@ -266,6 +281,12 @@
       <Filter>dotnet Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Conversions.cpp">
+      <Filter>dotnet Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TidyException.cpp">
+      <Filter>dotnet Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InputSource.cpp">
       <Filter>dotnet Source Files</Filter>
     </ClCompile>
   </ItemGroup>
