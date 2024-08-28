@@ -18,7 +18,6 @@ namespace TidyHtml5Dotnet
 		TidyIterator pos;
 		TidyMessageArgument arg;
 		TidyFormatParameterType messageType;
-		ctmbstr messageFormat;
 
 		// loop through the arguments, if any, and fetch their details
 		pos = tidyGetMessageArguments(tmessage);

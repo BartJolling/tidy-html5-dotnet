@@ -9,25 +9,11 @@ using namespace System::Runtime::InteropServices;
 
 namespace TidyHtml5Dotnet
 {
-	static Bool TIDY_CALL NativeMessageCallback(TidyMessage tmessage)
-	{
-		auto tidyDoc = tidyGetMessageDoc(tmessage);
-		Document^ document = Tidy::GetRegisteredDocument(tidyDoc);
-
-		if (document->FeedbackMessagesCallback != nullptr)
-		{
-			auto feedbackMessage = gcnew FeedbackMessage(tmessage);
-			document->FeedbackMessagesCallback(feedbackMessage);
-			return no;
-		}
-		return yes;
-	}
+	private delegate Bool FeedbackMessageDelegate(TidyMessage tmessage);
 
 	Document::Document()
 	{
 		_tidyDoc = tidyCreate();
-
-		Tidy::RegisterDocument(_tidyDoc, this);
 
 		_cleanupOptions = gcnew TidyHtml5Dotnet::CleanupOptions(_tidyDoc);
 		_diagnosticOptions = gcnew TidyHtml5Dotnet::DiagnosticOptions(_tidyDoc);
@@ -86,7 +72,7 @@ namespace TidyHtml5Dotnet
 
 		//Dispose managed objects here
 		delete _inputSource;
-				
+
 		this->!Document();
 		_disposed = true;
 	}
@@ -95,22 +81,46 @@ namespace TidyHtml5Dotnet
 	{
 		//Free unmanaged objects here
 		Conversions::FreeCharArray(_contentString);
-		Tidy::UnregisterDocument(_tidyDoc);
 		tidyRelease(_tidyDoc);
 	}
 
-	void Document::FeedbackMessagesCallback::set(Action<FeedbackMessage^>^ value) 
+	/// <summary>
+	/// Callback used by tidylib to return feedback messages
+	/// </summary>
+	/// <param name="tmessage">tidylib warning or error message</param>
+	/// <returns>yes or no, indicating if tidylib should log to standard output or not</returns>
+	Bool Document::FeedbackMessageCallback(TidyMessage tmessage)
 	{
-		Bool succes = tidySetMessageCallback(_tidyDoc, value 
-			? NativeMessageCallback
-			: nullptr);
-
-		if (succes == no) 
-			throw gcnew InvalidOperationException("Failed to set message call back");
-			
-		_feedbackMessagesCallback = value; 
+		if (FeedbackMessagesCallback != nullptr)
+		{
+			auto feedbackMessage = gcnew FeedbackMessage(tmessage);
+			FeedbackMessagesCallback(feedbackMessage);
+			return no;
+		}
+		return yes;
 	}
-	
+
+	void Document::FeedbackMessagesCallback::set(Action<FeedbackMessage^>^ value)
+	{
+		Bool succes = no;
+
+		if (value)
+		{
+			auto feedbackDelegate = gcnew FeedbackMessageDelegate(this, &Document::FeedbackMessageCallback);
+			auto feedbackPointer = Marshal::GetFunctionPointerForDelegate(feedbackDelegate).ToPointer();
+			succes = tidySetMessageCallback(_tidyDoc, static_cast<TidyMessageCallback>(feedbackPointer));
+		}
+		else
+		{
+			succes = tidySetMessageCallback(_tidyDoc, nullptr);
+		}
+
+		if (succes == no)
+			throw gcnew InvalidOperationException("Failed to set feedback message callback");
+
+		_feedbackMessagesCallback = value;
+	}
+
 	Action<FeedbackMessage^>^ Document::FeedbackMessagesCallback::get()
 	{
 		return _feedbackMessagesCallback;
@@ -128,7 +138,7 @@ namespace TidyHtml5Dotnet
 			if (result < 0) throw gcnew TidyException(result);
 			return static_cast<DocumentStatuses>(result);
 		}
-		else if(this->_inputSource != nullptr)
+		else if (this->_inputSource != nullptr)
 		{
 			auto result = tidyParseSource(_tidyDoc, _inputSource->TidyInSource);
 

@@ -41,7 +41,10 @@ namespace TidyHtml5Dotnet
 
 		InputSource^ _inputSource = nullptr;
 		ctmbstr _contentString;
+
 		Action<FeedbackMessage^>^ _feedbackMessagesCallback = nullptr;
+		Bool FeedbackMessageCallback(TidyMessage tmessage);
+
 		bool _cleaned = false;
 		bool _disposed = false;		
 
