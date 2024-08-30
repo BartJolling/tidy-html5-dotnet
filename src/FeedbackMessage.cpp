@@ -1,7 +1,6 @@
 #include "FeedbackMessage.hpp"
 
 using namespace System;
-using namespace System::Collections::Generic;
 using namespace System::Linq;
 
 namespace TidyHtml5Dotnet

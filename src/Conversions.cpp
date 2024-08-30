@@ -1,9 +1,6 @@
 #include "Conversions.hpp"
 #include <sstream>
 
-#using "System.Linq.dll"
-#using "System.Collections.dll"
-
 using namespace System::Collections::Generic;
 using namespace System::Linq;
 using namespace System::Runtime::InteropServices;

@@ -9,12 +9,14 @@
             "LIBTIDY_VERSION=\"5.8.0\"",
             "RELEASE_DATE=\"2021.07.10\""
         ],
-        "commonArgs" : [
+        "commonArgs": [
             "/clr:netcore",
-            "/AI", "C:/Program Files/dotnet/packs/Microsoft.NETCore.App.Ref/8.0.7/ref/net8.0",
-            "/FU", "C:/Program Files/dotnet/packs/Microsoft.NETCore.App.Ref/8.0.7/ref/net8.0/System.Collections.dll",
-            "/FU", "C:/Program Files/dotnet/packs/Microsoft.NETCore.App.Ref/8.0.7/ref/net8.0/System.Collections.Concurrent.dll",
-            "/FU", "C:/Program Files/dotnet/packs/Microsoft.NETCore.App.Ref/8.0.7/ref/net8.0/System.Linq.dll"
+            "/AI",
+            "C:/Program Files/dotnet/packs/Microsoft.NETCore.App.Ref/8.0.7/ref/net8.0",
+            "/FU",
+            "C:/Program Files/dotnet/packs/Microsoft.NETCore.App.Ref/8.0.7/ref/net8.0/System.Collections.dll",
+            "/FU",
+            "C:/Program Files/dotnet/packs/Microsoft.NETCore.App.Ref/8.0.7/ref/net8.0/System.Linq.dll"
         ]
     },
     "configurations": [
@@ -28,19 +30,18 @@
                 "${commonDefines}"
             ],
             "windowsSdkVersion": "10.0.22621.0",
-            "compilerPath": "cl.exe",
             "compilerArgs": [
                 "${commonArgs}"
             ],
             "cStandard": "c17",
             "cppStandard": "c++17",
-            "intelliSenseMode": "windows-msvc-x64",
+            "intelliSenseMode": "${default}",
             "browse": {
                 "path": [
                     "${workspaceFolder}"
                 ],
                 "limitSymbolsToIncludedHeaders": true
-            },            
+            },
             "customConfigurationVariables": {
                 "Configuration": "Debug",
                 "Platform": "x64",
@@ -58,19 +59,18 @@
                 "${commonDefines}"
             ],
             "windowsSdkVersion": "10.0.22621.0",
-            "compilerPath": "cl.exe",
             "compilerArgs": [
                 "${commonArgs}"
             ],
             "cStandard": "c17",
             "cppStandard": "c++17",
-            "intelliSenseMode": "windows-msvc-x64",
+            "intelliSenseMode": "${default}",
             "browse": {
                 "path": [
                     "${workspaceFolder}"
                 ],
                 "limitSymbolsToIncludedHeaders": true
-            },            
+            },
             "customConfigurationVariables": {
                 "Configuration": "Release",
                 "Platform": "x64",
