@@ -8,8 +8,25 @@
     <IsPackable>false</IsPackable>
     <IsTestProject>true</IsTestProject>
     <Platforms>x64</Platforms> 
-    <OutDir>../build/x64/$(Configuration)/</OutDir>
-  </PropertyGroup>  
+    <OutDir>$(ProjectDir)../build/x64/$(Configuration)/</OutDir>
+  </PropertyGroup>
+
+  <PropertyGroup>  
+    <MSBuildExePath>&quot;$(VCToolsInstallDir)../../../../MSBuild\Current\Bin\MSBuild.exe&quot;</MSBuildExePath>
+  </PropertyGroup>
+
+  <Target Name="CheckVCTools">
+    <Message Text="VCToolsInstallDir: $(VCToolsInstallDir)" Importance="high" />
+    <Message Text="MSBuildExePath: $(MSBuildExePath)" Importance="high" />
+    <Error Condition="'$(VCToolsInstallDir)' == ''" Text="VCToolsInstallDir is not defined. Install Visual Studio Build Tools" />
+  </Target>
+
+
+  <Target Name="TidyLibBuild" DependsOnTargets="CheckVCTools" BeforeTargets="Restore">    
+    <Exec Command="$(MSBuildExePath) $(ProjectDir)../src/tidy-html5-dotnet.vcxproj -restore -t:build -p:RestorePackagesConfig=true /p:Configuration=$(Configuration) /p:Platform=$(Platform)" ConsoleToMSBuild="true">
+      <Output TaskParameter="ConsoleOutput" PropertyName="OutputOfExec" />
+    </Exec>
+  </Target>
 
   <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="6.0.2">
@@ -26,7 +43,7 @@
   
   <ItemGroup>
     <Reference Include="tidy-html5-dotnet">
-      <HintPath>../build/x64/$(Configuration)/tidy-html5-dotnet.dll</HintPath>
+      <HintPath>$(ProjectDir)../build/x64/$(Configuration)/tidy-html5-dotnet.dll</HintPath>
     </Reference>
   </ItemGroup> 
 

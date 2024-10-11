@@ -4,6 +4,7 @@ using namespace System::Runtime::InteropServices;
 
 #include "Document.hpp"
 #include "InputSource.hpp"
+#include "OutputSink.hpp"
 #include "TidyException.hpp"
 #include "Tidy.hpp"
 
@@ -30,19 +31,34 @@ namespace TidyHtml5Dotnet
 
 	Document::Document(String^ htmlString) : Document()
 	{
+		ArgumentNullException::ThrowIfNullOrWhiteSpace(htmlString, "htmlString");
+				
 		_contentString = Conversions::StringToCharArray(htmlString);
+		_inputLength = htmlString->Length;
 	};
 
 	Document::Document(Stream^ stream) : Document()
 	{
+		ArgumentNullException::ThrowIfNull(stream, "stream");
+
+		if (!stream->CanRead)
+			throw gcnew ArgumentException("Stream must be readable.");
+		if (!stream->CanSeek)
+			throw gcnew ArgumentException("Stream must be seekable.");
+
 		_inputSource = gcnew InputSource(stream);
+		_inputLength = stream->Length;
 	};
 
 	Document^ Document::FromString(String^ htmlString)
 	{
-		ArgumentNullException::ThrowIfNullOrWhiteSpace(htmlString, "htmlString");
 		return gcnew Document(htmlString);
 	}
+
+	Document^ Document::FromStream(Stream^ stream)
+	{
+		return gcnew Document(stream);
+	}	
 
 	Document^ Document::FromFile(String^ filePath)
 	{
@@ -52,18 +68,6 @@ namespace TidyHtml5Dotnet
 			throw gcnew FileNotFoundException("File not found.", filePath);
 
 		return gcnew Document(gcnew FileStream(filePath, FileMode::Open));
-	}
-
-	Document^ Document::FromStream(Stream^ stream)
-	{
-		ArgumentNullException::ThrowIfNull(stream, "stream");
-
-		if (!stream->CanRead)
-			throw gcnew ArgumentException("Stream must be readable.");
-		if (!stream->CanSeek)
-			throw gcnew ArgumentException("Stream must be seekable.");
-
-		return gcnew Document(stream);
 	}
 
 	Document::~Document()
@@ -126,6 +130,10 @@ namespace TidyHtml5Dotnet
 		return _feedbackMessagesCallback;
 	}
 
+	/// <summary>
+	/// Parses input markup, and executes configured cleanup and repair operations.
+	/// </summary>
+	/// <returns>See Tidy error code convention (DocumentStatuses)</returns>
 	DocumentStatuses Document::CleanAndRepair()
 	{
 		if (this->_contentString != nullptr)
@@ -152,4 +160,49 @@ namespace TidyHtml5Dotnet
 		_cleaned = true;
 		return static_cast<DocumentStatuses>(result);
 	}
+
+
+   // Override ToString method
+    String^ Document::ToString()
+    {
+		int status = 0;
+		tmbstr buffer = nullptr;
+		uint outputLength = _inputLength * 2u; // Foresee enough initial room for cleaned output
+
+		auto previousEncoding = _encodingOptions->OutputCharacterEncoding;		
+
+		do {
+			buffer = new char[outputLength + 1];
+			_encodingOptions->OutputCharacterEncoding = Encodings::Utf8;
+			status = tidySaveString(_tidyDoc, buffer, &outputLength);
+		} while (status == -ENOMEM);
+
+		buffer[outputLength] = '\0';
+		auto output = gcnew String(buffer);
+		delete [] buffer;
+
+		_encodingOptions->OutputCharacterEncoding = previousEncoding;
+
+		return output;
+    }
+
+    DocumentStatuses Document::ToStream(Stream ^ stream)
+    {
+		ArgumentNullException::ThrowIfNull(stream, "stream");
+
+		if (!stream->CanWrite)
+			throw gcnew ArgumentException("Stream must be writeable.");		
+
+		auto result = tidySaveSink(_tidyDoc, (gcnew OutputSink(stream))->TidyOutSink);
+		return static_cast<DocumentStatuses>(result);
+    }
+
+    DocumentStatuses Document::ToFile(String ^ filePath)
+    {
+		if (String::IsNullOrWhiteSpace(filePath)) 
+			throw gcnew ArgumentNullException("filePath");
+
+		auto result = tidySaveFile(_tidyDoc, Conversions::StringToCharArray(filePath));
+		return static_cast<DocumentStatuses>(result);
+    }	
 }

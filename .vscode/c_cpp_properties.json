@@ -12,11 +12,13 @@
         "commonArgs": [
             "/clr:netcore",
             "/AI",
-            "C:/Program Files/dotnet/packs/Microsoft.NETCore.App.Ref/8.0.7/ref/net8.0",
+            "C:/Program Files/dotnet/packs/Microsoft.NETCore.App.Ref/8.0.8/ref/net8.0",
             "/FU",
-            "C:/Program Files/dotnet/packs/Microsoft.NETCore.App.Ref/8.0.7/ref/net8.0/System.Collections.dll",
+            "C:/Program Files/dotnet/packs/Microsoft.NETCore.App.Ref/8.0.8/ref/net8.0/System.Collections.dll",
             "/FU",
-            "C:/Program Files/dotnet/packs/Microsoft.NETCore.App.Ref/8.0.7/ref/net8.0/System.Linq.dll"
+            "C:/Program Files/dotnet/packs/Microsoft.NETCore.App.Ref/8.0.8/ref/net8.0/System.Linq.dll",
+            "/FU",
+            "C:/Program Files/dotnet/packs/Microsoft.NETCore.App.Ref/8.0.8/ref/net8.0/System.Runtime.dll"
         ]
     },
     "configurations": [
