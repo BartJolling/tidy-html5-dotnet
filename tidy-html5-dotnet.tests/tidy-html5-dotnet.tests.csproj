@@ -12,7 +12,7 @@
   </PropertyGroup>
 
   <PropertyGroup>  
-    <MSBuildExePath>&quot;$(VCToolsInstallDir)../../../../MSBuild\Current\Bin\MSBuild.exe&quot;</MSBuildExePath>
+    <MSBuildExePath>"$(VCToolsInstallDir)../../../../MSBuild\Current\Bin\MSBuild.exe"</MSBuildExePath>
   </PropertyGroup>
 
   <Target Name="CheckVCTools">
@@ -34,6 +34,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.10.0" />
+    <PackageReference Include="Verify" Version="27.0.1" />
     <PackageReference Include="xunit" Version="2.9.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2">
       <PrivateAssets>all</PrivateAssets>
@@ -49,6 +50,10 @@
 
   <ItemGroup>
     <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(Configuration)' == 'Debug'">
+    <None Update="DocumentLoadConfigTests.config" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

@@ -130,11 +130,28 @@ namespace TidyHtml5Dotnet
 		return _feedbackMessagesCallback;
 	}
 
-	/// <summary>
-	/// Parses input markup, and executes configured cleanup and repair operations.
-	/// </summary>
-	/// <returns>See Tidy error code convention (DocumentStatuses)</returns>
-	DocumentStatuses Document::CleanAndRepair()
+    /// @brief Loads document config options from config file
+    /// @param filePath Path to the config file
+    /// @param encoding Encoding of the config file. If unspecified, assumes Ascii
+    /// @return Error code indicating success or failure reading the file and setting the options
+    DocumentStatuses Document::LoadConfig(String ^ filePath, Nullable<Encodings> encoding)
+    {
+		if(!encoding.HasValue) { encoding = Encodings::Ascii; }
+		String^ encodingName = Enum::GetName(Encodings::typeid, encoding);
+		
+        auto result = tidyLoadConfigEnc(
+			_tidyDoc, 
+			Conversions::StringToCharArray(filePath), 
+			Conversions::StringToCharArray(encodingName));
+
+		return static_cast<DocumentStatuses>(result);
+    }
+
+    /// <summary>
+    /// Parses input markup, and executes configured cleanup and repair operations.
+    /// </summary>
+    /// <returns>See Tidy error code convention (DocumentStatuses)</returns>
+    DocumentStatuses Document::CleanAndRepair()
 	{
 		if (this->_contentString != nullptr)
 		{
