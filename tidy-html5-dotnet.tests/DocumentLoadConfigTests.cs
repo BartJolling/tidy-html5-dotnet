@@ -7,7 +7,7 @@ public class DocumentLoadConfigTests
     [Fact]
     public void Load_config_must_succeed()
     {
-        var configFileName = "DocumentLoadConfigTests.config";
+        var configFileName = "./cases/access-cases/case-1_1_1_1.conf";
 
         using var tidyDocument = new Document();
         Assert.NotNull(tidyDocument);
