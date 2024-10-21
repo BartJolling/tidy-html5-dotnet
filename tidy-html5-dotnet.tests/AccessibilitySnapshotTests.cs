@@ -14,25 +14,19 @@ public class AccessibilitySnapshotTests
     [Fact]
     public void AccessCase_1_1_1_1()
     {
-        _snapshotTestHelper.ForCase("1_1_1_1");
+        var configStatus = _snapshotTestHelper
+            .ForCase("1_1_1_1")
+            .LoadDocument(out Document tidyDocument)
+            .LoadConfig();
 
-        var tidyDocument = Document.FromFile(_snapshotTestHelper.InputFile);
-        var configStatus = tidyDocument.LoadConfig(_snapshotTestHelper.ConfigFile);
         Assert.Equal(DocumentStatuses.Success, configStatus);
 
         var cleanStatus = tidyDocument.CleanAndRepair();
         Assert.Equal(DocumentStatuses.Warnings, cleanStatus);
 
-        string outputFile = Path.GetTempFileName();
-        try
-        {            
-            var saveStatus = tidyDocument.ToFile(outputFile);
-            Assert.Equal(DocumentStatuses.Warnings, saveStatus);
-            Assert.True(_snapshotTestHelper.AreEqualContent(outputFile));
-        }
-        finally
-        {
-            File.Delete(outputFile);
-        }
+        var saveStatus = _snapshotTestHelper.ToFile();
+        Assert.Equal(DocumentStatuses.Warnings, saveStatus);
+
+        Assert.True(_snapshotTestHelper.AreEqualOutput());
     }
 }

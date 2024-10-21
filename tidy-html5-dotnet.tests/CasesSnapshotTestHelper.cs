@@ -1,7 +1,11 @@
-﻿namespace tidy_html5_dotnet_test
+﻿using TidyHtml5Dotnet;
+
+namespace tidy_html5_dotnet_test
 {
     internal class CasesSnapshotTestHelper
     {
+        private Document? _tidyDocument;
+
         private string _casesPath;
         private string _expectsPath;
 
@@ -11,7 +15,9 @@
         private string? _expectsContentFile;
         private string? _expectsWarningsFile;
 
-        public CasesSnapshotTestHelper(string casePrefix)
+        private string? _outputFile;
+
+        internal CasesSnapshotTestHelper(string casePrefix)
         {
             var casesPaths = new string[] { "cases", $"{casePrefix}-cases" };
             _casesPath = Path.Combine(casesPaths);
@@ -20,7 +26,7 @@
             _expectsPath = Path.Combine(expectsPaths);
         }
 
-        public CasesSnapshotTestHelper ForCase(string caseNumber)
+        internal CasesSnapshotTestHelper ForCase(string caseNumber)
         {
             var caseName = $"case-{caseNumber}";
 
@@ -30,7 +36,6 @@
                 throw new FileNotFoundException(inputFile);
             }
             _inputFile = inputFile;
-
 
             var configFile = Path.Combine(_casesPath, $"{caseName}.conf");
             if (!File.Exists(configFile))
@@ -56,29 +61,45 @@
             return this;
         }
 
-        public string? InputFile
+        internal CasesSnapshotTestHelper LoadDocument(out Document tidyDocument)
         {
-            get { return _inputFile; }
+            _tidyDocument = Document.FromFile(_inputFile);
+            tidyDocument = _tidyDocument;
+            return this;
         }
 
-        public string? ConfigFile
+        internal DocumentStatuses LoadConfig()
         {
-            get { return _configFile; }
+            return _tidyDocument is null 
+                ? throw new InvalidOperationException()
+                : _tidyDocument.LoadConfig(_configFile);
         }
 
-        public bool AreEqualContent(string outputfile)
+        internal DocumentStatuses ToFile()
         {
-            if (!File.Exists(outputfile))
+            _outputFile = Path.GetTempFileName();
+
+            return _tidyDocument is null 
+                ? throw new InvalidOperationException()
+                : _tidyDocument.ToFile(_outputFile);
+        }
+
+
+        internal bool AreEqualOutput()
+        {
+            if (!File.Exists(_outputFile))
             {
-                throw new FileNotFoundException(outputfile);
+                throw new FileNotFoundException(_outputFile);
             }
 
-            if(_expectsContentFile is null) throw new InvalidOperationException("Call1 ForCase first");
+            if(_expectsContentFile is null) throw new InvalidOperationException("Call ForCase first");
 
-            var receivedContent = File.ReadAllText(outputfile);
             var expectedContent = File.ReadAllText(_expectsContentFile);
+            var receivedContent = File.ReadAllText(_outputFile);
+            
+            File.Delete(_outputFile);
 
             return receivedContent == expectedContent;
-        }
+        }        
     }
 }
