@@ -5,17 +5,21 @@ namespace tidy_html5_dotnet_test
     internal class CasesSnapshotTestHelper
     {
         private Document? _tidyDocument;
+        private List<string>? _receivedMessages;
 
-        private string _casesPath;
-        private string _expectsPath;
+        private readonly string _casesPath;
+        private readonly string _expectsPath;
 
         private string? _inputFile;
         private string? _configFile;
 
-        private string? _expectsContentFile;
-        private string? _expectsWarningsFile;
+        private string? _expectedContentFile;
+        private string? _expectedContent;
+        private string? _expectedMessagesFile;
+        private List<string>? _expectedMessages;
 
-        private string? _outputFile;
+        private string? _receivedContentFile;
+        private string? _receivedContent;
 
         internal CasesSnapshotTestHelper(string casePrefix)
         {
@@ -28,6 +32,16 @@ namespace tidy_html5_dotnet_test
 
         internal CasesSnapshotTestHelper ForCase(string caseNumber)
         {
+            //reset previous case
+            _expectedContentFile = null;
+            _expectedContent = null;
+            _receivedContentFile = null;
+            _receivedContent = null;
+            _expectedMessagesFile = null;
+            _expectedMessages = null;
+            _receivedMessages = null;
+
+            //initialize current case
             var caseName = $"case-{caseNumber}";
 
             var inputFile = Path.Combine(_casesPath, $"{caseName}@0.html");
@@ -49,14 +63,14 @@ namespace tidy_html5_dotnet_test
             {
                 throw new FileNotFoundException(expectsContentFile);
             }
-            _expectsContentFile = expectsContentFile;
+            _expectedContentFile = expectsContentFile;
 
             var expectsWarningsFile = Path.Combine(_expectsPath, $"{caseName}.txt");
             if (!File.Exists(expectsWarningsFile))
             {
                 throw new FileNotFoundException(expectsWarningsFile);
             }
-            _expectsWarningsFile = expectsWarningsFile;
+            _expectedMessagesFile = expectsWarningsFile;
 
             return this;
         }
@@ -64,8 +78,20 @@ namespace tidy_html5_dotnet_test
         internal CasesSnapshotTestHelper LoadDocument(out Document tidyDocument)
         {
             _tidyDocument = Document.FromFile(_inputFile);
+            
             tidyDocument = _tidyDocument;
+            tidyDocument.FeedbackMessagesCallback = message => AddTidyMessage(message);
+            
             return this;
+        }
+
+        private void AddTidyMessage(FeedbackMessage message)
+        {
+            if( message.Key == "STRING_HELLO_ACCESS") return;
+            if( message.Key == "STRING_CONTENT_LOOKS") return;
+
+            _receivedMessages ??= [];
+            _receivedMessages.Add(message.Output.Trim());
         }
 
         internal DocumentStatuses LoadConfig()
@@ -77,29 +103,56 @@ namespace tidy_html5_dotnet_test
 
         internal DocumentStatuses ToFile()
         {
-            _outputFile = Path.GetTempFileName();
+            _receivedContentFile = Path.GetTempFileName();
 
             return _tidyDocument is null 
                 ? throw new InvalidOperationException()
-                : _tidyDocument.ToFile(_outputFile);
+                : _tidyDocument.ToFile(_receivedContentFile);
         }
 
-
-        internal bool AreEqualOutput()
+        internal string? ExpectedContent
         {
-            if (!File.Exists(_outputFile))
+            get 
             {
-                throw new FileNotFoundException(_outputFile);
+                if(_expectedContent is null && _expectedContentFile is not null)
+                {
+                    _expectedContent = File.ReadAllText(_expectedContentFile);
+                }
+                return _expectedContent;
             }
+        }
 
-            if(_expectsContentFile is null) throw new InvalidOperationException("Call ForCase first");
+        internal string? ReceivedContent
+        {
+            get 
+            {
+                if(_receivedContent is null && _receivedContentFile is not null)
+                {
+                    _receivedContent = File.ReadAllText(_receivedContentFile);
+                    File.Delete(_receivedContentFile);
+                }
+                return _receivedContent;
+            }
+        }
 
-            var expectedContent = File.ReadAllText(_expectsContentFile);
-            var receivedContent = File.ReadAllText(_outputFile);
-            
-            File.Delete(_outputFile);
+        internal List<string>? ExpectedMessages
+        {
+            get
+            {
+                if(_expectedMessages is null && _expectedMessagesFile is not null)
+                {
+                    _expectedMessages = File.ReadAllLines(_expectedMessagesFile)
+                           .Where(line => !string.IsNullOrWhiteSpace(line))
+                           .Select(line => line.Trim())
+                           .ToList();
+                }
+                return _expectedMessages;                
+            }
+        }
 
-            return receivedContent == expectedContent;
-        }        
+        internal List<string>? ReceivedMessages
+        {
+            get { return _receivedMessages; }
+        }
     }
 }

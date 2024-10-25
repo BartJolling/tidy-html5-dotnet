@@ -4,7 +4,7 @@ namespace tidy_html5_dotnet_test;
 
 public class AccessibilitySnapshotTests
 {
-    private CasesSnapshotTestHelper _snapshotTestHelper;
+    private readonly CasesSnapshotTestHelper _snapshotTestHelper;
 
     public AccessibilitySnapshotTests() 
     {
@@ -24,9 +24,18 @@ public class AccessibilitySnapshotTests
         var cleanStatus = tidyDocument.CleanAndRepair();
         Assert.Equal(DocumentStatuses.Warnings, cleanStatus);
 
+        var diagStatus = tidyDocument.RunDiagnostics();
+        Assert.Equal(DocumentStatuses.Warnings, diagStatus);
+
         var saveStatus = _snapshotTestHelper.ToFile();
         Assert.Equal(DocumentStatuses.Warnings, saveStatus);
 
-        Assert.True(_snapshotTestHelper.AreEqualOutput());
+        Assert.NotNull(_snapshotTestHelper.ExpectedContent);
+        Assert.NotNull(_snapshotTestHelper.ReceivedContent);
+        Assert.Equal (_snapshotTestHelper.ExpectedContent, _snapshotTestHelper.ReceivedContent);
+
+        Assert.NotNull(_snapshotTestHelper.ExpectedMessages);
+        Assert.NotNull(_snapshotTestHelper.ReceivedMessages);
+        Assert.Equal(_snapshotTestHelper.ExpectedMessages, _snapshotTestHelper.ReceivedMessages);
     }
 }

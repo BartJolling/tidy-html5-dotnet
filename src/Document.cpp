@@ -178,6 +178,17 @@ namespace TidyHtml5Dotnet
 		return static_cast<DocumentStatuses>(result);
 	}
 
+    DocumentStatuses Document::ReportDocType()
+    {
+		auto result = tidyReportDoctype(_tidyDoc);
+        return static_cast<DocumentStatuses>(result);
+    }
+
+    DocumentStatuses Document::RunDiagnostics()
+    {
+		auto result = tidyRunDiagnostics(_tidyDoc);
+        return static_cast<DocumentStatuses>(result);
+    }
 
    // Override ToString method
     String^ Document::ToString()

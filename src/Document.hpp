@@ -63,6 +63,8 @@ namespace TidyHtml5Dotnet
 
         DocumentStatuses LoadConfig(String ^ filePath, [Optional] Nullable<Encodings> encoding);
         DocumentStatuses CleanAndRepair();
+		DocumentStatuses ReportDocType();
+		DocumentStatuses RunDiagnostics();
 
         property Action<FeedbackMessage^>^ FeedbackMessagesCallback
 		{
