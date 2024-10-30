@@ -18,7 +18,6 @@ namespace tidy_html5_dotnet_test
         private string? _expectedMessagesFile;
         private List<string>? _expectedMessages;
 
-        private string? _receivedContentFile;
         private string? _receivedContent;
 
         internal CasesSnapshotTestHelper(string casePrefix)
@@ -35,7 +34,6 @@ namespace tidy_html5_dotnet_test
             //reset previous case
             _expectedContentFile = null;
             _expectedContent = null;
-            _receivedContentFile = null;
             _receivedContent = null;
             _expectedMessagesFile = null;
             _expectedMessages = null;
@@ -45,7 +43,7 @@ namespace tidy_html5_dotnet_test
             var caseName = $"case-{caseNumber}";
 
             var inputFile = Path.Combine(_casesPath, $"{caseName}@0.html");
-            if( !File.Exists(inputFile))
+            if (!File.Exists(inputFile))
             {
                 throw new FileNotFoundException(inputFile);
             }
@@ -78,17 +76,17 @@ namespace tidy_html5_dotnet_test
         internal CasesSnapshotTestHelper LoadDocument(out Document tidyDocument)
         {
             _tidyDocument = Document.FromFile(_inputFile);
-            
+
             tidyDocument = _tidyDocument;
             tidyDocument.FeedbackMessagesCallback = message => AddTidyMessage(message);
-            
+
             return this;
         }
 
         private void AddTidyMessage(FeedbackMessage message)
         {
-            if( message.Key == "STRING_HELLO_ACCESS") return;
-            if( message.Key == "STRING_CONTENT_LOOKS") return;
+            if (message.Key == "STRING_HELLO_ACCESS") return;
+            if (message.Key == "STRING_CONTENT_LOOKS") return;
 
             _receivedMessages ??= [];
             _receivedMessages.Add(message.Output.Trim());
@@ -96,25 +94,16 @@ namespace tidy_html5_dotnet_test
 
         internal DocumentStatuses LoadConfig()
         {
-            return _tidyDocument is null 
+            return _tidyDocument is null
                 ? throw new InvalidOperationException()
                 : _tidyDocument.LoadConfig(_configFile);
         }
 
-        internal DocumentStatuses ToFile()
-        {
-            _receivedContentFile = Path.GetTempFileName();
-
-            return _tidyDocument is null 
-                ? throw new InvalidOperationException()
-                : _tidyDocument.ToFile(_receivedContentFile);
-        }
-
         internal string? ExpectedContent
         {
-            get 
+            get
             {
-                if(_expectedContent is null && _expectedContentFile is not null)
+                if (_expectedContent is null && _expectedContentFile is not null)
                 {
                     _expectedContent = File.ReadAllText(_expectedContentFile);
                 }
@@ -124,12 +113,11 @@ namespace tidy_html5_dotnet_test
 
         internal string? ReceivedContent
         {
-            get 
+            get
             {
-                if(_receivedContent is null && _receivedContentFile is not null)
+                if (_receivedContent is null && _tidyDocument is not null)
                 {
-                    _receivedContent = File.ReadAllText(_receivedContentFile);
-                    File.Delete(_receivedContentFile);
+                    _receivedContent = _tidyDocument.ToString();
                 }
                 return _receivedContent;
             }
@@ -139,14 +127,14 @@ namespace tidy_html5_dotnet_test
         {
             get
             {
-                if(_expectedMessages is null && _expectedMessagesFile is not null)
+                if (_expectedMessages is null && _expectedMessagesFile is not null)
                 {
                     _expectedMessages = File.ReadAllLines(_expectedMessagesFile)
                            .Where(line => !string.IsNullOrWhiteSpace(line))
                            .Select(line => line.Trim())
                            .ToList();
                 }
-                return _expectedMessages;                
+                return _expectedMessages;
             }
         }
 
