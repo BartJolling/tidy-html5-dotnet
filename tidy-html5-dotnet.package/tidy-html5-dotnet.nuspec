@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>tidy-html5-dotnet</id>
+    <version>5.8.0.1</version>
+    <authors>Bart Jolling</authors>
+    <owners>Thosa-IT NV</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Mixed-mode tidy-html5 wrapper for .NET</description>
+    <tags>tidy html c++ cli mixed-mode</tags>
+	<repository type="git" url="https://github.com/BartJolling/tidy-html5-dotnet" />
+  </metadata>
+
+  <files>
+    <!-- x86 -->
+    <file src="..\build\Win32\Release\tidy-html5-dotnet.dll"
+          target="runtimes/win-x86/lib/net8.0-windows7.0/" />
+
+    <!-- x64 -->
+    <file src="..\build\x64\Release\tidy-html5-dotnet.dll"
+          target="runtimes/win-x64/lib/net8.0-windows7.0/" />
+
+    <!-- PDBs -->
+    <file src="..\build\Win32\Release\tidy-html5-dotnet.pdb"
+          target="runtimes/win-x86/lib/net8.0-windows7.0/" />
+
+    <file src="..\build\x64\Release\tidy-html5-dotnet.pdb"
+          target="runtimes/win-x64/lib/net8.0-windows7.0/" />
+  </files>
+</package>

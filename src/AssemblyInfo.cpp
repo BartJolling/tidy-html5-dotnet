@@ -11,9 +11,9 @@ using namespace System::Security::Permissions;
 #else
 [assembly:AssemblyConfigurationAttribute(L"Debug")];
 #endif
-[assembly:AssemblyCompanyAttribute(L"Thosa IT NV")];
+[assembly:AssemblyCompanyAttribute(L"Thosa-IT NV")];
 [assembly:AssemblyProductAttribute(L"tidy-html5-dotnet")];
-[assembly:AssemblyCopyrightAttribute(L"Copyright (c) Thosa IT NV 2024")];
+[assembly:AssemblyCopyrightAttribute(L"Copyright (c) Thosa-IT NV 2024")];
 [assembly:AssemblyTrademarkAttribute(L"")];
 [assembly:AssemblyCultureAttribute(L"")];
 

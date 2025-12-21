@@ -1,0 +1,29 @@
+<Project DefaultTargets="Pack" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<PropertyGroup>
+		<BuildConfig Condition="'$(Configuration)'==''">Release</BuildConfig>
+	</PropertyGroup>	
+	<!-- Paths -->
+	<PropertyGroup>
+		<SourceProject>..\src\tidy-html5-dotnet.vcxproj</SourceProject>
+		<NuspecFile>$(MSBuildThisFileDirectory)tidy-html5-dotnet.nuspec</NuspecFile>
+		<NuGetExe>$(MSBuildThisFileDirectory)nuget.exe</NuGetExe>
+		<PackageOutputPath>$(MSBuildThisFileDirectory)nupkg</PackageOutputPath>
+	</PropertyGroup>
+	<!-- Ensure output folder exists -->
+	<Target Name="EnsurePackageOutputPath">
+		<MakeDir Directories="$(PackageOutputPath)" Condition="!Exists('$(PackageOutputPath)')"/>
+	</Target>
+	<!-- Build Win32 -->
+	<Target Name="BuildWin32">
+		<MSBuild Projects="$(SourceProject)" Properties="Configuration=$(BuildConfig);Platform=Win32"/>
+	</Target>
+	<!-- Build x64 -->
+	<Target Name="BuildX64">
+		<MSBuild Projects="$(SourceProject)" Properties="Configuration=$(BuildConfig);Platform=x64"/>
+	</Target>
+	<!-- Pack -->
+	<Target Name="Pack" DependsOnTargets="EnsurePackageOutputPath;BuildWin32;BuildX64">
+		<Message Text="Packing tidy-html5-dotnet..." Importance="high"/>
+		<Exec Command="&quot;$(NuGetExe)&quot; pack &quot;$(NuspecFile)&quot; -OutputDirectory &quot;$(PackageOutputPath)&quot;"/>
+	</Target>
+</Project>
