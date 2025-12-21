@@ -21,3 +21,8 @@ temp*
 /build/Win32/
 /build/x64/
 /intermediate/
+/tidy-html5-dotnet-test/bin
+/tidy-html5-dotnet-test/obj
+/Win32/Debug
+/x64/Debug
+/tidy-html5-dotnet.package/nupkg
