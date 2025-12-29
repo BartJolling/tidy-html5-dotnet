@@ -187,6 +187,7 @@
     <ClInclude Include="mappedio.h" />
     <ClInclude Include="message.h" />
     <ClInclude Include="messageobj.h" />
+    <ClInclude Include="OutputSink.hpp" />
     <ClInclude Include="TeachingOptions.hpp" />
     <ClInclude Include="Tidy.hpp" />
     <ClInclude Include="TidyException.hpp" />
@@ -311,6 +312,7 @@
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</CompileAsManaged>
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</CompileAsManaged>
     </ClCompile>
+    <ClCompile Include="OutputSink.cpp" />
     <ClCompile Include="parser.c">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>

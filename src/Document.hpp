@@ -45,6 +45,7 @@ namespace TidyHtml5Dotnet
 		Action<FeedbackMessage^>^ _feedbackMessagesCallback = nullptr;
 		Bool FeedbackMessageCallback(TidyMessage tmessage);
 
+		uint _inputLength = 0;
 		bool _cleaned = false;
 		bool _disposed = false;		
 
@@ -60,13 +61,20 @@ namespace TidyHtml5Dotnet
 		~Document();
 		!Document();
 
-		DocumentStatuses CleanAndRepair();
+        DocumentStatuses LoadConfig(String ^ filePath, [Optional] Nullable<Encodings> encoding);
+        DocumentStatuses CleanAndRepair();
+		DocumentStatuses ReportDocType();
+		DocumentStatuses RunDiagnostics();
 
-		property Action<FeedbackMessage^>^ FeedbackMessagesCallback
+        property Action<FeedbackMessage^>^ FeedbackMessagesCallback
 		{
 			Action<FeedbackMessage^>^ get();
 			void set(Action<FeedbackMessage^>^ value);
 		}
+
+		virtual String^ ToString() override;
+		DocumentStatuses ToFile(String^ filePath);
+		DocumentStatuses ToStream(Stream^ stream);
 
 		property CleanupOptions^ CleanupOptions { TidyHtml5Dotnet::CleanupOptions^ get() { return _cleanupOptions; }}
 		property DiagnosticOptions^ DiagnosticOptions { TidyHtml5Dotnet::DiagnosticOptions^ get() { return _diagnosticOptions; }}
