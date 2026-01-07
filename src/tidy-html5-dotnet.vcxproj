@@ -159,6 +159,7 @@
     <ClInclude Include="DisplayOptions.hpp" />
     <ClInclude Include="DocTypeModes.hpp" />
     <ClInclude Include="Document.hpp" />
+    <ClInclude Include="DocumentOptionsView.hpp" />
     <ClInclude Include="FeedbackMessage.hpp" />
     <ClInclude Include="DocumentStatuses.hpp" />
     <ClInclude Include="EncodingOptions.hpp" />

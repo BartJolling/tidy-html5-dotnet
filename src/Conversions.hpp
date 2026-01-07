@@ -102,5 +102,7 @@ namespace TidyHtml5Dotnet
 
 		static Nullable<Boolean> TidyTriStateToNullableBoolean(TidyTriState autobool);
         static IEnumerable<String^>^ TidyTagNamesToIEnumerable(ctmbstr tidyTagNames);
+        static String^ CharArrayToString(ctmbstr unmanagedString);
+        static String^ MapOptionType(TidyOptionType type);
 	};
 }

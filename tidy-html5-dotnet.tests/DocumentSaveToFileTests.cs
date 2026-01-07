@@ -22,6 +22,6 @@ public class DocumentSaveToFileTests
         Assert.True(File.Exists(fileName));
 
         var content = File.ReadAllText(fileName);
-        Assert.Equal("<html>\r\n<head>\r\n<title></title>\r\n</head>\r\n<body>\r\n<h1>Title</h1>\r\n</body>\r\n</html>\r\n", content);
+        Assert.Equal("<!DOCTYPE html>\r\n<html>\r\n<head>\r\n<meta name=\"generator\" content=\r\n\"HTML Tidy for HTML5 for Windows version 5.8.0\">\r\n<title></title>\r\n</head>\r\n<body>\r\n<h1>Title</h1>\r\n</body>\r\n</html>\r\n", content);
     }
 }

@@ -33,6 +33,6 @@ public class FeedbackMessageTests
             _output.WriteLine(message.ToString());
         }
 
-        Assert.Equal(3, _tidyMessages.Count);
+        Assert.Equal(8, _tidyMessages.Count);
     }
 }

@@ -13,6 +13,7 @@ namespace TidyHtml5Dotnet
 		_tmessage = tmessage;
 		_key = gcnew String(tidyGetMessageKey(tmessage));
 		_output = gcnew String(tidyGetMessageOutput(tmessage));
+		_level = tidyGetMessageLevel(tmessage);
 
 		TidyIterator pos;
 		TidyMessageArgument arg;
@@ -69,6 +70,11 @@ namespace TidyHtml5Dotnet
 	{
 		return _output;
 	};
+
+	ReportLevel FeedbackMessage::Level::get()
+	{
+		return (ReportLevel)_level;
+	}
 
 	IEnumerable<String ^> ^ FeedbackMessage::Arguments::get()
 	{

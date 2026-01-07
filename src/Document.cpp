@@ -10,8 +10,6 @@ using namespace System::Runtime::InteropServices;
 
 namespace TidyHtml5Dotnet
 {
-	private delegate Bool FeedbackMessageDelegate(TidyMessage tmessage);
-
 	Document::Document()
 	{
 		_tidyDoc = tidyCreate();
@@ -74,8 +72,8 @@ namespace TidyHtml5Dotnet
 	{
 		if (_disposed) return;
 
-		//Dispose managed objects here
 		delete _inputSource;
+		_feedbackMessageDelegate = nullptr;  // Release delegate reference
 
 		this->!Document();
 		_disposed = true;
@@ -104,25 +102,27 @@ namespace TidyHtml5Dotnet
 		return yes;
 	}
 
-	void Document::FeedbackMessagesCallback::set(Action<FeedbackMessage^>^ value)
+	void Document::FeedbackMessagesCallback::set(Action<FeedbackMessage^>^ feedbackMessageHandler)
 	{
-		Bool succes = no;
+	    Bool succes = no;
 
-		if (value)
-		{
-			auto feedbackDelegate = gcnew FeedbackMessageDelegate(this, &Document::FeedbackMessageCallback);
-			auto feedbackPointer = Marshal::GetFunctionPointerForDelegate(feedbackDelegate).ToPointer();
-			succes = tidySetMessageCallback(_tidyDoc, static_cast<TidyMessageCallback>(feedbackPointer));
-		}
-		else
-		{
-			succes = tidySetMessageCallback(_tidyDoc, nullptr);
-		}
+	    if (feedbackMessageHandler)
+	    {
+	        // Create delegate and keep it alive by storing in member variable
+			_feedbackMessageDelegate = gcnew FeedbackMessageDelegate(this, &Document::FeedbackMessageCallback);
+	        auto feedbackPointer = Marshal::GetFunctionPointerForDelegate(_feedbackMessageDelegate).ToPointer();
+	        succes = tidySetMessageCallback(_tidyDoc, static_cast<TidyMessageCallback>(feedbackPointer));
+	    }
+	    else
+	    {
+	        succes = tidySetMessageCallback(_tidyDoc, nullptr);
+			_feedbackMessageDelegate = nullptr;  // Allow GC to collect when unregistered
+	    }
 
-		if (succes == no)
-			throw gcnew InvalidOperationException("Failed to set feedback message callback");
+	    if (succes == no)
+	        throw gcnew InvalidOperationException("Failed to set feedback message callback");
 
-		_feedbackMessagesCallback = value;
+	    _feedbackMessagesCallback = feedbackMessageHandler;
 	}
 
 	Action<FeedbackMessage^>^ Document::FeedbackMessagesCallback::get()
@@ -136,13 +136,17 @@ namespace TidyHtml5Dotnet
     /// @return Error code indicating success or failure reading the file and setting the options
     DocumentStatuses Document::LoadConfig(String ^ filePath, Nullable<Encodings> encoding)
     {
-		if(!encoding.HasValue) { encoding = Encodings::Ascii; }
+
+		if (!encoding.HasValue) { encoding = Encodings::Ascii; }
 		String^ encodingName = Enum::GetName(Encodings::typeid, encoding);
-		
-        auto result = tidyLoadConfigEnc(
-			_tidyDoc, 
-			Conversions::StringToCharArray(filePath), 
-			Conversions::StringToCharArray(encodingName));
+
+		auto filePathC = Conversions::StringToCharArray(filePath);
+		auto encodingC = Conversions::StringToCharArray(encodingName);
+
+		int result = tidyLoadConfigEnc(_tidyDoc, filePathC, encodingC);
+
+		Conversions::FreeCharArray(filePathC);
+		Conversions::FreeCharArray(encodingC);
 
 		return static_cast<DocumentStatuses>(result);
     }
@@ -153,29 +157,37 @@ namespace TidyHtml5Dotnet
     /// <returns>See Tidy error code convention (DocumentStatuses)</returns>
     DocumentStatuses Document::CleanAndRepair()
 	{
+		int parseResult = 0;
 		if (this->_contentString != nullptr)
 		{
 			auto previousEncoding = _encodingOptions->InputCharacterEncoding;
 			_encodingOptions->InputCharacterEncoding = Encodings::Utf8;
-			auto result = tidyParseString(_tidyDoc, _contentString);
+			parseResult = tidyParseString(_tidyDoc, _contentString);
 			_encodingOptions->InputCharacterEncoding = previousEncoding;
 
-			if (result < 0) throw gcnew TidyException(result);
-			return static_cast<DocumentStatuses>(result);
+			if (parseResult < 0) throw gcnew TidyException(parseResult);
 		}
 		else if (this->_inputSource != nullptr)
 		{
-			auto result = tidyParseSource(_tidyDoc, _inputSource->TidyInSource);
+			parseResult = tidyParseSource(_tidyDoc, _inputSource->TidyInSource);
 
-			if (result < 0) throw gcnew TidyException(result);
-			return static_cast<DocumentStatuses>(result);
+			if (parseResult < 0) throw gcnew TidyException(parseResult);
 		}
 
-		auto result = tidyCleanAndRepair(_tidyDoc);
-		if (result < 0) throw gcnew TidyException(result);
+		// Run clean & repair after parsing
+		auto repairResult = tidyCleanAndRepair(_tidyDoc);
+		if (repairResult < 0) throw gcnew TidyException(repairResult);
 
 		_cleaned = true;
-		return static_cast<DocumentStatuses>(result);
+
+		auto diagResults = tidyRunDiagnostics(_tidyDoc);
+		if (diagResults < 0) throw gcnew TidyException(diagResults);
+
+		/* generate footnote messages only if errors or warnings */
+		if (ErrorCount + WarningCount > 0)
+			ErrorSummary();
+
+		return static_cast<DocumentStatuses>(repairResult);
 	}
 
     DocumentStatuses Document::ReportDocType()
@@ -190,15 +202,30 @@ namespace TidyHtml5Dotnet
         return static_cast<DocumentStatuses>(result);
     }
 
-   // Override ToString method
+	void Document::ErrorSummary()
+	{
+		tidyErrorSummary(_tidyDoc);
+	}
+
+	void Document::GeneralInfo()
+	{
+		tidyGeneralInfo(_tidyDoc);
+	}
+
+    // Override ToString method
+	// TODO : REWRITE STUPID FUNCTION
     String^ Document::ToString()
     {
 		int status = 0;
 		tmbstr buffer = nullptr;
 		uint outputLength = _inputLength * 2u; // Foresee enough initial room for cleaned output
 
+		if (_inputLength > UINT_MAX / 2)
+			return String::Empty; // Prevent overflow
+
 		auto previousEncoding = _encodingOptions->OutputCharacterEncoding;		
 
+		// TODO: slow buffer increment +1. What if doc could give required length before hand
 		do {
 			buffer = new char[outputLength + 1];
 			_encodingOptions->OutputCharacterEncoding = Encodings::Utf8;
@@ -232,5 +259,27 @@ namespace TidyHtml5Dotnet
 
 		auto result = tidySaveFile(_tidyDoc, Conversions::StringToCharArray(filePath));
 		return static_cast<DocumentStatuses>(result);
-    }	
+    }
+
+	//TODO: accessibilityWarningCount??
+	uint Document::AccessWarningCount::get()
+	{
+		return tidyAccessWarningCount(_tidyDoc);
+	}
+	
+	uint Document::ErrorCount::get()
+	{
+		return tidyErrorCount(_tidyDoc);
+	}
+
+	uint Document::WarningCount::get()
+	{
+		return tidyWarningCount(_tidyDoc);
+	}
+
+	IReadOnlyList<DocumentOptionInfo^>^ Document::GetOptionsValues()
+	{
+		auto view = gcnew DocumentOptionsView(_tidyDoc);
+		return view->GetOptionsValues();
+	}
 }

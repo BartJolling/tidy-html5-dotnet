@@ -1,63 +1,65 @@
-﻿using TidyHtml5Dotnet;
+﻿using System.Diagnostics;
+using tidy_html5_dotnet_test.helpers;
+using TidyHtml5Dotnet;
+using Xunit.Abstractions;
 
 namespace tidy_html5_dotnet_test;
 
-public class AccessibilitySnapshotTests
+[Collection("Accessibility")]
+public class AccessibilitySnapshotTests(ITestOutputHelper output)
 {
-    private readonly CasesSnapshotTestHelper _snapshotTestHelper;
+    private readonly ITestOutputHelper _output = output;
 
-    public AccessibilitySnapshotTests()
+    [Theory]
+    [DirectoryCasesData("access")] // scans cases/access-cases + cases/access-expects
+    public void Accessibility_Case(CaseData testCaseData)
     {
-        _snapshotTestHelper = new CasesSnapshotTestHelper("access");
-    }
+        // Build document from input string
+        var doc = Document.FromFile(testCaseData.InputHtml);
 
-    [Fact]
-    public void AccessCase_1_1_1_1()
-    {
-        var configStatus = _snapshotTestHelper
-            .ForCase("1_1_1_1")
-            .LoadDocument(out Document tidyDocument)
-            .LoadConfig();
+        // Capture messages
+        var receivedMessages = new List<string>();
+        doc.FeedbackMessagesCallback = message =>
+        {
+            if(message.Level == ReportLevel.Info || message.Level == ReportLevel.DialogueInfo)
+                return;
 
+            //if (message.Key == "STRING_HELLO_ACCESS") 
+              // return;
+
+            var output = message.Output?.Trim();
+
+            if (string.IsNullOrWhiteSpace(output))
+                return;
+
+            // Split on CRLF or LF, remove empty entries, and trim each line
+            var lines = output.Split(["\r\n", "\n"], StringSplitOptions.None);
+
+            foreach (var line in lines)
+            {
+                var trimmed = line.Trim();
+                if (!string.IsNullOrWhiteSpace(trimmed))
+                    receivedMessages.Add(trimmed);
+            }
+        };
+
+        // Load config text (if API supports from string; if not, parse/apply options)
+        var configStatus = doc.LoadConfig(testCaseData.ConfigFile);
         Assert.Equal(DocumentStatuses.Success, configStatus);
+        
+        //TODO: these filters do not affect the message callback. They work on the Error Sink
+        //doc.DisplayOptions.Quiet = true;
+        //doc.DisplayOptions.ShowInfo = false;
 
-        var cleanStatus = tidyDocument.CleanAndRepair();
-        Assert.Equal(DocumentStatuses.Warnings, cleanStatus);
+        // Clean & repair
+        var cleanStatus = doc.CleanAndRepair();
+        Assert.Equal(testCaseData.CleanupStatus, cleanStatus);
 
-        var diagStatus = tidyDocument.RunDiagnostics();
-        Assert.Equal(DocumentStatuses.Warnings, diagStatus);
+        // Compare content
+        var receivedContent = doc.ToString();
+        Assert.Equal(testCaseData.ExpectedContent, receivedContent);
 
-        Assert.NotNull(_snapshotTestHelper.ExpectedContent);
-        Assert.NotNull(_snapshotTestHelper.ReceivedContent);
-        Assert.Equal(_snapshotTestHelper.ExpectedContent, _snapshotTestHelper.ReceivedContent);
-
-        Assert.NotNull(_snapshotTestHelper.ExpectedMessages);
-        Assert.NotNull(_snapshotTestHelper.ReceivedMessages);
-        Assert.Equal(_snapshotTestHelper.ExpectedMessages, _snapshotTestHelper.ReceivedMessages);
-    }
-
-    [Fact]
-    public void AccessCase_1_1_1_2()
-    {
-        var configStatus = _snapshotTestHelper
-            .ForCase("1_1_1_2")
-            .LoadDocument(out Document tidyDocument)
-            .LoadConfig();
-
-        Assert.Equal(DocumentStatuses.Success, configStatus);
-
-        var cleanStatus = tidyDocument.CleanAndRepair();
-        Assert.Equal(DocumentStatuses.Warnings, cleanStatus);
-
-        var diagStatus = tidyDocument.RunDiagnostics();
-        Assert.Equal(DocumentStatuses.Warnings, diagStatus);
-
-        Assert.NotNull(_snapshotTestHelper.ExpectedContent);
-        Assert.NotNull(_snapshotTestHelper.ReceivedContent);
-        Assert.Equal(_snapshotTestHelper.ExpectedContent, _snapshotTestHelper.ReceivedContent);
-
-        Assert.NotNull(_snapshotTestHelper.ExpectedMessages);
-        Assert.NotNull(_snapshotTestHelper.ReceivedMessages);
-        Assert.Equal(_snapshotTestHelper.ExpectedMessages, _snapshotTestHelper.ReceivedMessages);
+        // Compare messages
+        Assert.Equal(testCaseData.ExpectedMessages, receivedMessages);
     }
 }

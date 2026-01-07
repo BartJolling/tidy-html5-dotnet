@@ -42,10 +42,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="..\regression_testing\**\*.*" >
+    <Content Include="..\regression_testing\**\*.*">
       <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="xunit.runner.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
