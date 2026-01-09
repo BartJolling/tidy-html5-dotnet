@@ -86,7 +86,7 @@ namespace TidyHtml5Dotnet
 		property uint ErrorCount { uint get(); }
 		property uint WarningCount { uint get(); }
 
-		IReadOnlyList<DocumentOptionInfo^>^ GetOptionsValues();
+		IReadOnlyList<OptionDescription^>^ GetOptionDescriptions();
 
 		property CleanupOptions^ CleanupOptions { TidyHtml5Dotnet::CleanupOptions^ get() { return _cleanupOptions; }}
 		property DiagnosticOptions^ DiagnosticOptions { TidyHtml5Dotnet::DiagnosticOptions^ get() { return _diagnosticOptions; }}

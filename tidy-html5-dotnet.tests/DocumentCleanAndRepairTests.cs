@@ -46,7 +46,7 @@ public class DocumentCleanAndRepairTests
             _output.WriteLine(message.ToString());
         }
 
-        Assert.Equal(2, _tidyMessages.Count);
+        Assert.Equal(4, _tidyMessages.Count);
     }
 
     [Fact]
@@ -66,6 +66,6 @@ public class DocumentCleanAndRepairTests
             _output.WriteLine(message.ToString());
         }
 
-        Assert.Equal(2, _tidyMessages.Count);
+        Assert.Equal(4, _tidyMessages.Count);
     }
 }

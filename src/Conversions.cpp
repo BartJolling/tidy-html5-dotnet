@@ -71,36 +71,4 @@ namespace TidyHtml5Dotnet
 
 		return list;
 	}
-
-	/// <summary>
-	/// Convert ctmbstr (C string) to managed System::String^
-	/// </summary>
-	/// <param name="unmanagedString"></param>
-	/// <returns></returns>
-	String^ Conversions::CharArrayToString(ctmbstr unmanagedString)
-	{
-		//TODO: check if this cannot be done easier like gcnew String(unmanagedString)
-
-		if (unmanagedString == nullptr) return nullptr;
-		// ctmbstr is typically const char* (ANSI) in tidy builds.
-		return gcnew String(reinterpret_cast<const char*>(unmanagedString));
-	}
-
-	/// <summary>
-	/// Friendly name for TidyOptionType 
-	/// </summary>
-	/// <param name="type"></param>
-	/// <returns></returns>
-	String^ Conversions::MapOptionType(TidyOptionType type)
-	{
-		//TODO : this does not belong here
-
-		switch (type)
-		{
-		case TidyBoolean: return "Boolean";
-		case TidyInteger: return "Integer";
-		case TidyString:  return "String";
-		default:          return "Unknown";
-		}
-	}
 }

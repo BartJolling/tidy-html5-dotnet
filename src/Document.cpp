@@ -173,6 +173,11 @@ namespace TidyHtml5Dotnet
 
 			if (parseResult < 0) throw gcnew TidyException(parseResult);
 		}
+		else
+		{
+			// Nothing to parse. Exit here because tidyRunDiagnostics crashes on empty doc
+			return static_cast<DocumentStatuses>(parseResult);
+		}
 
 		// Run clean & repair after parsing
 		auto repairResult = tidyCleanAndRepair(_tidyDoc);
@@ -261,7 +266,7 @@ namespace TidyHtml5Dotnet
 		return static_cast<DocumentStatuses>(result);
     }
 
-	//TODO: accessibilityWarningCount??
+	//TODO: rename to accessibilityWarningCount??
 	uint Document::AccessWarningCount::get()
 	{
 		return tidyAccessWarningCount(_tidyDoc);
@@ -277,9 +282,9 @@ namespace TidyHtml5Dotnet
 		return tidyWarningCount(_tidyDoc);
 	}
 
-	IReadOnlyList<DocumentOptionInfo^>^ Document::GetOptionsValues()
+	IReadOnlyList<OptionDescription^>^ Document::GetOptionDescriptions()
 	{
 		auto view = gcnew DocumentOptionsView(_tidyDoc);
-		return view->GetOptionsValues();
+		return view->GetOptionDescriptions();
 	}
 }

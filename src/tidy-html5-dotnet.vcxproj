@@ -172,6 +172,7 @@
     <ClInclude Include="gdoc.h" />
     <ClInclude Include="InOutOptions.hpp" />
     <ClInclude Include="InputSource.hpp" />
+    <ClInclude Include="OptionDescription.hpp" />
     <ClInclude Include="PrettPrintOptions.hpp" />
     <ClInclude Include="SortAttributeStrategy.hpp" />
     <ClInclude Include="language.h" />
@@ -258,6 +259,7 @@
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</CompileAsManaged>
     </ClCompile>
     <ClCompile Include="Conversions.cpp" />
+    <ClCompile Include="DocumentOptionsView.cpp" />
     <ClCompile Include="entities.c">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</CompileAsManaged>
