@@ -217,8 +217,6 @@ namespace TidyHtml5Dotnet
 		tidyGeneralInfo(_tidyDoc);
 	}
 
-    // Override ToString method
-	// TODO : REWRITE STUPID FUNCTION
     String^ Document::ToString()
     {
 		int status = 0;
@@ -266,7 +264,6 @@ namespace TidyHtml5Dotnet
 		return static_cast<DocumentStatuses>(result);
     }
 
-	//TODO: rename to accessibilityWarningCount??
 	uint Document::AccessWarningCount::get()
 	{
 		return tidyAccessWarningCount(_tidyDoc);

@@ -10,10 +10,9 @@ namespace TidyHtml5Dotnet
 		if (tmessage == nullptr)
 			throw gcnew ArgumentNullException("tmessage", "Cannot create Message from null TidyMessage");
 
-		_tmessage = tmessage;
 		_key = gcnew String(tidyGetMessageKey(tmessage));
-		_output = gcnew String(tidyGetMessageOutput(tmessage));
-		_level = tidyGetMessageLevel(tmessage);
+		_output = (gcnew String(tidyGetMessageOutput(tmessage)))->TrimEnd();
+		_level = static_cast<ReportLevel>(tidyGetMessageLevel(tmessage));
 
 		TidyIterator pos;
 		TidyMessageArgument arg;
@@ -73,7 +72,7 @@ namespace TidyHtml5Dotnet
 
 	ReportLevel FeedbackMessage::Level::get()
 	{
-		return (ReportLevel)_level;
+		return _level;
 	}
 
 	IEnumerable<String ^> ^ FeedbackMessage::Arguments::get()
