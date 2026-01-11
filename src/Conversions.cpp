@@ -8,7 +8,7 @@ using namespace System::Runtime::InteropServices;
 namespace TidyHtml5Dotnet
 {
 	/*
-	* Tidy --> Managed
+	* Managed --> Tidy
 	*/
 
 	ctmbstr Conversions::StringToCharArray(String^ managedString)
@@ -39,7 +39,7 @@ namespace TidyHtml5Dotnet
 	}
 
 	/*
-	* Managed --> Tidy
+	* Tidy --> Managed
 	*/
 
 	Nullable<System::Boolean> Conversions::TidyTriStateToNullableBoolean(TidyTriState autobool)

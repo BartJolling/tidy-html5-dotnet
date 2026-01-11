@@ -4,6 +4,7 @@
 #include "DiagnosticOptions.hpp"
 #include "DisplayOptions.hpp"
 #include "Document.hpp"
+#include "DocumentOptionsView.hpp"
 #include "DocumentStatuses.hpp"
 #include "EncodingOptions.hpp"
 #include "EntitiesOptions.hpp"
@@ -21,6 +22,8 @@ using namespace System::IO;
 
 namespace TidyHtml5Dotnet
 {
+	private delegate Bool FeedbackMessageDelegate(TidyMessage tmessage);
+
 	public ref class Document
 	{
 	private:
@@ -42,10 +45,11 @@ namespace TidyHtml5Dotnet
 		InputSource^ _inputSource = nullptr;
 		ctmbstr _contentString;
 
+		FeedbackMessageDelegate^ _feedbackMessageDelegate;
 		Action<FeedbackMessage^>^ _feedbackMessagesCallback = nullptr;
 		Bool FeedbackMessageCallback(TidyMessage tmessage);
 
-		uint _inputLength = 0;
+		Int64 _inputLength = 0;
 		bool _cleaned = false;
 		bool _disposed = false;		
 
@@ -65,6 +69,8 @@ namespace TidyHtml5Dotnet
         DocumentStatuses CleanAndRepair();
 		DocumentStatuses ReportDocType();
 		DocumentStatuses RunDiagnostics();
+		void ErrorSummary();
+		void GeneralInfo();
 
         property Action<FeedbackMessage^>^ FeedbackMessagesCallback
 		{
@@ -75,6 +81,12 @@ namespace TidyHtml5Dotnet
 		virtual String^ ToString() override;
 		DocumentStatuses ToFile(String^ filePath);
 		DocumentStatuses ToStream(Stream^ stream);
+
+		property uint AccessWarningCount { uint get(); }
+		property uint ErrorCount { uint get(); }
+		property uint WarningCount { uint get(); }
+
+		IReadOnlyList<OptionDescription^>^ GetOptionDescriptions();
 
 		property CleanupOptions^ CleanupOptions { TidyHtml5Dotnet::CleanupOptions^ get() { return _cleanupOptions; }}
 		property DiagnosticOptions^ DiagnosticOptions { TidyHtml5Dotnet::DiagnosticOptions^ get() { return _diagnosticOptions; }}
