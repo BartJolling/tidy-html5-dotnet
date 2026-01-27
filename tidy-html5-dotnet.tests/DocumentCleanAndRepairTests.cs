@@ -4,16 +4,9 @@ using Xunit.Abstractions;
 
 namespace tidy_html5_dotnet_test;
 
-public class DocumentCleanAndRepairTests
+public class DocumentCleanAndRepairTests(ITestOutputHelper output)
 {
-    private readonly ITestOutputHelper _output;
-    private readonly List<FeedbackMessage> _tidyMessages = [];
-
-    public DocumentCleanAndRepairTests(ITestOutputHelper output)
-    {
-        _output = output;
-        _tidyMessages.Clear();
-    }
+    private readonly ITestOutputHelper _output = output;
 
     [Fact]
     public void CleanAndRepair_Document_without_parameters_must_succeed()
@@ -21,12 +14,16 @@ public class DocumentCleanAndRepairTests
         using var tidyDocument = new Document();
         Assert.NotNull(tidyDocument);
 
-        tidyDocument.FeedbackMessagesCallback = message => _tidyMessages.Add(message);
+        tidyDocument.OnReceiveDiagnosticMessage =
+            message => (message.Level == ReportLevel.Info ||
+                        message.Level == ReportLevel.DialogueInfo)
+                ? IncludeInReport.No
+                : IncludeInReport.Yes;
 
         var status = tidyDocument.CleanAndRepair();
         Assert.Equal(DocumentStatuses.Success, status);
 
-        Assert.Empty(_tidyMessages);
+        Assert.Empty(tidyDocument.DiagnosticMessages);
     }
 
     [Fact]
@@ -36,17 +33,15 @@ public class DocumentCleanAndRepairTests
         using var tidyDocument = new Document(htmlString);
         Assert.NotNull(tidyDocument);
 
-        tidyDocument.FeedbackMessagesCallback = message => _tidyMessages.Add(message);
-
         var status = tidyDocument.CleanAndRepair();
         Assert.Equal(DocumentStatuses.Warnings, status);
 
-        foreach (var message in _tidyMessages)
+        foreach (var message in tidyDocument.DiagnosticMessages)
         {
             _output.WriteLine(message.ToString());
         }
 
-        Assert.Equal(4, _tidyMessages.Count);
+        Assert.Equal(4, tidyDocument.DiagnosticMessages.Count);
     }
 
     [Fact]
@@ -56,16 +51,14 @@ public class DocumentCleanAndRepairTests
         using var tidyDocument = new Document(htmlStream);
         Assert.NotNull(tidyDocument);
 
-        tidyDocument.FeedbackMessagesCallback = message => _tidyMessages.Add(message);
-
         var status = tidyDocument.CleanAndRepair();
         Assert.Equal(DocumentStatuses.Warnings, status);
 
-        foreach (var message in _tidyMessages)
+        foreach (var message in tidyDocument.DiagnosticMessages)
         {
             _output.WriteLine(message.ToString());
         }
 
-        Assert.Equal(4, _tidyMessages.Count);
+        Assert.Equal(4, tidyDocument.DiagnosticMessages.Count);
     }
 }

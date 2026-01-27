@@ -194,7 +194,7 @@
     <ClInclude Include="FeedbackMessage.hpp">
       <Filter>dotnet Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="OutputSink.hpp">
+    <ClInclude Include="StreamSink.hpp">
       <Filter>dotnet Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Tidy.hpp">
@@ -307,7 +307,7 @@
     <ClCompile Include="InputSource.cpp">
       <Filter>dotnet Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="OutputSink.cpp">
+    <ClCompile Include="StreamSink.cpp">
       <Filter>dotnet Source Files</Filter>
     </ClCompile>
     <ClCompile Include="FeedbackMessage.cpp">
@@ -330,6 +330,9 @@
   <ItemGroup>
     <None Include=".gitignore" />
     <None Include="CPP.HINT">
+      <Filter>dotnet Header Files</Filter>
+    </None>
+    <None Include="IncludeInReport.hpp">
       <Filter>dotnet Header Files</Filter>
     </None>
   </ItemGroup>

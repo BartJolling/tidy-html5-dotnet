@@ -34,7 +34,6 @@ public sealed class DirectoryCasesDataAttribute : DataAttribute
             var fileName = Path.GetFileName(inputFilePath); 
             
             // Must contain @
-            // TODO: check if the 0,1,2 after the @ have a meaning
             var atIndex = fileName.IndexOf('@');
             if (atIndex < 0) continue;
 
@@ -61,13 +60,11 @@ public sealed class DirectoryCasesDataAttribute : DataAttribute
                 continue; // skip only if both are missing
 
             var expectedContent = File.ReadAllText(expectedContentFile);
-            var expectedMessages = File.ReadAllLines(expectedMessagesFile)
-                .Where(l => !string.IsNullOrWhiteSpace(l))
-                .Select(l => l.Trim())
-                .ToList()
-                .AsReadOnly();
+            var expectedReport = File.ReadAllText(expectedMessagesFile);
 
-            var cleanupStatus = expectedMessages.Count > 1 ? DocumentStatuses.Warnings : DocumentStatuses.Success;
+            var cleanupStatus = "No warnings or errors were found.".Equals(expectedReport.Trim())
+                ? DocumentStatuses.Success
+                : DocumentStatuses.Warnings;
 
             yield return new object[]
             {
@@ -76,7 +73,7 @@ public sealed class DirectoryCasesDataAttribute : DataAttribute
                     inputFilePath,
                     configFilePath,
                     expectedContent,
-                    expectedMessages,
+                    expectedReport,
                     cleanupStatus,
                     cleanupStatus
                 )

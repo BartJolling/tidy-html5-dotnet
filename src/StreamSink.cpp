@@ -1,4 +1,4 @@
-#include "OutputSink.hpp"
+#include "StreamSink.hpp"
 
 using namespace System;
 using namespace System::IO;
@@ -8,36 +8,36 @@ namespace TidyHtml5Dotnet
 {
     private delegate void TidyPutByteDelegate(void* sinkData, byte bt);
 
-    OutputSink::OutputSink(Stream ^ stream)
+    StreamSink::StreamSink(Stream ^ stream)
     {
         ArgumentNullException::ThrowIfNull(stream, "stream");
         _stream = stream;
 
-        auto putByteFnPtr = Marshal::GetFunctionPointerForDelegate(gcnew TidyPutByteDelegate(this, &OutputSink::OnPutByte));
+        auto putByteFnPtr = Marshal::GetFunctionPointerForDelegate(gcnew TidyPutByteDelegate(this, &StreamSink::OnPutByte));
 
         _tidyOutputSink = new TidyOutputSink();
         _tidyOutputSink->sinkData = nullptr;
         _tidyOutputSink->putByte = static_cast<TidyPutByteFunc>(putByteFnPtr.ToPointer());        
     }
 
-    OutputSink::~OutputSink()
+    StreamSink::~StreamSink()
     {
         if (_disposed) return;
 
         //Dispose managed objects here
 
-        this->!OutputSink();
+        this->!StreamSink();
         _disposed = true;
     }
 
-    OutputSink::!OutputSink()
+    StreamSink::!StreamSink()
     {
         //Free unmanaged objects here
 
         delete _tidyOutputSink;
     }
 
-    void OutputSink::OnPutByte(void *sinkData, byte bt)
+    void StreamSink::OnPutByte(void *sinkData, byte bt)
     {
         _stream->WriteByte(bt);
     }

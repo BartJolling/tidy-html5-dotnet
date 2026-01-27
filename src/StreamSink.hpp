@@ -6,12 +6,12 @@ using namespace System::IO;
 
 namespace TidyHtml5Dotnet
 {
-	public ref class OutputSink
+	public ref class StreamSink
 	{
     public:
-		OutputSink(Stream^ stream);
-		~OutputSink();
-		!OutputSink();
+		StreamSink(Stream^ stream);
+		~StreamSink();
+		!StreamSink();
 
 	private:
 		Stream^ _stream;
