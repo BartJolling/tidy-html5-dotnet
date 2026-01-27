@@ -7,7 +7,7 @@ public sealed record CaseData(
     string InputHtml,
     string ConfigFile,
     string ExpectedContent,
-    IReadOnlyList<string> ExpectedMessages,
+    string ExpectedReport,
     DocumentStatuses CleanupStatus,
     DocumentStatuses DiagnosticStatus)
 {

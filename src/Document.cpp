@@ -4,7 +4,7 @@ using namespace System::Runtime::InteropServices;
 
 #include "Document.hpp"
 #include "InputSource.hpp"
-#include "OutputSink.hpp"
+#include "StreamSink.hpp"
 #include "TidyException.hpp"
 #include "Tidy.hpp"
 
@@ -14,6 +14,15 @@ namespace TidyHtml5Dotnet
 	{
 		_tidyDoc = tidyCreate();
 
+		// Create delegate and keep it alive by storing in member variable
+		_tidyMessageDelegate = gcnew TidyMessageDelegate(this, &Document::OnReceiveTidyMessage);
+		auto feedbackPointer = Marshal::GetFunctionPointerForDelegate(_tidyMessageDelegate).ToPointer();
+		if (tidySetMessageCallback(_tidyDoc, static_cast<TidyMessageCallback>(feedbackPointer)) == no)
+		{
+			throw gcnew InvalidOperationException("Failed to set tidy message callback");
+		}
+
+		// Options
 		_cleanupOptions = gcnew TidyHtml5Dotnet::CleanupOptions(_tidyDoc);
 		_diagnosticOptions = gcnew TidyHtml5Dotnet::DiagnosticOptions(_tidyDoc);
 		_displayOptions = gcnew TidyHtml5Dotnet::DisplayOptions(_tidyDoc);
@@ -30,7 +39,7 @@ namespace TidyHtml5Dotnet
 	Document::Document(String^ htmlString) : Document()
 	{
 		ArgumentNullException::ThrowIfNullOrWhiteSpace(htmlString, "htmlString");
-				
+
 		_contentString = Conversions::StringToCharArray(htmlString);
 		_inputLength = htmlString->Length;
 	};
@@ -56,7 +65,7 @@ namespace TidyHtml5Dotnet
 	Document^ Document::FromStream(Stream^ stream)
 	{
 		return gcnew Document(stream);
-	}	
+	}
 
 	Document^ Document::FromFile(String^ filePath)
 	{
@@ -68,12 +77,44 @@ namespace TidyHtml5Dotnet
 		return gcnew Document(gcnew FileStream(filePath, FileMode::Open));
 	}
 
+	Document^ Document::WithReportStream(Stream^ stream)
+	{
+		ArgumentNullException::ThrowIfNull(stream, "stream");
+
+		if (!stream->CanWrite)
+			throw gcnew ArgumentException("Stream must be writable.");
+
+		_reportStreamSink = gcnew StreamSink(stream);
+
+		int result = tidySetErrorSink(_tidyDoc, _reportStreamSink->TidyOutSink);
+		if (result != 0)
+			throw gcnew InvalidOperationException("Failed to set error stream sink");
+
+		return this;
+	}
+
+	Document^ Document::WithReportFile(String^ filePath)
+	{
+		ArgumentNullException::ThrowIfNullOrWhiteSpace(filePath, "filePath");
+
+		FILE* f = tidySetErrorFile(_tidyDoc, Conversions::StringToCharArray(filePath));
+
+		if (f == nullptr)
+		{
+			throw gcnew IOException(
+				String::Format("Failed to open error file '{0}'.", filePath));
+		}
+
+		return this;
+	}
+
 	Document::~Document()
 	{
 		if (_disposed) return;
 
 		delete _inputSource;
-		_feedbackMessageDelegate = nullptr;  // Release delegate reference
+		delete _reportStreamSink;
+		_tidyMessageDelegate = nullptr;  // Release delegate reference
 
 		this->!Document();
 		_disposed = true;
@@ -81,7 +122,7 @@ namespace TidyHtml5Dotnet
 
 	Document::!Document()
 	{
-		//Free unmanaged objects here
+		//Free unmanaged objects
 		Conversions::FreeCharArray(_contentString);
 		tidyRelease(_tidyDoc);
 	}
@@ -90,53 +131,33 @@ namespace TidyHtml5Dotnet
 	/// Callback used by tidylib to return feedback messages
 	/// </summary>
 	/// <param name="tmessage">tidylib warning or error message</param>
-	/// <returns>yes or no, indicating if tidylib should log to standard output or not</returns>
-	Bool Document::FeedbackMessageCallback(TidyMessage tmessage)
+	/// <returns>yes or no, indicating if tidylib should log to the report stream or report file or not</returns>
+	Bool Document::OnReceiveTidyMessage(TidyMessage tmessage)
 	{
-		if (FeedbackMessagesCallback != nullptr)
+		auto feedbackMessage = gcnew FeedbackMessage(tmessage);
+
+		IncludeInReport includeInReport = IncludeInReport::Yes;
+
+		if (OnReceiveDiagnosticMessage != nullptr)
 		{
-			auto feedbackMessage = gcnew FeedbackMessage(tmessage);
-			FeedbackMessagesCallback(feedbackMessage);
-			return no;
+			includeInReport = OnReceiveDiagnosticMessage(feedbackMessage);
 		}
-		return yes;
+
+		if (includeInReport == IncludeInReport::Yes)
+		{
+			_diagnosticMessages->Add(feedbackMessage);
+			return yes;
+		}
+
+		return no;
 	}
 
-	void Document::FeedbackMessagesCallback::set(Action<FeedbackMessage^>^ feedbackMessageHandler)
+	/// @brief Loads document config options from config file
+	/// @param filePath Path to the config file
+	/// @param encoding Encoding of the config file. If unspecified, assumes Ascii
+	/// @return Error code indicating success or failure reading the file and setting the options
+	DocumentStatuses Document::LoadConfig(String^ filePath, Nullable<Encodings> encoding)
 	{
-	    Bool succes = no;
-
-	    if (feedbackMessageHandler)
-	    {
-	        // Create delegate and keep it alive by storing in member variable
-			_feedbackMessageDelegate = gcnew FeedbackMessageDelegate(this, &Document::FeedbackMessageCallback);
-	        auto feedbackPointer = Marshal::GetFunctionPointerForDelegate(_feedbackMessageDelegate).ToPointer();
-	        succes = tidySetMessageCallback(_tidyDoc, static_cast<TidyMessageCallback>(feedbackPointer));
-	    }
-	    else
-	    {
-	        succes = tidySetMessageCallback(_tidyDoc, nullptr);
-			_feedbackMessageDelegate = nullptr;  // Allow GC to collect when unregistered
-	    }
-
-	    if (succes == no)
-	        throw gcnew InvalidOperationException("Failed to set feedback message callback");
-
-	    _feedbackMessagesCallback = feedbackMessageHandler;
-	}
-
-	Action<FeedbackMessage^>^ Document::FeedbackMessagesCallback::get()
-	{
-		return _feedbackMessagesCallback;
-	}
-
-    /// @brief Loads document config options from config file
-    /// @param filePath Path to the config file
-    /// @param encoding Encoding of the config file. If unspecified, assumes Ascii
-    /// @return Error code indicating success or failure reading the file and setting the options
-    DocumentStatuses Document::LoadConfig(String ^ filePath, Nullable<Encodings> encoding)
-    {
-
 		if (!encoding.HasValue) { encoding = Encodings::Ascii; }
 		String^ encodingName = Enum::GetName(Encodings::typeid, encoding);
 
@@ -149,13 +170,13 @@ namespace TidyHtml5Dotnet
 		Conversions::FreeCharArray(encodingC);
 
 		return static_cast<DocumentStatuses>(result);
-    }
+	}
 
-    /// <summary>
-    /// Parses input markup, and executes configured cleanup and repair operations.
-    /// </summary>
-    /// <returns>See Tidy error code convention (DocumentStatuses)</returns>
-    DocumentStatuses Document::CleanAndRepair()
+	/// <summary>
+	/// Parses input markup, and executes configured cleanup and repair operations.
+	/// </summary>
+	/// <returns>See Tidy error code convention (DocumentStatuses)</returns>
+	DocumentStatuses Document::CleanAndRepair()
 	{
 		int parseResult = 0;
 		if (this->_contentString != nullptr)
@@ -195,17 +216,17 @@ namespace TidyHtml5Dotnet
 		return static_cast<DocumentStatuses>(repairResult);
 	}
 
-    DocumentStatuses Document::ReportDocType()
-    {
+	DocumentStatuses Document::ReportDocType()
+	{
 		auto result = tidyReportDoctype(_tidyDoc);
-        return static_cast<DocumentStatuses>(result);
-    }
+		return static_cast<DocumentStatuses>(result);
+	}
 
-    DocumentStatuses Document::RunDiagnostics()
-    {
+	DocumentStatuses Document::RunDiagnostics()
+	{
 		auto result = tidyRunDiagnostics(_tidyDoc);
-        return static_cast<DocumentStatuses>(result);
-    }
+		return static_cast<DocumentStatuses>(result);
+	}
 
 	void Document::ErrorSummary()
 	{
@@ -217,8 +238,8 @@ namespace TidyHtml5Dotnet
 		tidyGeneralInfo(_tidyDoc);
 	}
 
-    String^ Document::ToString()
-    {
+	String^ Document::ToString()
+	{
 		int status = 0;
 		tmbstr buffer = nullptr;
 		uint outputLength = _inputLength * 2u; // Foresee enough initial room for cleaned output
@@ -226,7 +247,7 @@ namespace TidyHtml5Dotnet
 		if (_inputLength > UINT_MAX / 2)
 			return String::Empty; // Prevent overflow
 
-		auto previousEncoding = _encodingOptions->OutputCharacterEncoding;		
+		auto previousEncoding = _encodingOptions->OutputCharacterEncoding;
 
 		// TODO: slow buffer increment +1. What if doc could give required length before hand
 		do {
@@ -237,38 +258,38 @@ namespace TidyHtml5Dotnet
 
 		buffer[outputLength] = '\0';
 		auto output = gcnew String(buffer);
-		delete [] buffer;
+		delete[] buffer;
 
 		_encodingOptions->OutputCharacterEncoding = previousEncoding;
 
 		return output;
-    }
+	}
 
-    DocumentStatuses Document::ToStream(Stream ^ stream)
-    {
+	DocumentStatuses Document::ToStream(Stream^ stream)
+	{
 		ArgumentNullException::ThrowIfNull(stream, "stream");
 
 		if (!stream->CanWrite)
-			throw gcnew ArgumentException("Stream must be writeable.");		
+			throw gcnew ArgumentException("Stream must be writeable.");
 
-		auto result = tidySaveSink(_tidyDoc, (gcnew OutputSink(stream))->TidyOutSink);
+		auto result = tidySaveSink(_tidyDoc, (gcnew StreamSink(stream))->TidyOutSink);
 		return static_cast<DocumentStatuses>(result);
-    }
+	}
 
-    DocumentStatuses Document::ToFile(String ^ filePath)
-    {
-		if (String::IsNullOrWhiteSpace(filePath)) 
+	DocumentStatuses Document::ToFile(String^ filePath)
+	{
+		if (String::IsNullOrWhiteSpace(filePath))
 			throw gcnew ArgumentNullException("filePath");
 
 		auto result = tidySaveFile(_tidyDoc, Conversions::StringToCharArray(filePath));
 		return static_cast<DocumentStatuses>(result);
-    }
+	}
 
 	uint Document::AccessWarningCount::get()
 	{
 		return tidyAccessWarningCount(_tidyDoc);
 	}
-	
+
 	uint Document::ErrorCount::get()
 	{
 		return tidyErrorCount(_tidyDoc);

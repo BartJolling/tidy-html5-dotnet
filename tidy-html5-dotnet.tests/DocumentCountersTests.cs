@@ -1,17 +1,19 @@
-﻿using TidyHtml5Dotnet;
+﻿using System.Text;
+using TidyHtml5Dotnet;
 using Xunit.Abstractions;
 
 namespace tidy_html5_dotnet_test;
 
-public class DocumentCountersTests
+public class DocumentCountersTests(ITestOutputHelper output)
 {
-    private readonly ITestOutputHelper _output;
-    private readonly List<FeedbackMessage> _tidyMessages = [];
+    private readonly ITestOutputHelper _output = output;
 
-    public DocumentCountersTests(ITestOutputHelper output)
+    private static IncludeInReport ExcludeInfoMessages(FeedbackMessage message)
     {
-        _output = output;
-        _tidyMessages.Clear();
+        return (message.Level == ReportLevel.Info ||
+                message.Level == ReportLevel.DialogueInfo)
+            ? IncludeInReport.No
+            : IncludeInReport.Yes;
     }
 
     [Fact]
@@ -22,12 +24,7 @@ public class DocumentCountersTests
         using var tidyDocument = new Document(htmlString);       
         Assert.NotNull(tidyDocument);
 
-        tidyDocument.FeedbackMessagesCallback = message =>
-        {
-            if (message.Level == ReportLevel.Info || message.Level == ReportLevel.DialogueInfo)
-                return;
-            _tidyMessages.Add(message);
-        };
+        tidyDocument.OnReceiveDiagnosticMessage = ExcludeInfoMessages;
 
         // Act
         var status = tidyDocument.CleanAndRepair();
@@ -37,17 +34,17 @@ public class DocumentCountersTests
 
         _output.WriteLine(tidyDocument.ToString());
 
-        foreach (var message in _tidyMessages)
+        foreach (var message in tidyDocument.DiagnosticMessages)
         {
             _output.WriteLine($"{message.Level}: {message}");
         }
 
-        Assert.Single(_tidyMessages);
+        Assert.Single(tidyDocument.DiagnosticMessages);
         Assert.Equal(0u, tidyDocument.ErrorCount);
         Assert.Equal(0u, tidyDocument.WarningCount);
         Assert.Equal(0u, tidyDocument.AccessWarningCount);
 
-        var dialogueSummary = _tidyMessages.Single(m => m.Key == "STRING_NO_ERRORS").Output;
+        var dialogueSummary = tidyDocument.DiagnosticMessages.Single(m => m.Key == "STRING_NO_ERRORS").Output;
         Assert.Equal("No warnings or errors were found.", dialogueSummary);
     }
 
@@ -59,12 +56,7 @@ public class DocumentCountersTests
         using var tidyDocument = new Document(htmlString);       
         Assert.NotNull(tidyDocument);
 
-        tidyDocument.FeedbackMessagesCallback = message =>
-        {
-            if (message.Level == ReportLevel.Info || message.Level == ReportLevel.DialogueInfo)
-                return;
-            _tidyMessages.Add(message);
-        };
+        tidyDocument.OnReceiveDiagnosticMessage = ExcludeInfoMessages;
 
         // Act
         var status = tidyDocument.CleanAndRepair();
@@ -74,17 +66,17 @@ public class DocumentCountersTests
 
         _output.WriteLine(tidyDocument.ToString());
 
-        foreach (var message in _tidyMessages)
+        foreach (var message in tidyDocument.DiagnosticMessages)
         {
             _output.WriteLine($"{message.Level}: {message}");
         }
 
-        Assert.Equal(3, _tidyMessages.Count);
+        Assert.Equal(3, tidyDocument.DiagnosticMessages.Count);
         Assert.Equal(0u, tidyDocument.ErrorCount);
         Assert.Equal(2u, tidyDocument.WarningCount);
         Assert.Equal(0u, tidyDocument.AccessWarningCount);
 
-        var dialogueSummary = _tidyMessages.Single(m => m.Key == "STRING_ERROR_COUNT").Output;
+        var dialogueSummary = tidyDocument.DiagnosticMessages.Single(m => m.Key == "STRING_ERROR_COUNT").Output;
         Assert.Equal("Tidy found 2 warnings and 0 errors!", dialogueSummary);
     }
 
@@ -96,12 +88,7 @@ public class DocumentCountersTests
         using var tidyDocument = new Document(htmlString);       
         Assert.NotNull(tidyDocument);
 
-        tidyDocument.FeedbackMessagesCallback = message =>
-        {
-            if (message.Level == ReportLevel.Info || message.Level == ReportLevel.DialogueInfo)
-                return;
-            _tidyMessages.Add(message);
-        };
+        tidyDocument.OnReceiveDiagnosticMessage = ExcludeInfoMessages;
 
         // Act
         var status = tidyDocument.CleanAndRepair();
@@ -110,17 +97,19 @@ public class DocumentCountersTests
         Assert.Equal(DocumentStatuses.Errors, status);
         _output.WriteLine(tidyDocument.ToString());
 
-        foreach (var message in _tidyMessages)
+        foreach (var message in tidyDocument.DiagnosticMessages)
         {
-            _output.WriteLine($"{message.Level}: {message}" );
+            _output.WriteLine($"{message.Level}: {message}");
         }
 
-        Assert.Equal(9, _tidyMessages.Count);
+        Assert.Equal(9, tidyDocument.DiagnosticMessages.Count);
         Assert.Equal(1u, tidyDocument.ErrorCount);
         Assert.Equal(6u, tidyDocument.WarningCount);
         Assert.Equal(0u, tidyDocument.AccessWarningCount);
 
-        var dialogueSummary = _tidyMessages.Single(m => m.Key == "STRING_ERROR_COUNT").Output;
+        Assert.NotEmpty(tidyDocument.DiagnosticMessages);
+
+        var dialogueSummary = tidyDocument.DiagnosticMessages.Single(m => m.Key == "STRING_ERROR_COUNT").Output;
         Assert.Equal("Tidy found 6 warnings and 1 error!", dialogueSummary);
     }
 
@@ -132,12 +121,7 @@ public class DocumentCountersTests
         using var tidyDocument = new Document(htmlString);       
         Assert.NotNull(tidyDocument);
 
-        tidyDocument.FeedbackMessagesCallback = message =>
-        {
-            if (message.Level == ReportLevel.Info || message.Level == ReportLevel.DialogueInfo)
-                return;
-            _tidyMessages.Add(message);
-        };
+        tidyDocument.OnReceiveDiagnosticMessage = ExcludeInfoMessages;
 
         // Act
         tidyDocument.DiagnosticOptions.AccessibilityCheckLevel = AccessibilityCheckLevels.TidyClassic;
@@ -148,17 +132,17 @@ public class DocumentCountersTests
 
         _output.WriteLine(tidyDocument.ToString());
 
-        foreach (var message in _tidyMessages)
+        foreach (var message in tidyDocument.DiagnosticMessages)
         {
-            _output.WriteLine($"{message.Level}: {message}" );
+            _output.WriteLine($"{message.Level}: {message}");
         }
 
-        Assert.Equal(4, _tidyMessages.Count);
+        Assert.Equal(4, tidyDocument.DiagnosticMessages.Count);
         Assert.Equal(0u, tidyDocument.ErrorCount);
         Assert.Equal(1u, tidyDocument.WarningCount);
         Assert.Equal(0u, tidyDocument.AccessWarningCount);
 
-        var dialogueSummary = _tidyMessages.Single(m => m.Key == "STRING_ERROR_COUNT").Output;
+        var dialogueSummary = tidyDocument.DiagnosticMessages.Single(m => m.Key == "STRING_ERROR_COUNT").Output;
         Assert.Equal("Tidy found 1 warning and 0 errors!", dialogueSummary);
     }
 
@@ -166,16 +150,12 @@ public class DocumentCountersTests
     public void AccessWarningCounter_should_be_non_zero_on_checklevel_priority3()
     {
         // Arrange
+        var reportStream = new MemoryStream();
         var htmlString = "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 3.2//EN\">\r\n<html><head><title>Title</title></head>\r\n<body>\r\n\r\n<p><img src=\"img.png\"></p>\r\n\r\n</body></html>";
-        using var tidyDocument = new Document(htmlString);
+        using var tidyDocument = new Document(htmlString).WithReportStream(reportStream);
         Assert.NotNull(tidyDocument);
 
-        tidyDocument.FeedbackMessagesCallback = message =>
-        {
-            if (message.Level == ReportLevel.Info || message.Level == ReportLevel.DialogueInfo)
-                return;
-            _tidyMessages.Add(message);
-        };
+        tidyDocument.OnReceiveDiagnosticMessage = ExcludeInfoMessages;
 
         // Act
         tidyDocument.DiagnosticOptions.AccessibilityCheckLevel = AccessibilityCheckLevels.Priority3;
@@ -183,20 +163,22 @@ public class DocumentCountersTests
 
         // Assert
         Assert.Equal(DocumentStatuses.Warnings, status);
+        var output = tidyDocument.ToString();
+        Assert.NotEmpty(output);
+        _output.WriteLine(output);
 
-        _output.WriteLine(tidyDocument.ToString());
-
-        foreach (var message in _tidyMessages)
+        Assert.NotEmpty(tidyDocument.DiagnosticMessages);
+        foreach (var message in tidyDocument.DiagnosticMessages)
         {
             _output.WriteLine($"{message.Level}: {message}");
         }
 
-        Assert.Equal(7, _tidyMessages.Count);
+        Assert.Equal(7, tidyDocument.DiagnosticMessages.Count);
         Assert.Equal(0u, tidyDocument.ErrorCount);
         Assert.Equal(0u, tidyDocument.WarningCount); // warning count moved to access warning counter
         Assert.Equal(6u, tidyDocument.AccessWarningCount);
 
-        var dialogueSummary = _tidyMessages.Single(m => m.Key == "STRING_NO_ERRORS").Output;
+        var dialogueSummary = tidyDocument.DiagnosticMessages.Single(m => m.Key == "STRING_NO_ERRORS").Output;
         Assert.Equal("No warnings or errors were found.", dialogueSummary);
     }
 }
