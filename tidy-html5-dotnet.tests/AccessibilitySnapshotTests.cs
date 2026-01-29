@@ -13,14 +13,14 @@ public class AccessibilitySnapshotTests()
     {
         // Build document from input string
         var reportStream = new MemoryStream();
-        var doc = Document.FromFile(testCaseData.InputHtml).WithReportStream(reportStream);       
+        var doc = Document.FromFile(testCaseData.InputHtml);     
 
         // Load config text (if API supports from string; if not, parse/apply options)
         var configStatus = doc.LoadConfig(testCaseData.ConfigFile);
         Assert.Equal(DocumentStatuses.Success, configStatus);
 
         // Clean & repair
-        var cleanStatus = doc.CleanAndRepair();
+        var cleanStatus = doc.CleanAndRepair(reportStream);
         Assert.Equal(testCaseData.CleanupStatus, cleanStatus);
 
         // Compare content

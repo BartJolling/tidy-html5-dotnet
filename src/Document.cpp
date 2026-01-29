@@ -77,37 +77,6 @@ namespace TidyHtml5Dotnet
 		return gcnew Document(gcnew FileStream(filePath, FileMode::Open));
 	}
 
-	Document^ Document::WithReportStream(Stream^ stream)
-	{
-		ArgumentNullException::ThrowIfNull(stream, "stream");
-
-		if (!stream->CanWrite)
-			throw gcnew ArgumentException("Stream must be writable.");
-
-		_reportStreamSink = gcnew StreamSink(stream);
-
-		int result = tidySetErrorSink(_tidyDoc, _reportStreamSink->TidyOutSink);
-		if (result != 0)
-			throw gcnew InvalidOperationException("Failed to set error stream sink");
-
-		return this;
-	}
-
-	Document^ Document::WithReportFile(String^ filePath)
-	{
-		ArgumentNullException::ThrowIfNullOrWhiteSpace(filePath, "filePath");
-
-		FILE* f = tidySetErrorFile(_tidyDoc, Conversions::StringToCharArray(filePath));
-
-		if (f == nullptr)
-		{
-			throw gcnew IOException(
-				String::Format("Failed to open error file '{0}'.", filePath));
-		}
-
-		return this;
-	}
-
 	Document::~Document()
 	{
 		if (_disposed) return;
@@ -152,13 +121,23 @@ namespace TidyHtml5Dotnet
 		return no;
 	}
 
-	/// @brief Loads document config options from config file
-	/// @param filePath Path to the config file
-	/// @param encoding Encoding of the config file. If unspecified, assumes Ascii
-	/// @return Error code indicating success or failure reading the file and setting the options
+	/// <summary>
+	/// Loads document configuration options from a configuration file.
+	/// </summary>
+	/// <param name="filePath">
+	/// Path to the configuration file.
+	/// </param>
+	/// <param name="encoding">
+	/// Encoding of the configuration file. If not specified, ASCII is assumed.
+	/// </param>
+	/// <returns>
+	/// A status code indicating success or failure when reading the file
+	/// and applying the configuration options.
+	/// </returns>
 	DocumentStatuses Document::LoadConfig(String^ filePath, Nullable<Encodings> encoding)
 	{
-		if (!encoding.HasValue) { encoding = Encodings::Ascii; }
+		encoding = encoding.GetValueOrDefault(Encodings::Ascii);
+
 		String^ encodingName = Enum::GetName(Encodings::typeid, encoding);
 
 		auto filePathC = Conversions::StringToCharArray(filePath);
@@ -174,8 +153,55 @@ namespace TidyHtml5Dotnet
 
 	/// <summary>
 	/// Parses input markup, and executes configured cleanup and repair operations.
+	/// The diagnostic report is written to the provided report stream.
 	/// </summary>
-	/// <returns>See Tidy error code convention (DocumentStatuses)</returns>
+	/// <param name="reportStream">An open and writeable stream to write the report to</param>
+	/// <returns>A status for success, with warnings or with errors</returns>
+	DocumentStatuses Document::CleanAndRepair(Stream^ reportStream)
+	{
+		ArgumentNullException::ThrowIfNull(reportStream, "stream");
+
+		if (!reportStream->CanWrite)
+			throw gcnew ArgumentException("Stream must be writable.", "reportStream");
+
+		_reportStreamSink = gcnew StreamSink(reportStream);
+
+		int result = tidySetErrorSink(_tidyDoc, _reportStreamSink->TidyOutSink);
+		if (result != 0)
+			throw gcnew InvalidOperationException("Failed to set report stream.");
+
+		return CleanAndRepair();
+	}
+
+	/// <summary>
+	/// Parses input markup, and executes configured cleanup and repair operations.
+	/// The diagnostic report is written to the provide report file.
+	/// </summary>
+	/// <param name="reportFilePath">An file path to writeable location to write the report to</param>
+	/// <returns>A status for success, with warnings or with errors</returns>
+	DocumentStatuses Document::CleanAndRepair(String^ reportFilePath)
+	{
+		ArgumentNullException::ThrowIfNullOrWhiteSpace(reportFilePath, "reportFilePath");
+
+		FILE* f = tidySetErrorFile(
+			_tidyDoc,
+			Conversions::StringToCharArray(reportFilePath)
+		);
+
+		if (f == nullptr)
+		{
+			throw gcnew IOException(
+				String::Format("Failed to open report file '{0}'.", reportFilePath));
+		}
+
+		return CleanAndRepair();
+	}
+
+	/// <summary>
+	/// Parses input markup, and executes configured cleanup and repair operations.
+	/// The diagnostic report is written to the stderr stream.
+	/// </summary>
+	/// <returns>A status for success, with warnings or with errors</returns>
 	DocumentStatuses Document::CleanAndRepair()
 	{
 		int parseResult = 0;
@@ -200,20 +226,34 @@ namespace TidyHtml5Dotnet
 			return static_cast<DocumentStatuses>(parseResult);
 		}
 
-		// Run clean & repair after parsing
-		auto repairResult = tidyCleanAndRepair(_tidyDoc);
-		if (repairResult < 0) throw gcnew TidyException(repairResult);
+		try
+		{
+			// Run clean & repair after parsing
+			auto repairResult = tidyCleanAndRepair(_tidyDoc);
+			if (repairResult < 0) throw gcnew TidyException(repairResult);
 
-		_cleaned = true;
+			_cleaned = true;
 
-		auto diagResults = tidyRunDiagnostics(_tidyDoc);
-		if (diagResults < 0) throw gcnew TidyException(diagResults);
+			auto diagResults = tidyRunDiagnostics(_tidyDoc);
+			if (diagResults < 0) throw gcnew TidyException(diagResults);
 
-		/* generate footnote messages only if errors or warnings */
-		if (ErrorCount + WarningCount > 0)
-			ErrorSummary();
+			/* generate footnote messages only if errors or warnings */
+			if (ErrorCount + WarningCount > 0)
+				ErrorSummary();
 
-		return static_cast<DocumentStatuses>(repairResult);
+			return static_cast<DocumentStatuses>(repairResult);
+		}
+		finally
+		{
+			if (_reportStreamSink != nullptr)
+			{
+				delete _reportStreamSink;
+				_reportStreamSink = nullptr;
+			}
+
+			// Reset to default stderr
+			tidySetErrorFile(_tidyDoc, nullptr);
+		}
 	}
 
 	DocumentStatuses Document::ReportDocType()

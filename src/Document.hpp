@@ -75,6 +75,8 @@ namespace TidyHtml5Dotnet
 
 		DocumentStatuses LoadConfig(String^ filePath, [Optional] Nullable<Encodings> encoding);
 		DocumentStatuses CleanAndRepair();
+		DocumentStatuses CleanAndRepair(Stream^ reportStream);
+		DocumentStatuses CleanAndRepair(String^ reportFilePath);
 		DocumentStatuses ReportDocType();
 		DocumentStatuses RunDiagnostics();
 		void ErrorSummary();
@@ -97,9 +99,6 @@ namespace TidyHtml5Dotnet
 		IReadOnlyList<OptionDescription^>^ GetOptionDescriptions();
 
 		// Configuration
-		Document^ WithReportStream(Stream^ stream);
-		Document^ WithReportFile(String^ path);
-
 		property CleanupOptions^ CleanupOptions { TidyHtml5Dotnet::CleanupOptions^ get() { return _cleanupOptions; } }
 		property DiagnosticOptions^ DiagnosticOptions { TidyHtml5Dotnet::DiagnosticOptions^ get() { return _diagnosticOptions; } }
 		property DisplayOptions^ DisplayOptions { TidyHtml5Dotnet::DisplayOptions^ get() { return _displayOptions; } }

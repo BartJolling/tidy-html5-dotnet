@@ -152,14 +152,14 @@ public class DocumentCountersTests(ITestOutputHelper output)
         // Arrange
         var reportStream = new MemoryStream();
         var htmlString = "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 3.2//EN\">\r\n<html><head><title>Title</title></head>\r\n<body>\r\n\r\n<p><img src=\"img.png\"></p>\r\n\r\n</body></html>";
-        using var tidyDocument = new Document(htmlString).WithReportStream(reportStream);
+        using var tidyDocument = new Document(htmlString);
         Assert.NotNull(tidyDocument);
 
         tidyDocument.OnReceiveDiagnosticMessage = ExcludeInfoMessages;
 
         // Act
         tidyDocument.DiagnosticOptions.AccessibilityCheckLevel = AccessibilityCheckLevels.Priority3;
-        var status = tidyDocument.CleanAndRepair();
+        var status = tidyDocument.CleanAndRepair(reportStream);
 
         // Assert
         Assert.Equal(DocumentStatuses.Warnings, status);
