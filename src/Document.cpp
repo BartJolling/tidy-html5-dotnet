@@ -245,6 +245,7 @@ namespace TidyHtml5Dotnet
 		}
 		finally
 		{
+			// TODO: unit tests to check lifetimes
 			if (_reportStreamSink != nullptr)
 			{
 				delete _reportStreamSink;
@@ -252,7 +253,7 @@ namespace TidyHtml5Dotnet
 			}
 
 			// Reset to default stderr
-			tidySetErrorFile(_tidyDoc, nullptr);
+			//tidySetErrorFile(_tidyDoc, nullptr);
 		}
 	}
 

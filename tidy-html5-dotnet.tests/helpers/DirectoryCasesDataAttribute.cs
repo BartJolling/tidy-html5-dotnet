@@ -1,24 +1,22 @@
 ﻿namespace tidy_html5_dotnet_test.helpers;
 
 using System.Reflection;
+using System.Threading.Tasks;
 using TidyHtml5Dotnet;
+using Xunit;
 using Xunit.Sdk;
+using Xunit.v3;
 
-public sealed class DirectoryCasesDataAttribute : DataAttribute
+public sealed class DirectoryCasesDataAttribute(string casePrefix) : DataAttribute
 {
-    private readonly string _casePrefix;
+    public override bool SupportsDiscoveryEnumeration() => true;
 
-    public DirectoryCasesDataAttribute(string casePrefix)
-    {
-        _casePrefix = casePrefix;
-    }
-
-    public override IEnumerable<object[]> GetData(MethodInfo testMethod)
+    public IEnumerable<TheoryDataRow<CaseData>> GetData(MethodInfo testMethod)
     {
         var baseDir = AppContext.BaseDirectory;
 
-        var casesPath = Path.Combine(baseDir, "cases", $"{_casePrefix}-cases");
-        var expectsPath = Path.Combine(baseDir, "cases", $"{_casePrefix}-expects");
+        var casesPath = Path.Combine(baseDir, "cases", $"{casePrefix}-cases");
+        var expectsPath = Path.Combine(baseDir, "cases", $"{casePrefix}-expects");
 
         if (!Directory.Exists(casesPath))
             throw new DirectoryNotFoundException(casesPath);
@@ -31,8 +29,8 @@ public sealed class DirectoryCasesDataAttribute : DataAttribute
 
         foreach (var inputFilePath in files)
         {
-            var fileName = Path.GetFileName(inputFilePath); 
-            
+            var fileName = Path.GetFileName(inputFilePath);
+
             // Must contain @
             var atIndex = fileName.IndexOf('@');
             if (atIndex < 0) continue;
@@ -66,8 +64,7 @@ public sealed class DirectoryCasesDataAttribute : DataAttribute
                 ? DocumentStatuses.Success
                 : DocumentStatuses.Warnings;
 
-            yield return new object[]
-            {
+            yield return new TheoryDataRow<CaseData>(
                 new CaseData(
                     caseNumber,
                     inputFilePath,
@@ -77,7 +74,12 @@ public sealed class DirectoryCasesDataAttribute : DataAttribute
                     cleanupStatus,
                     cleanupStatus
                 )
-            };
+             );
         }
+    }
+
+    public override ValueTask<IReadOnlyCollection<ITheoryDataRow>> GetData(MethodInfo testMethod, DisposalTracker disposalTracker)
+    {
+        return ValueTask.FromResult<IReadOnlyCollection<ITheoryDataRow>>(GetData(testMethod).ToList());
     }
 }

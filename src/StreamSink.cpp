@@ -6,17 +6,17 @@ using namespace System::Runtime::InteropServices;
 
 namespace TidyHtml5Dotnet
 {
-    private delegate void TidyPutByteDelegate(void* sinkData, byte bt);
-
     StreamSink::StreamSink(Stream ^ stream)
     {
         ArgumentNullException::ThrowIfNull(stream, "stream");
-        _stream = stream;
+        _stream = stream;        
 
-        auto putByteFnPtr = Marshal::GetFunctionPointerForDelegate(gcnew TidyPutByteDelegate(this, &StreamSink::OnPutByte));
+        _handle = GCHandle::Alloc(this);
+        _putByteDelegate = gcnew TidyPutByteDelegate(this, &StreamSink::OnPutByte);
+        auto putByteFnPtr = Marshal::GetFunctionPointerForDelegate(_putByteDelegate);
 
         _tidyOutputSink = new TidyOutputSink();
-        _tidyOutputSink->sinkData = nullptr;
+        _tidyOutputSink->sinkData = GCHandle::ToIntPtr(_handle).ToPointer();
         _tidyOutputSink->putByte = static_cast<TidyPutByteFunc>(putByteFnPtr.ToPointer());        
     }
 
@@ -24,7 +24,9 @@ namespace TidyHtml5Dotnet
     {
         if (_disposed) return;
 
-        //Dispose managed objects here
+        // Release managed references early
+        _putByteDelegate = nullptr;
+        _stream = nullptr;
 
         this->!StreamSink();
         _disposed = true;
@@ -33,8 +35,11 @@ namespace TidyHtml5Dotnet
     StreamSink::!StreamSink()
     {
         //Free unmanaged objects here
+        if (_handle.IsAllocated)
+            _handle.Free();
 
         delete _tidyOutputSink;
+        _tidyOutputSink = nullptr;
     }
 
     void StreamSink::OnPutByte(void *sinkData, byte bt)

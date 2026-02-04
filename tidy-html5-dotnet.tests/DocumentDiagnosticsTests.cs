@@ -1,10 +1,8 @@
-﻿using System.Text;
-using TidyHtml5Dotnet;
-using Xunit.Abstractions;
+﻿using TidyHtml5Dotnet;
 
 namespace tidy_html5_dotnet_test;
 
-public class DocumentCountersTests(ITestOutputHelper output)
+public class DocumentDiagnosticsTests(ITestOutputHelper output)
 {
     private readonly ITestOutputHelper _output = output;
 
@@ -17,7 +15,7 @@ public class DocumentCountersTests(ITestOutputHelper output)
     }
 
     [Fact]
-    public void Counters_should_be_zero_on_clean_status()
+    public void Clean_input_results_in_no_warnings_and_clean_report()
     {
         // Arrange
         var htmlString = "<!DOCTYPE html><html><head><title>Title</title></head><body><h1>Header</h1></body></html>";
@@ -27,25 +25,36 @@ public class DocumentCountersTests(ITestOutputHelper output)
         tidyDocument.OnReceiveDiagnosticMessage = ExcludeInfoMessages;
 
         // Act
-        var status = tidyDocument.CleanAndRepair();
+        var reportStream = new MemoryStream();
+        var status = tidyDocument.CleanAndRepair(reportStream);
 
-        // Assert
+        // Assert - Status
         Assert.Equal(DocumentStatuses.Success, status);
 
         _output.WriteLine(tidyDocument.ToString());
 
+        // Assert - Messages
         foreach (var message in tidyDocument.DiagnosticMessages)
         {
             _output.WriteLine($"{message.Level}: {message}");
         }
 
         Assert.Single(tidyDocument.DiagnosticMessages);
+        var dialogueSummary = tidyDocument.DiagnosticMessages.Single(m => m.Key == "STRING_NO_ERRORS").Output;
+        Assert.Equal("No warnings or errors were found.", dialogueSummary);
+
+        // Assert - Counters
         Assert.Equal(0u, tidyDocument.ErrorCount);
         Assert.Equal(0u, tidyDocument.WarningCount);
         Assert.Equal(0u, tidyDocument.AccessWarningCount);
 
-        var dialogueSummary = tidyDocument.DiagnosticMessages.Single(m => m.Key == "STRING_NO_ERRORS").Output;
-        Assert.Equal("No warnings or errors were found.", dialogueSummary);
+        // Assert - Report
+        reportStream.Seek(0, SeekOrigin.Begin);
+        using var reader = new StreamReader(reportStream);
+        var reportContent = reader.ReadToEnd();
+        _output.WriteLine("Report Content:");
+        _output.WriteLine(reportContent);
+        Assert.Contains("No warnings or errors were found.", reportContent);
     }
 
     [Fact]
